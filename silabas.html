@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Dictado de Sílabas de Chispa 🤖</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="El Sobrinito">
+<meta name="theme-color" content="#C9B6F0">
+<link href="https://fonts.googleapis.com/css2?family=Chewy&family=Baloo+2:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--sol:#FFE08A;--durazno:#FFCBA4;--lila:#C9B6F0;--lila-d:#A98FE0;--cielo:#A9DCF2;--limon:#C2E89A;--menta:#A8E6D4;--rosa:#FFC4D6;--verde:#A5DD8A;--crema:#FFFCF5;--tinta:#2E2435;}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{height:100%;}
+body{font-family:'Baloo 2',sans-serif;font-weight:700;color:var(--tinta);background:linear-gradient(165deg,var(--lila),var(--cielo));min-height:100%;display:flex;flex-direction:column;align-items:center;padding:14px;overflow-x:hidden;font-size:19px;}
+.top{width:100%;max-width:540px;display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:10px;}
+.title{font-family:'Chewy';font-size:23px;color:#fff;text-shadow:3px 3px 0 var(--tinta);}
+.top-right{display:flex;gap:8px;align-items:center;}
+.score{background:var(--sol);border:3px solid var(--tinta);border-radius:100px;padding:5px 14px;box-shadow:3px 3px 0 var(--tinta);font-size:19px;}
+.gear{background:#fff;border:3px solid var(--tinta);border-radius:50%;width:42px;height:42px;font-size:20px;cursor:pointer;box-shadow:3px 3px 0 var(--tinta);}
+.controls{width:100%;max-width:540px;display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:8px;}
+.seg{display:flex;background:#fff;border:3px solid var(--tinta);border-radius:100px;overflow:hidden;box-shadow:3px 3px 0 var(--tinta);}
+.seg button{border:none;background:none;padding:7px 13px;font-family:'Baloo 2';font-weight:700;font-size:14px;cursor:pointer;color:var(--tinta);}
+.seg button.on{background:var(--sol);}
+.levels{width:100%;max-width:540px;display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-bottom:12px;}
+.lvl{background:#fff;border:3px solid var(--tinta);border-radius:100px;padding:4px 12px;cursor:pointer;box-shadow:2px 2px 0 var(--tinta);font-size:13px;}
+.lvl.on{background:var(--menta);}
+.stars{display:flex;flex-wrap:wrap;justify-content:center;margin-bottom:8px;font-size:18px;line-height:1.2;min-height:22px;max-width:540px;word-break:break-word;}
+.stage{background:#fff;border:4px solid var(--tinta);border-radius:26px;box-shadow:7px 7px 0 var(--tinta);padding:20px;text-align:center;width:100%;max-width:540px;margin-bottom:14px;}
+.robot{font-size:70px;line-height:1;display:inline-block;animation:idle 3s ease-in-out infinite;filter:drop-shadow(0 5px 0 rgba(0,0,0,.12));}
+.robot.talk{animation:talk .35s ease-in-out infinite;}
+@keyframes idle{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes talk{0%,100%{transform:scale(1) rotate(-3deg)}50%{transform:scale(1.08) rotate(3deg)}}
+.bubble{background:var(--lila);border:3px solid var(--tinta);border-radius:18px;padding:12px;margin-top:10px;font-size:20px;position:relative;}
+.bubble::before{content:'';position:absolute;top:-13px;left:50%;transform:translateX(-50%);border-left:11px solid transparent;border-right:11px solid transparent;border-bottom:13px solid var(--tinta);}
+.hintbox{margin-top:10px;background:var(--crema);border:3px dashed var(--tinta);border-radius:16px;padding:12px;display:none;}
+.hintbox.show{display:block;}
+.big-emoji{font-size:56px;line-height:1;}
+.reveal-syl{font-family:'Chewy';font-size:54px;color:var(--lila-d);}
+.btns{display:flex;gap:10px;justify-content:center;margin-top:12px;flex-wrap:wrap;}
+.bbtn{background:var(--lila-d);color:#fff;border:4px solid var(--tinta);border-radius:100px;padding:11px 22px;font-family:'Chewy';font-size:21px;cursor:pointer;box-shadow:4px 4px 0 var(--tinta);transition:transform .1s;}
+.bbtn:active{transform:translate(3px,3px);box-shadow:1px 1px 0 var(--tinta);}
+.bbtn.peek{background:var(--menta);color:var(--tinta);}
+.options{display:grid;grid-template-columns:repeat(3,1fr);gap:11px;width:100%;max-width:540px;}
+.opt{aspect-ratio:1;background:#fff;border:4px solid var(--tinta);border-radius:22px;font-family:'Chewy';font-size:clamp(30px,9vw,44px);display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:5px 5px 0 var(--tinta);transition:transform .1s;text-transform:lowercase;}
+.opt:active{transform:translate(3px,3px);box-shadow:2px 2px 0 var(--tinta);}
+.opt.correct{background:var(--verde);color:#fff;animation:pop .4s;}
+.opt.wrong{background:var(--rosa);animation:shake .4s;}
+.opt.hintpulse{animation:pulse 1s infinite;}
+@keyframes pop{0%{transform:scale(1)}40%{transform:scale(1.18)}100%{transform:scale(1)}}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-7px)}75%{transform:translateX(7px)}}
+@keyframes pulse{0%,100%{box-shadow:5px 5px 0 var(--tinta)}50%{box-shadow:0 0 0 6px var(--sol),5px 5px 0 var(--tinta)}}
+.feedback{margin-top:12px;font-family:'Chewy';font-size:24px;color:#fff;text-shadow:3px 3px 0 var(--tinta);min-height:30px;text-align:center;}
+#wordArea,#challengeArea{display:none;flex-direction:column;align-items:center;width:100%;max-width:540px;}
+.ch-banner{background:var(--limon);border:3px solid var(--tinta);border-radius:16px;padding:8px 16px;font-family:'Chewy';font-size:20px;margin-bottom:10px;box-shadow:3px 3px 0 var(--tinta);}
+.pic-card{background:var(--crema);border:3px dashed var(--tinta);border-radius:16px;padding:12px 26px;margin-bottom:8px;}
+.slots{display:flex;gap:10px;justify-content:center;margin:10px 0;}
+.slot{width:92px;height:92px;background:var(--crema);border:4px dashed var(--tinta);border-radius:20px;font-family:'Chewy';font-size:38px;display:flex;align-items:center;justify-content:center;text-transform:lowercase;}
+.slot.filled{background:var(--sol);border-style:solid;animation:pop .3s;}
+.pieces{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;width:100%;max-width:400px;}
+.piece{aspect-ratio:1.4;background:#fff;border:4px solid var(--tinta);border-radius:18px;font-family:'Chewy';font-size:32px;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:4px 4px 0 var(--tinta);text-transform:lowercase;transition:transform .1s;}
+.piece:active{transform:translate(3px,3px);box-shadow:1px 1px 0 var(--tinta);}
+.piece.used{opacity:.25;pointer-events:none;}
+.overlay{position:fixed;inset:0;background:rgba(46,36,53,.55);display:none;align-items:center;justify-content:center;z-index:50;padding:18px;}
+.ocard{background:var(--sol);border:5px solid var(--tinta);border-radius:30px;padding:30px 26px;text-align:center;max-width:340px;box-shadow:8px 8px 0 var(--tinta);animation:pop .4s;}
+.ocard .oe{font-size:78px;animation:bounce .6s infinite alternate;}
+@keyframes bounce{from{transform:translateY(0)}to{transform:translateY(-12px)}}
+.ocard h2{font-family:'Chewy';font-weight:400;font-size:30px;margin:6px 0;}
+.ocard p{font-size:19px;margin-bottom:14px;}
+.sheet{position:fixed;inset:0;background:rgba(46,36,53,.5);display:none;align-items:flex-end;justify-content:center;z-index:60;}
+.sheet.show{display:flex;}
+.sheet-card{background:var(--crema);border:4px solid var(--tinta);border-radius:28px 28px 0 0;padding:24px 22px 30px;width:100%;max-width:540px;box-shadow:0 -6px 0 var(--tinta);}
+.sheet-card h2{font-family:'Chewy';font-weight:400;font-size:26px;text-align:center;margin-bottom:4px;}
+.sheet-card .sub{text-align:center;font-size:14px;color:#7a6f80;margin-bottom:18px;}
+.setrow{display:flex;align-items:center;gap:12px;background:#fff;border:3px solid var(--tinta);border-radius:16px;padding:14px;margin-bottom:12px;}
+.setrow .si{font-size:30px;}.setrow .st{flex:1;}
+.setrow .st b{font-size:17px;}.setrow .st p{font-size:13px;color:#7a6f80;}
+.toggle{width:58px;height:32px;border-radius:100px;border:3px solid var(--tinta);background:#ddd;position:relative;cursor:pointer;flex-shrink:0;transition:background .15s;}
+.toggle.on{background:var(--verde);}.toggle .knob{position:absolute;top:1px;left:1px;width:24px;height:24px;border-radius:50%;background:#fff;border:2px solid var(--tinta);transition:left .15s;}
+.toggle.on .knob{left:27px;}
+.closebtn{width:100%;background:var(--lila-d);color:#fff;border:4px solid var(--tinta);border-radius:16px;padding:12px;font-family:'Chewy';font-size:22px;cursor:pointer;box-shadow:4px 4px 0 var(--tinta);margin-top:6px;}
+.resetbtn{width:100%;background:var(--rosa);color:var(--tinta);border:3px solid var(--tinta);border-radius:16px;padding:12px;font-family:'Chewy';font-size:20px;cursor:pointer;margin-bottom:12px;}
+.celebrate{font-size:48px;position:fixed;pointer-events:none;animation:fall 1.3s linear forwards;z-index:99;}
+@keyframes fall{0%{transform:translateY(-40px) rotate(0);opacity:1}100%{transform:translateY(60vh) rotate(360deg);opacity:0}}
+.note{color:#fff;font-size:13px;margin-top:14px;text-align:center;max-width:520px;background:rgba(46,36,53,.32);padding:10px 14px;border-radius:14px;}
+</style>
+</head>
+<body>
+<div class="top">
+  <div class="title">🤖 Dictado de Sílabas</div>
+  <div class="top-right">
+    <div class="score">⭐ <span id="score">0</span></div>
+    <button class="gear" onclick="openSettings()">⚙️</button>
+  </div>
+</div>
+<div class="controls">
+  <div class="seg">
+    <button id="m-find" class="on" onclick="setMode('find')">🔍 Sílabas</button>
+    <button id="m-word" onclick="setMode('word')">🗣️ Palabras</button>
+  </div>
+</div>
+<div class="levels" id="levelRow">
+  <div class="lvl on" onclick="setGroup(this,'m,p,l,s')">m·p·l·s</div>
+  <div class="lvl" onclick="setGroup(this,'t,n,d,f')">t·n·d·f</div>
+  <div class="lvl" onclick="setGroup(this,'b,c,q,g')">b·c·q·g</div>
+  <div class="lvl" onclick="setGroup(this,'h,j,k,ñ')">h·j·k·ñ</div>
+  <div class="lvl" onclick="setGroup(this,'r,v,w,x')">r·v·w·x</div>
+  <div class="lvl" onclick="setGroup(this,'y,z')">y·z</div>
+  <div class="lvl" onclick="setGroup(this,'todas')">¡Todas!</div>
+</div>
+<div class="stars" id="stars"></div>
+<div id="findPanel" style="width:100%;display:flex;flex-direction:column;align-items:center;">
+  <div class="stage">
+    <div class="robot" id="robot">🤖</div>
+    <div class="bubble" id="bubble">¡Hola! Soy Chispa. Toca 🔊 y te diré una sílaba. ¡Encuéntrala! ¿Capichi? 😎</div>
+    <div class="hintbox" id="hintbox"></div>
+    <div class="btns" id="findBtns">
+      <button class="bbtn" id="listenBtn" onclick="speakTarget()">🔊 Escuchar</button>
+      <button class="bbtn peek" onclick="peek()">👀 Pista</button>
+    </div>
+  </div>
+  <div class="options" id="options"></div>
+  <div id="challengeArea">
+    <div class="ch-banner">🦖 ¡Desafío de Rex! Arma la palabra <b>(2 sílabas)</b></div>
+    <div class="pic-card"><div class="big-emoji" id="chEmoji">🌙</div></div>
+    <div class="slots" id="chSlots"></div>
+    <div class="pieces" id="pieces"></div>
+    <div class="btns">
+      <button class="bbtn" onclick="speakWord()">🔊 Palabra</button>
+      <button class="bbtn peek" onclick="clearChallenge()">🧽 Borrar</button>
+    </div>
+  </div>
+  <div class="feedback" id="feedback"></div>
+</div>
+<div id="wordArea">
+  <div class="ch-banner">🗣️ Dictado de Palabras</div>
+  <div class="stage" style="padding:14px;">
+    <div class="robot" id="robotW">🤖</div>
+    <div class="bubble" id="bubbleW">¡Escucha la palabra y ármala!</div>
+    <div class="hintbox show" id="wPic"><div class="big-emoji" id="wEmoji">🍇</div></div>
+    <div class="btns">
+      <button class="bbtn" id="listenBtnW" onclick="speakDictWord()">🔊 Escuchar</button>
+      <button class="bbtn peek" onclick="clearWord()">🧽 Borrar</button>
+    </div>
+  </div>
+  <div class="slots" id="wSlots"></div>
+  <div class="pieces" id="wPieces"></div>
+  <div class="feedback" id="feedbackW"></div>
+</div>
+<div class="note">📲 Celular → Compartir → <b>"Agregar a inicio"</b> para usarlo como app. ⚙️ ajustes para papás. 🦖 El Desafío de Rex usa <b>solo palabras de 2 sílabas</b>.</div>
+<div class="overlay" id="overlay">
+  <div class="ocard">
+    <div class="oe" id="oe">⭐</div>
+    <h2 id="ot">¡Vas genial!</h2>
+    <p id="ox">¡Sigue así!</p>
+    <button class="bbtn" id="obtn">¡Seguir!</button>
+  </div>
+</div>
+<div class="sheet" id="sheet">
+  <div class="sheet-card">
+    <h2>⚙️ Ajustes para los papás</h2>
+    <div class="sub">Adáptenlo a cada niño. Todos pueden jugar. 💛</div>
+    <div class="setrow">
+      <div class="si">🔊</div>
+      <div class="st"><b>Sonido (voz de Chispa)</b><p>Apagado: la pista es visual (dibujo o sílaba grande). Ideal si el niño no escucha.</p></div>
+      <div class="toggle on" id="tg-sound" onclick="toggleSound()"><div class="knob"></div></div>
+    </div>
+    <div class="setrow">
+      <div class="si">🎉</div>
+      <div class="st"><b>Sorpresas y desafíos</b><p>Apagado: juego calmado sin interrupciones. Ideal para niños TEA.</p></div>
+      <div class="toggle on" id="tg-surp" onclick="toggleSurprises()"><div class="knob"></div></div>
+    </div>
+    <button class="resetbtn" onclick="resetGame()">🔄 Nueva partida</button>
+    <button class="closebtn" onclick="closeSettings()">Listo</button>
+  </div>
+</div>
+<script>
+/* ==========================================================
+   DICTADO DE SÍLABAS DE CHISPA — v2 (14-jul-2026)
+   Registro de actualización:
+   - TODAS las consonantes: b c d f g h j k l m n ñ p q r s t v w x y z
+     con todas las vocales a e i o u (q usa que/qui).
+   - Desafío de Rex: SOLO palabras de 2 sílabas (regla fija).
+   - Nuevo modo 🗣️ Dictado de Palabras: uva, uno, dos, pato, mamá, etc.
+   - Pistas visuales: dibujo si existe, sílaba grande si no (modo sin sonido).
+   ========================================================== */
+const VOWELS=['a','e','i','o','u'];
+const ALL_CONS=['b','c','d','f','g','h','j','k','l','m','n','ñ','p','q','r','s','t','v','w','x','y','z'];
+let GROUP=['m','p','l','s'];
+function sylsFor(c){if(c==='q')return['que','qui'];return VOWELS.map(v=>c+v);}
+function allSyls(){const cons=GROUP[0]==='todas'?ALL_CONS:GROUP;const out=[];cons.forEach(c=>sylsFor(c).forEach(s=>out.push(s)));return out;}
+/* Palabras del Desafío de Rex — SOLO 2 SÍLABAS */
+const WORDS=[
+ {w:'luna',s:['lu','na'],e:'🌙',g:'l'},{w:'loro',s:['lo','ro'],e:'🦜',g:'l'},{w:'lobo',s:['lo','bo'],e:'🐺',g:'l'},
+ {w:'mesa',s:['me','sa'],e:'🪑',g:'m'},{w:'mano',s:['ma','no'],e:'✋',g:'m'},{w:'mono',s:['mo','no'],e:'🐒',g:'m'},
+ {w:'pato',s:['pa','to'],e:'🦆',g:'p'},{w:'pera',s:['pe','ra'],e:'🍐',g:'p'},{w:'pila',s:['pi','la'],e:'🔋',g:'p'},
+ {w:'sopa',s:['so','pa'],e:'🍲',g:'s'},{w:'sapo',s:['sa','po'],e:'🐸',g:'s'},
+ {w:'taza',s:['ta','za'],e:'☕',g:'t'},{w:'toro',s:['to','ro'],e:'🐂',g:'t'},{w:'taxi',s:['ta','xi'],e:'🚕',g:'x'},
+ {w:'nube',s:['nu','be'],e:'☁️',g:'n'},{w:'nido',s:['ni','do'],e:'🪺',g:'n'},{w:'nota',s:['no','ta'],e:'🎵',g:'n'},
+ {w:'dado',s:['da','do'],e:'🎲',g:'d'},{w:'dedo',s:['de','do'],e:'☝️',g:'d'},
+ {w:'foca',s:['fo','ca'],e:'🦭',g:'f'},{w:'foto',s:['fo','to'],e:'📷',g:'f'},
+ {w:'bota',s:['bo','ta'],e:'🥾',g:'b'},{w:'beso',s:['be','so'],e:'😘',g:'b'},
+ {w:'casa',s:['ca','sa'],e:'🏠',g:'c'},{w:'cama',s:['ca','ma'],e:'🛏️',g:'c'},
+ {w:'queso',s:['que','so'],e:'🧀',g:'q'},
+ {w:'gato',s:['ga','to'],e:'🐱',g:'g'},{w:'goma',s:['go','ma'],e:'🩹',g:'g'},
+ {w:'hilo',s:['hi','lo'],e:'🧵',g:'h'},{w:'humo',s:['hu','mo'],e:'💨',g:'h'},
+ {w:'jugo',s:['ju','go'],e:'🧃',g:'j'},{w:'jamón',s:['ja','món'],e:'🍖',g:'j'},
+ {w:'kiwi',s:['ki','wi'],e:'🥝',g:'k'},{w:'koala',s:['koa','la'],e:'🐨',g:'k'},
+ {w:'piña',s:['pi','ña'],e:'🍍',g:'ñ'},{w:'niño',s:['ni','ño'],e:'🧒',g:'ñ'},
+ {w:'rana',s:['ra','na'],e:'🐸',g:'r'},{w:'rosa',s:['ro','sa'],e:'🌹',g:'r'},
+ {w:'vaca',s:['va','ca'],e:'🐄',g:'v'},{w:'vela',s:['ve','la'],e:'🕯️',g:'v'},
+ {w:'wifi',s:['wi','fi'],e:'📶',g:'w'},
+ {w:'yoyo',s:['yo','yo'],e:'🪀',g:'y'},{w:'yema',s:['ye','ma'],e:'🍳',g:'y'},
+ {w:'zorro',s:['zo','rro'],e:'🦊',g:'z'},{w:'zumo',s:['zu','mo'],e:'🧃',g:'z'}
+];
+/* Dictado de Palabras — cortas (1 y 2 sílabas), incluye las que empiezan con vocal */
+const DICT_WORDS=[
+ {w:'uva',s:['u','va'],e:'🍇'},{w:'uno',s:['u','no'],e:'1️⃣'},{w:'dos',s:['dos'],e:'2️⃣'},
+ {w:'pan',s:['pan'],e:'🍞'},{w:'sol',s:['sol'],e:'☀️'},{w:'mar',s:['mar'],e:'🌊'},
+ {w:'pez',s:['pez'],e:'🐟'},{w:'mamá',s:['ma','má'],e:'👩'},{w:'papá',s:['pa','pá'],e:'👨'},
+ {w:'oso',s:['o','so'],e:'🐻'},{w:'ala',s:['a','la'],e:'🪽'},{w:'ojo',s:['o','jo'],e:'👁️'},
+ {w:'uña',s:['u','ña'],e:'💅'},{w:'ave',s:['a','ve'],e:'🐦'},{w:'pato',s:['pa','to'],e:'🦆'},
+ {w:'tres',s:['tres'],e:'3️⃣'},{w:'luz',s:['luz'],e:'💡'},{w:'flor',s:['flor'],e:'🌸'}
+];
+/* Dibujos-pista por sílaba (la palabra del dibujo EMPIEZA con la sílaba) */
+const SYLPIC={ma:'✋',me:'🪑',mi:'🐱',mo:'🐒',mu:'🧸',pa:'🦆',pe:'🍐',pi:'🔋',po:'🍿',pu:'🚪',la:'🖍️',le:'🦁',li:'🍋',lo:'🦜',lu:'🌙',sa:'🐸',se:'🚦',si:'💺',so:'🍲',su:'🧮',ta:'☕',te:'🧵',ti:'🦈',to:'🐂',tu:'🌷',na:'🍊',ne:'🧊',ni:'🪺',no:'🎵',nu:'☁️',da:'🎲',de:'☝️',di:'🦕',do:'🍩',du:'🚿',fa:'💡',fe:'🎡',fi:'🎉',fo:'🦭',fu:'🔥',ba:'🛁',be:'😘',bi:'🚲',bo:'🥾',bu:'🦉',ca:'🏠',co:'🚗',cu:'🥄',que:'🧀',qui:'🧀',ga:'🐱',go:'🩹',gu:'🐛',ha:'🧚',hi:'🧵',ho:'🍃',hu:'💨',ja:'🍖',ji:'🦒',ju:'🧃',ka:'🥋',ki:'🥝',ko:'🐨',ña:'🍬',ño:'🧒',ra:'🐸',re:'👑',ri:'🏞️',ro:'🌹',ru:'🎡',va:'🐄',ve:'🕯️',vi:'🎻',vo:'🌋',wa:'🥪',wi:'📶',ya:'🪀',ye:'🍳',yo:'🪀',yu:'🧘',za:'👟',zo:'🦊',zu:'🧃',xi:'🚕'};
+/* ============ ESTADO ============ */
+let mode='find',target=null,score=0,wrong=0,soundOn=true,surprisesOn=true,challengeActive=false,nextChallengeAt=5;
+function rand(a,b){return Math.floor(Math.random()*(b-a+1))+a;}
+function pick(arr){return arr[rand(0,arr.length-1)];}
+function speakRaw(txt,r,pitch){if(!soundOn)return;try{const u=new SpeechSynthesisUtterance(txt);u.lang='es-ES';u.rate=r||0.8;u.pitch=pitch||1.15;const v=window.speechSynthesis.getVoices().find(x=>x.lang.toLowerCase().startsWith('es'));if(v)u.voice=v;window.speechSynthesis.speak(u);}catch(e){}}
+function speak(t,r){if(!soundOn)return;try{window.speechSynthesis.cancel();}catch(e){}speakRaw(t,r);}
+function setMode(m){if(challengeActive)return;mode=m;document.getElementById('m-find').classList.toggle('on',m==='find');document.getElementById('m-word').classList.toggle('on',m==='word');document.getElementById('findPanel').style.display=m==='find'?'flex':'none';document.getElementById('wordArea').style.display=m==='word'?'flex':'none';document.getElementById('levelRow').style.display=m==='find'?'flex':'none';m==='find'?newFind():newDictWord();}
+function setGroup(el,g){if(challengeActive)return;document.querySelectorAll('.lvl').forEach(x=>x.classList.remove('on'));el.classList.add('on');GROUP=g==='todas'?['todas']:g.split(',');newFind();}
+function openSettings(){document.getElementById('sheet').classList.add('show');}
+function closeSettings(){document.getElementById('sheet').classList.remove('show');}
+function toggleSound(){soundOn=!soundOn;document.getElementById('tg-sound').classList.toggle('on',soundOn);document.getElementById('listenBtn').style.display=soundOn?'':'none';document.getElementById('listenBtnW').style.display=soundOn?'':'none';if(!challengeActive){mode==='find'?newFind():newDictWord();}}
+function toggleSurprises(){surprisesOn=!surprisesOn;document.getElementById('tg-surp').classList.toggle('on',surprisesOn);}
+function resetGame(){score=0;wrong=0;nextChallengeAt=5;challengeActive=false;document.getElementById('score').textContent=0;renderStars();closeSettings();setMode('find');}
+function renderStars(){const s=document.getElementById('stars');s.textContent='⭐'.repeat(Math.min(score,40))+(score>40?' +'+(score-40):'');}
+function addScore(n){score+=n;document.getElementById('score').textContent=score;renderStars();}
+/* ============ MODO SÍLABAS ============ */
+function newFind(){challengeActive=false;document.getElementById('options').style.display='grid';document.getElementById('challengeArea').style.display='none';const syls=allSyls();target=pick(syls);wrong=0;const set=new Set([target]);while(set.size<6)set.add(pick(syls));const arr=[...set].sort(()=>Math.random()-0.5);const c=document.getElementById('options');c.innerHTML='';arr.forEach(s=>{const d=document.createElement('div');d.className='opt';d.textContent=s;d.onclick=()=>choose(s,d);c.appendChild(d);});document.getElementById('feedback').textContent='';const hb=document.getElementById('hintbox');hb.classList.remove('show');hb.innerHTML='';if(!soundOn){showHint(hb);document.getElementById('bubble').textContent='¡Mira la pista y toca la sílaba! 👀';}else{document.getElementById('bubble').textContent='Toca 🔊 y escucha qué sílaba busco…';}}
+function showHint(hb){const e=SYLPIC[target];if(e){hb.innerHTML='<div class="big-emoji">'+e+'</div><div style="font-size:14px;margin-top:6px;">empieza con…</div>';}else{hb.innerHTML='<div class="reveal-syl">'+target+'</div>';}hb.classList.add('show');}
+function speakTarget(){if(target===null)newFind();const r=document.getElementById('robot');r.classList.add('talk');document.getElementById('bubble').textContent='🔊 ¡Escucha bien!';speak('Busca la sílaba... '+target,0.65);setTimeout(()=>r.classList.remove('talk'),2600);}
+function peek(){if(target===null)return;showHint(document.getElementById('hintbox'));document.getElementById('bubble').textContent='¡Mira la pista! 👀';speak('Pista. '+(SYLPIC[target]?'La palabra del dibujo empieza con '+target:'Es la sílaba '+target),0.85);}
+function revealSyl(){const hb=document.getElementById('hintbox');hb.innerHTML='<div class="reveal-syl">👀 '+target+'</div>';hb.classList.add('show');document.getElementById('bubble').innerHTML='¡Mira! Es <b>'+target+'</b>';speak('Mira, es la sílaba '+target,0.8);document.querySelectorAll('#options .opt').forEach(o=>{if(o.textContent===target)o.classList.add('hintpulse');});}
+function choose(s,el){if(target===null)return;if(s===target){el.classList.add('correct');addScore(1);wrong=0;document.getElementById('feedback').textContent=pick(['¡Genial! 🎉','¡Capichi! 😎','¡Crack! ⭐','¡Súper! 🚀']);celebrate();speak(pick(['¡Muy bien!','¡Correcto!','¡Excelente!']),0.95);setTimeout(afterCorrect,1200);}else{el.classList.add('wrong');wrong++;document.getElementById('feedback').textContent='¡Casi! 👂';if(wrong>=3)revealSyl();setTimeout(()=>el.classList.remove('wrong'),500);}}
+function afterCorrect(){if(surprisesOn&&score>=nextChallengeAt){nextChallengeAt+=rand(4,6);showChallengeIntro();}else newFind();}
+/* ============ DESAFÍO DE REX — SOLO 2 SÍLABAS ============ */
+let chWord=null,chFilled=[];
+function showChallengeIntro(){const ov=document.getElementById('overlay');document.getElementById('oe').textContent='🦖';document.getElementById('ot').textContent='¡Desafío de Rex!';document.getElementById('ox').textContent='Arma una palabra de 2 sílabas.';const b=document.getElementById('obtn');b.textContent='¡Vamos!';b.onclick=()=>{ov.style.display='none';startChallenge();};ov.style.display='flex';speak('¡Desafío de Rex! Arma la palabra de dos sílabas.',0.9);}
+function startChallenge(){challengeActive=true;const cons=GROUP[0]==='todas'?null:GROUP;const pool=cons?WORDS.filter(w=>cons.includes(w.g)):WORDS;chWord=pick(pool.length?pool:WORDS);chFilled=[];document.getElementById('options').style.display='none';document.getElementById('challengeArea').style.display='flex';document.getElementById('chEmoji').textContent=chWord.e;const sl=document.getElementById('chSlots');sl.innerHTML='<div class="slot" id="slot0"></div><div class="slot" id="slot1"></div>';const distract=allSyls().filter(s=>!chWord.s.includes(s));const set=new Set(chWord.s);while(set.size<6&&distract.length)set.add(pick(distract));const arr=[...set].sort(()=>Math.random()-0.5);const pz=document.getElementById('pieces');pz.innerHTML='';arr.forEach(s=>{const d=document.createElement('div');d.className='piece';d.textContent=s;d.onclick=()=>placePiece(s,d);pz.appendChild(d);});document.getElementById('bubble').innerHTML='🦖 ¡Arma la palabra del dibujo!';document.getElementById('feedback').textContent='';speak('Arma la palabra... '+chWord.w,0.75);}
+function speakWord(){if(chWord)speak(chWord.w+'. '+chWord.s.join('... '),0.6);}
+function placePiece(s,el){if(chFilled.length>=2)return;el.classList.add('used');chFilled.push(s);const slot=document.getElementById('slot'+(chFilled.length-1));slot.textContent=s;slot.classList.add('filled');if(chFilled.length===2)checkChallenge();}
+function clearChallenge(){chFilled=[];['slot0','slot1'].forEach(id=>{const s=document.getElementById(id);if(s){s.textContent='';s.classList.remove('filled');}});document.querySelectorAll('#pieces .piece').forEach(p=>p.classList.remove('used'));}
+function checkChallenge(){const ok=chFilled[0]===chWord.s[0]&&chFilled[1]===chWord.s[1];if(ok){addScore(2);document.getElementById('feedback').textContent='🦖 ¡'+chWord.w.toUpperCase()+'! +2 ⭐';bigCelebrate();speak('¡Excelente! ¡'+chWord.w+'! ¡Lo lograste!',0.9);setTimeout(()=>{challengeActive=false;newFind();},1800);}else{document.getElementById('feedback').textContent='¡Casi! Escucha otra vez 👂';speak('Casi. La palabra es '+chWord.w+'. '+chWord.s.join('... '),0.6);setTimeout(clearChallenge,900);}}
+/* ============ MODO DICTADO DE PALABRAS ============ */
+let dWord=null,dFilled=[];
+function newDictWord(){dWord=pick(DICT_WORDS);dFilled=[];document.getElementById('wEmoji').textContent=dWord.e;document.getElementById('wPic').style.display=soundOn?'none':'block';document.getElementById('feedbackW').textContent='';const sl=document.getElementById('wSlots');sl.innerHTML=dWord.s.map((_,i)=>'<div class="slot" id="wslot'+i+'"></div>').join('');const all=allSylsForDict();const set=new Set(dWord.s);while(set.size<6)set.add(pick(all));const arr=[...set].sort(()=>Math.random()-0.5);const pz=document.getElementById('wPieces');pz.innerHTML='';arr.forEach(s=>{const d=document.createElement('div');d.className='piece';d.textContent=s;d.onclick=()=>wPlace(s,d);pz.appendChild(d);});document.getElementById('bubbleW').textContent=soundOn?'Toca 🔊, escucha la palabra y ármala.':'¡Mira el dibujo y arma su palabra!';if(soundOn)setTimeout(speakDictWord,600);}
+function allSylsForDict(){const pool=[];DICT_WORDS.forEach(w=>w.s.forEach(s=>pool.push(s)));ALL_CONS.slice(0,10).forEach(c=>VOWELS.forEach(v=>pool.push(c+v)));return pool;}
+function speakDictWord(){if(!dWord)return;const r=document.getElementById('robotW');r.classList.add('talk');speak('La palabra es... '+dWord.w,0.6);setTimeout(()=>r.classList.remove('talk'),2400);}
+function wPlace(s,el){if(dFilled.length>=dWord.s.length)return;el.classList.add('used');dFilled.push(s);const slot=document.getElementById('wslot'+(dFilled.length-1));slot.textContent=s;slot.classList.add('filled');if(dFilled.length===dWord.s.length)wCheck();}
+function clearWord(){dFilled=[];dWord.s.forEach((_,i)=>{const s=document.getElementById('wslot'+i);if(s){s.textContent='';s.classList.remove('filled');}});document.querySelectorAll('#wPieces .piece').forEach(p=>p.classList.remove('used'));}
+function wCheck(){const ok=dFilled.every((s,i)=>s===dWord.s[i]);if(ok){addScore(dWord.s.length);document.getElementById('feedbackW').textContent='¡'+dWord.w.toUpperCase()+'! 🎉 +'+dWord.s.length+' ⭐';bigCelebrate();speak('¡Muy bien! ¡'+dWord.w+'!',0.9);setTimeout(newDictWord,1600);}else{document.getElementById('feedbackW').textContent='¡Casi! 👂 Intenta de nuevo';speak('Casi. La palabra es '+dWord.w,0.6);setTimeout(clearWord,900);}}
+/* ============ FIESTA ============ */
+function celebrate(){const em=['🎉','⭐','🦖','🤖','🦙','🐶','✨','🏅'];for(let i=0;i<8;i++){const e=document.createElement('div');e.className='celebrate';e.textContent=pick(em);e.style.left=rand(5,90)+'%';e.style.top='8%';e.style.animationDelay=(Math.random()*.3)+'s';document.body.appendChild(e);setTimeout(()=>e.remove(),1500);}}
+function bigCelebrate(){const em=['🎉','🏅','⭐','🥳','✨','🌟','🦖'];for(let i=0;i<16;i++){const e=document.createElement('div');e.className='celebrate';e.textContent=pick(em);e.style.left=rand(3,92)+'%';e.style.top='4%';e.style.animationDelay=(Math.random()*.4)+'s';document.body.appendChild(e);setTimeout(()=>e.remove(),1600);}}
+window.addEventListener('load',()=>{document.getElementById('listenBtn').style.display=soundOn?'':'none';renderStars();newFind();});
+window.speechSynthesis&&(window.speechSynthesis.onvoiceschanged=()=>window.speechSynthesis.getVoices());
+</script>
+</body>
+</html>
