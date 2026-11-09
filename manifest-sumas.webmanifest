@@ -1,0 +1,39 @@
+{
+ "id": "/El-Sobrinito/sumas.html",
+ "name": "Sumas con Rex",
+ "short_name": "Sumas con Rex",
+ "description": "Juego de sumas para kínder y primero básico. Parte de El Sobrinito Aprende.",
+ "lang": "es",
+ "start_url": "./sumas.html",
+ "scope": "./",
+ "display": "standalone",
+ "orientation": "any",
+ "background_color": "#FFC4D6",
+ "theme_color": "#C9B6F0",
+ "icons": [
+  {
+   "src": "icons/sumas-192.png",
+   "sizes": "192x192",
+   "type": "image/png",
+   "purpose": "any"
+  },
+  {
+   "src": "icons/sumas-512.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "any"
+  },
+  {
+   "src": "icons/sumas-maskable-192.png",
+   "sizes": "192x192",
+   "type": "image/png",
+   "purpose": "maskable"
+  },
+  {
+   "src": "icons/sumas-maskable-512.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "maskable"
+  }
+ ]
+}

@@ -6,7 +6,10 @@
 <title>Chispa Aprende — El Sobrinito 🤖</title>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="El Sobrinito">
+<meta name="apple-mobile-web-app-title" content="Chispa Aprende">
+<link rel="manifest" href="manifest-silabas.webmanifest">
+<link rel="icon" type="image/png" href="icons/silabas-32.png">
+<link rel="apple-touch-icon" href="icons/silabas-apple-180.png">
 <meta name="theme-color" content="#C9B6F0">
 <link href="https://fonts.googleapis.com/css2?family=Chewy&family=Baloo+2:wght@600;700;800&display=swap" rel="stylesheet">
 <style>
@@ -111,6 +114,8 @@ body{font-family:'Baloo 2',sans-serif;font-weight:700;color:var(--tinta);backgro
 .celebrate{font-size:48px;position:fixed;pointer-events:none;animation:fall 1.3s linear forwards;z-index:99;}
 @keyframes fall{0%{transform:translateY(-40px) rotate(0);opacity:1}100%{transform:translateY(60vh) rotate(360deg);opacity:0}}
 .note{color:#fff;font-size:13px;margin-top:14px;text-align:center;max-width:520px;background:rgba(46,36,53,.32);padding:10px 14px;border-radius:14px;}
+.score{white-space:nowrap;}
+@media (max-width:420px){.title{font-size:21px;}.gear{width:38px;height:38px;font-size:18px;}.top-right{gap:6px;}}
 </style>
 </head>
 <body>
@@ -118,6 +123,7 @@ body{font-family:'Baloo 2',sans-serif;font-weight:700;color:var(--tinta);backgro
   <div class="title">🤖 Chispa Aprende</div>
   <div class="top-right">
     <div class="score">⭐ <span id="score">0</span></div>
+    <button class="gear" onclick="abrirInstalar()" aria-label="Poner en la pantalla de inicio" title="Poner en la pantalla de inicio">📲</button>
     <button class="gear" onclick="openSettings()">⚙️</button>
   </div>
 </div>
@@ -202,7 +208,7 @@ body{font-family:'Baloo 2',sans-serif;font-weight:700;color:var(--tinta);backgro
   <div class="feedback" id="feedbackD"></div>
 </div>
 
-<div class="note">📲 Celular → Compartir → <b>"Agregar a inicio"</b>. ⚙️ Para papás y acompañantes: elige las <b>consonantes a estudiar</b>, sonido y juego calmado. 🦖 Rex usa solo palabras de 2 sílabas.</div>
+<div class="note">📲 Toca <b>📲</b> arriba para dejarlo en la pantalla de inicio. ⚙️ Para papás y acompañantes: elige las <b>consonantes a estudiar</b>, sonido y juego calmado. 🦖 Rex usa solo palabras de 2 sílabas.</div>
 
 <div class="overlay" id="overlay">
   <div class="ocard">
@@ -395,5 +401,6 @@ window.speechSynthesis&&(window.speechSynthesis.onvoiceschanged=()=>loadVoices()
 <!-- Contador de visitas GoatCounter -->
 <script data-goatcounter="https://elsobrinitoaprende.goatcounter.com/count"
         async src="//gc.zgo.at/count.js"></script>
+<script src="app.js" data-app="Chispa Aprende" data-icon="icons/silabas-192.png"></script>
 </body>
 </html>

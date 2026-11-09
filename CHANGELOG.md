@@ -2,6 +2,12 @@
 
 Cada cambio deja una copia con fecha en `versiones/` y su detalle en Notion (Registro de versiones de apps).
 
+## 2026-11-09 (tarde) · Voz en inglés grabada + los 3 juegos como app
+- **Voz en inglés de Chispa grabada:** 77 audios en `audio/en/` (números del 0 al 50 y todas las frases en inglés del Dictado: "Find the number…", "Draw the number…", "Great job!", etc.). Voz "af_heart" del modelo abierto Kokoro-82M (licencia Apache 2.0, uso comercial permitido). Ahora el inglés suena igual en cualquier celular o computador, aunque el equipo no tenga voz en inglés. Si un audio no carga, se usa la voz del equipo.
+- **Acceso directo / app:** cada juego tiene su propio ícono y se puede dejar en la pantalla de inicio con el botón **📲** (arriba, al lado de ⚙️): Dictado de Chispa (123, amarillo), Chispa Aprende (Aa, menta) y Sumas con Rex (1+2, rosado). Archivos nuevos: `manifest-dictado.webmanifest`, `manifest-silabas.webmanifest`, `manifest-sumas.webmanifest`, `icons/`, `app.js` (botón e instrucciones para Android, iPhone y computador) y `sw.js` (los 3 juegos, íconos y audios quedan guardados para jugar sin internet).
+- Barra de arriba más compacta en celulares chicos.
+- Respaldos: `versiones/2026-11-09_v2.1_Dictado-de-Chispa_voz-ingles-y-app.html`, `versiones/2026-11-09_v4.1_Chispa-Aprende_app.html` y `versiones/2026-11-09_v1.1_Sumas-con-Rex_app.html`. Sumas antes del cambio = `versiones/2026-11-07_v1_Sumas-con-Rex.html`.
+
 ## 2026-11-09 · El Dictado de Chispa v2 (`index.html`)
 - **Inglés de verdad:** Chispa busca la mejor voz de cada idioma (prefiere las naturales). Antes, si el equipo no tenía voz en inglés, leía la frase en inglés con voz española y decía el número en español ("siete"). Ahora los números se dicen en palabras (*seven*, *siete*) y, si falta la voz en inglés, aparece un aviso para el adulto con la frase que debe leer en voz alta.
 - **Más claro para los niños:** primero la frase ("Busca el número…") y después el número, más lento. Voz en inglés menos lenta (ya no se arrastra). Botón **❓** con instrucciones habladas por Chispa en cada modo.

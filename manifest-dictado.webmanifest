@@ -1,0 +1,39 @@
+{
+ "id": "/El-Sobrinito/",
+ "name": "El Dictado de Chispa",
+ "short_name": "Dictado de Chispa",
+ "description": "Juego para reconocer los números escuchándolos y escribiéndolos, en español y en inglés. Parte de El Sobrinito Aprende.",
+ "lang": "es",
+ "start_url": "./",
+ "scope": "./",
+ "display": "standalone",
+ "orientation": "any",
+ "background_color": "#FFE08A",
+ "theme_color": "#C9B6F0",
+ "icons": [
+  {
+   "src": "icons/dictado-192.png",
+   "sizes": "192x192",
+   "type": "image/png",
+   "purpose": "any"
+  },
+  {
+   "src": "icons/dictado-512.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "any"
+  },
+  {
+   "src": "icons/dictado-maskable-192.png",
+   "sizes": "192x192",
+   "type": "image/png",
+   "purpose": "maskable"
+  },
+  {
+   "src": "icons/dictado-maskable-512.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "maskable"
+  }
+ ]
+}

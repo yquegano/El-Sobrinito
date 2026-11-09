@@ -8,6 +8,9 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Sumas con Rex">
+<link rel="manifest" href="manifest-sumas.webmanifest">
+<link rel="icon" type="image/png" href="icons/sumas-32.png">
+<link rel="apple-touch-icon" href="icons/sumas-apple-180.png">
 <meta name="theme-color" content="#C2E89A">
 <link href="https://fonts.googleapis.com/css2?family=Chewy&family=Baloo+2:wght@600;700;800&display=swap" rel="stylesheet">
 <style>
@@ -104,6 +107,8 @@ button{font-family:inherit;color:inherit;}
 @keyframes fall{0%{transform:translateY(-40px) rotate(0);opacity:1}100%{transform:translateY(70vh) rotate(360deg);opacity:0}}
 body.calm *{animation:none!important;transition:none!important;}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);}
+.score{white-space:nowrap;}
+@media (max-width:420px){.title{font-size:21px;}.gear{width:38px;height:38px;font-size:18px;}.top-right{gap:6px;}}
 </style>
 </head>
 <body>
@@ -114,6 +119,7 @@ body.calm *{animation:none!important;transition:none!important;}
   </div>
   <div class="top-right">
     <div class="score" aria-label="Estrellas">⭐ <span id="score">0</span></div>
+    <button class="gear" onclick="abrirInstalar()" aria-label="Poner en la pantalla de inicio" title="Poner en la pantalla de inicio">📲</button>
     <button class="gear" onclick="openSheet()" aria-label="Ajustes para acompañantes">⚙️</button>
   </div>
 </div>
@@ -155,7 +161,7 @@ body.calm *{animation:none!important;transition:none!important;}
   <a href="index.html">🔢 Dictado de números</a>
   <a href="silabas.html">🔤 Chispa Aprende (sílabas)</a>
 </div>
-<div class="note">📲 En el celular: Compartir → <b>"Agregar a inicio"</b>. Toca cada dibujo para contarlo en voz alta. ⚙️ Ajustes para acompañantes: sonido, modo calmado y avance.</div>
+<div class="note">📲 Toca <b>📲</b> arriba para dejarlo en la pantalla de inicio. Toca cada dibujo para contarlo en voz alta. ⚙️ Ajustes para acompañantes: sonido, modo calmado y avance.</div>
 
 <div class="overlay" id="overlay" role="dialog" aria-modal="true">
   <div class="ocard">
@@ -364,5 +370,6 @@ $('score').textContent=S.score;renderStars();
 cur=makeSum();render();
 talk('🤖','¡Hola! Soy Chispa 🤖. Rex 🦖 y Blanca 🐶 también juegan. Toca los dibujos para contar y elige el número.');
 </script>
+<script src="app.js" data-app="Sumas con Rex" data-icon="icons/sumas-192.png"></script>
 </body>
 </html>
