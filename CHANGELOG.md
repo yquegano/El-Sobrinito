@@ -2,6 +2,20 @@
 
 Cada cambio deja una copia con fecha en `versiones/` y su detalle en Notion (Registro de versiones de apps).
 
+## 2026-11-09 · El Dictado de Chispa v2 (`index.html`)
+- **Inglés de verdad:** Chispa busca la mejor voz de cada idioma (prefiere las naturales). Antes, si el equipo no tenía voz en inglés, leía la frase en inglés con voz española y decía el número en español ("siete"). Ahora los números se dicen en palabras (*seven*, *siete*) y, si falta la voz en inglés, aparece un aviso para el adulto con la frase que debe leer en voz alta.
+- **Más claro para los niños:** primero la frase ("Busca el número…") y después el número, más lento. Voz en inglés menos lenta (ya no se arrastra). Botón **❓** con instrucciones habladas por Chispa en cada modo.
+- **Para papás y acompañantes:** bienvenida la primera vez (con botón 🔊 para escucharla), sección "📖 Cómo se juega" en ⚙️, estado de las voces del equipo y cómo instalar una voz en Windows, Android o iPhone. Aviso: herramienta de aprendizaje, no reemplaza la educación formal; se recomienda jugar con un adulto.
+- **Ajuste nuevo:** "🌿 Juego calmado sin interrupciones" (reemplaza "Sorpresas y desafíos"; se quita "Ideal para niños TEA").
+- Respaldos: antes `versiones/2026-06-08_v1.3_Dictado-de-Chispa_PUBLICADA-antes-del-9nov.html`, después `versiones/2026-11-09_v2_Dictado-de-Chispa.html`.
+
+## 2026-11-09 · Chispa Aprende v4 (`silabas.html`)
+- Abecedario: **N de naranja** 🍊 (antes nube), **CH de chancho** 🐷 y **LL de llave** 🔑 (nuevas), **W de waffle** 🧇 (antes wifi), **X de xilófono** (dibujo propio; antes taxi).
+- CH y LL se pueden elegir en ⚙️ y aparecen en sílabas (cha… llu), en el Desafío de Rex (chancho, leche, llave, pollo) y en el desafío imagen → palabra (chancho, chocolate, llave, lluvia). Rex: "nube" → "nudo" 🪢 y "wifi" → "waffle".
+- La voz dice el nombre de la letra: "che", "elle", "doble ve", "equis". Mejor voz en español.
+- Ajuste nuevo: "🌿 Juego calmado sin interrupciones" (se quita "Ideal para niños TEA"). Ajustes "para papás y acompañantes" con el aviso de herramienta de aprendizaje.
+- Respaldos: antes `versiones/2026-07-16_v3_Chispa-Aprende_PUBLICADA-antes-del-9nov.html`, después `versiones/2026-11-09_v4_Chispa-Aprende.html`.
+
 ## 2026-11-07 · Sumas con Rex v1 (`sumas.html`) — NUEVO
 - Juego nuevo de sumas para kínder y primero básico, parte de **El Sobrinito Aprende**.
 - 3 modos: 🍎 **Contar** (dibujos que se tocan y cuentan en voz alta), 🔢 **Números** (suma escrita con pista de puntos) y 🦖 **Desafío de Rex** (10 sumas seguidas, medalla 🥇🥈🥉 y mejor puntaje guardado).
