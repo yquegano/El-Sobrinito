@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Sumas con Rex — El Sobrinito Aprende 🦖</title>
+<meta name="description" content="Juego gratis para aprender a sumar contando. Rex, Chispa y Blanca acompañan a niñas y niños de kínder y primero básico.">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Sumas con Rex">
+<link rel="manifest" href="manifest-sumas.webmanifest">
+<link rel="icon" type="image/png" href="icons/sumas-32.png">
+<link rel="apple-touch-icon" href="icons/sumas-apple-180.png">
+<meta name="theme-color" content="#C2E89A">
+<link href="https://fonts.googleapis.com/css2?family=Chewy&family=Baloo+2:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--sol:#FFE08A;--durazno:#FFCBA4;--lila:#C9B6F0;--lila-d:#A98FE0;--cielo:#A9DCF2;--limon:#C2E89A;--menta:#A8E6D4;--rosa:#FFC4D6;--verde:#7CCB5E;--crema:#FFFCF5;--tinta:#2E2435;}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{min-height:100%;}
+body{font-family:'Baloo 2',sans-serif;font-weight:700;color:var(--tinta);background:var(--limon);display:flex;flex-direction:column;align-items:center;padding:14px 14px 28px;}
+button{font-family:inherit;color:inherit;}
+.top{width:100%;max-width:560px;display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:4px;}
+.title{font-family:'Chewy';font-size:26px;line-height:1;color:#fff;text-shadow:3px 3px 0 var(--tinta);}
+.sub{font-size:13px;margin-top:2px;}
+.top-right{display:flex;gap:8px;align-items:center;}
+.score{background:var(--sol);border:3px solid var(--tinta);border-radius:100px;padding:5px 14px;box-shadow:3px 3px 0 var(--tinta);font-size:19px;}
+.gear{background:#fff;border:3px solid var(--tinta);border-radius:50%;width:44px;height:44px;font-size:20px;cursor:pointer;box-shadow:3px 3px 0 var(--tinta);}
+.controls{width:100%;max-width:560px;display:flex;flex-direction:column;gap:8px;align-items:center;margin:10px 0;}
+.seg{display:flex;background:#fff;border:3px solid var(--tinta);border-radius:100px;overflow:hidden;box-shadow:3px 3px 0 var(--tinta);flex-wrap:wrap;justify-content:center;}
+.seg button{border:none;background:none;padding:8px 14px;font-weight:800;font-size:14.5px;cursor:pointer;}
+.seg button.on{background:var(--sol);}
+.seg.small button{font-size:13px;padding:6px 12px;}
+.seg.small button.on{background:var(--cielo);}
+.stars{display:flex;flex-wrap:wrap;justify-content:center;font-size:18px;line-height:1.2;min-height:22px;max-width:560px;margin-bottom:8px;}
+.banner{background:var(--sol);border:3px solid var(--tinta);border-radius:16px;padding:8px 16px;font-family:'Chewy';font-size:20px;margin-bottom:10px;box-shadow:3px 3px 0 var(--tinta);text-align:center;display:none;}
+.banner.on{display:block;}
+.prog{font-size:14px;margin-bottom:8px;text-align:center;}
+.stage{background:#fff;border:4px solid var(--tinta);border-radius:26px;box-shadow:7px 7px 0 var(--tinta);padding:16px;text-align:center;width:100%;max-width:560px;margin-bottom:14px;}
+.helper{display:flex;align-items:center;gap:10px;text-align:left;}
+.face{font-size:52px;line-height:1;display:inline-block;animation:idle 3s ease-in-out infinite;}
+.face.talk{animation:talk .35s ease-in-out infinite;}
+@keyframes idle{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+@keyframes talk{0%,100%{transform:scale(1) rotate(-3deg)}50%{transform:scale(1.08) rotate(3deg)}}
+.bubble{flex:1;background:var(--lila);border:3px solid var(--tinta);border-radius:18px;padding:10px 12px;font-size:18px;line-height:1.25;position:relative;}
+.bubble::before{content:'';position:absolute;left:-13px;top:50%;transform:translateY(-50%);border-top:10px solid transparent;border-bottom:10px solid transparent;border-right:13px solid var(--tinta);}
+.bubble.blanca{background:var(--rosa);}
+.bubble.ok{background:var(--menta);}
+.sum{display:flex;align-items:center;justify-content:center;gap:8px;margin:14px 0 4px;flex-wrap:wrap;}
+.group{background:var(--crema);border:3px dashed var(--tinta);border-radius:18px;padding:8px;display:grid;grid-template-columns:repeat(5,1fr);gap:4px;min-width:64px;}
+.group.g1{grid-template-columns:repeat(var(--cols,5),1fr);}
+.obj{font-size:clamp(24px,7vw,34px);line-height:1;width:1.25em;height:1.25em;display:flex;align-items:center;justify-content:center;border-radius:12px;cursor:pointer;user-select:none;transition:transform .12s;position:relative;}
+.obj.counted{background:var(--sol);transform:scale(1.08);}
+.obj .n{position:absolute;bottom:-4px;right:-4px;font-family:'Chewy';font-size:13px;background:var(--tinta);color:#fff;border-radius:100px;min-width:18px;height:18px;line-height:18px;padding:0 4px;}
+.op{font-family:'Chewy';font-size:clamp(34px,10vw,48px);}
+.numbig{font-family:'Chewy';font-size:clamp(46px,15vw,72px);line-height:1;}
+.numbig.a{color:#E2725B;}
+.numbig.b{color:#3D8FD1;}
+.qbox{font-family:'Chewy';font-size:clamp(40px,12vw,58px);width:1.6em;height:1.6em;border:4px dashed var(--tinta);border-radius:18px;display:flex;align-items:center;justify-content:center;background:var(--crema);}
+.qbox.done{background:var(--verde);color:#fff;border-style:solid;animation:pop .4s;}
+.dots{display:flex;justify-content:center;gap:14px;margin-top:6px;flex-wrap:wrap;}
+.dots .group{padding:6px;}
+.dot{width:16px;height:16px;border-radius:50%;border:2px solid var(--tinta);}
+.dot.a{background:#E2725B;}
+.dot.b{background:#3D8FD1;}
+.btns{display:flex;gap:10px;justify-content:center;margin-top:12px;flex-wrap:wrap;}
+.bbtn{background:var(--lila-d);color:#fff;border:4px solid var(--tinta);border-radius:100px;padding:9px 18px;font-family:'Chewy';font-size:19px;cursor:pointer;box-shadow:4px 4px 0 var(--tinta);transition:transform .1s;}
+.bbtn:active{transform:translate(3px,3px);box-shadow:1px 1px 0 var(--tinta);}
+.bbtn.alt{background:var(--menta);color:var(--tinta);}
+.bbtn.sol{background:var(--sol);color:var(--tinta);}
+.options{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;width:100%;max-width:560px;}
+.opt{aspect-ratio:1.25;background:#fff;border:4px solid var(--tinta);border-radius:22px;font-family:'Chewy';font-size:clamp(36px,11vw,52px);display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:5px 5px 0 var(--tinta);transition:transform .1s;}
+.opt:active{transform:translate(3px,3px);box-shadow:2px 2px 0 var(--tinta);}
+.opt.correct{background:var(--verde);color:#fff;animation:pop .4s;}
+.opt.wrong{background:var(--rosa);animation:shake .4s;}
+.opt[disabled]{cursor:default;}
+@keyframes pop{0%{transform:scale(1)}40%{transform:scale(1.15)}100%{transform:scale(1)}}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-7px)}75%{transform:translateX(7px)}}
+.feedback{margin-top:12px;font-family:'Chewy';font-size:24px;color:#fff;text-shadow:3px 3px 0 var(--tinta);min-height:30px;text-align:center;}
+.more{width:100%;max-width:560px;background:#fff;border:3px solid var(--tinta);border-radius:20px;box-shadow:4px 4px 0 var(--tinta);padding:12px 14px;margin-top:16px;font-size:14px;text-align:center;}
+.more h3{font-family:'Chewy';font-weight:400;font-size:19px;margin-bottom:6px;}
+.more a{display:inline-block;margin:4px;padding:6px 12px;border:2px solid var(--tinta);border-radius:100px;background:var(--cielo);color:var(--tinta);text-decoration:none;}
+.note{font-size:12.5px;margin-top:12px;text-align:center;max-width:540px;}
+.overlay{position:fixed;inset:0;background:rgba(46,36,53,.55);display:none;align-items:center;justify-content:center;z-index:50;padding:20px;}
+.overlay.on{display:flex;}
+.ocard{background:#fff;border:4px solid var(--tinta);border-radius:26px;box-shadow:7px 7px 0 var(--tinta);padding:22px;text-align:center;max-width:360px;width:100%;}
+.ocard .oe{font-size:70px;line-height:1;}
+.ocard h2{font-family:'Chewy';font-weight:400;font-size:30px;margin:8px 0 4px;}
+.ocard p{font-size:16px;margin-bottom:12px;}
+.sheet{position:fixed;inset:0;background:rgba(46,36,53,.55);display:none;align-items:flex-end;justify-content:center;z-index:60;}
+.sheet.on{display:flex;}
+.scard{background:var(--crema);border:4px solid var(--tinta);border-bottom:none;border-radius:26px 26px 0 0;padding:18px;max-width:560px;width:100%;max-height:88vh;overflow:auto;}
+.scard h2{font-family:'Chewy';font-weight:400;font-size:24px;margin-bottom:4px;}
+.scard .hint{font-size:13px;margin-bottom:12px;}
+.row{display:flex;justify-content:space-between;align-items:center;gap:10px;background:#fff;border:3px solid var(--tinta);border-radius:16px;padding:10px 12px;margin-bottom:10px;font-size:15px;}
+.tog{width:56px;height:32px;border-radius:100px;border:3px solid var(--tinta);background:#ddd;position:relative;cursor:pointer;flex:none;}
+.tog::after{content:'';position:absolute;top:2px;left:2px;width:22px;height:22px;border-radius:50%;background:#fff;border:2px solid var(--tinta);transition:left .15s;}
+.tog.on{background:var(--verde);}
+.tog.on::after{left:26px;}
+.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:10px;}
+.stat{background:#fff;border:3px solid var(--tinta);border-radius:16px;padding:8px;text-align:center;}
+.stat b{display:block;font-family:'Chewy';font-weight:400;font-size:28px;line-height:1.1;}
+.stat span{font-size:12.5px;}
+.hard{background:#fff;border:3px solid var(--tinta);border-radius:16px;padding:10px 12px;margin-bottom:10px;font-size:14.5px;}
+.hard ul{list-style:none;display:flex;flex-wrap:wrap;gap:6px;margin-top:6px;}
+.hard li{background:var(--rosa);border:2px solid var(--tinta);border-radius:100px;padding:2px 10px;}
+.celebrate{font-size:44px;position:fixed;pointer-events:none;animation:fall 1.3s linear forwards;z-index:99;top:0;}
+@keyframes fall{0%{transform:translateY(-40px) rotate(0);opacity:1}100%{transform:translateY(70vh) rotate(360deg);opacity:0}}
+body.calm *{animation:none!important;transition:none!important;}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);}
+.score{white-space:nowrap;}
+@media (max-width:420px){.title{font-size:21px;}.gear{width:38px;height:38px;font-size:18px;}.top-right{gap:6px;}}
+</style>
+</head>
+<body>
+<div class="top">
+  <div>
+    <div class="title">🦖 Sumas con Rex</div>
+    <div class="sub">El Sobrinito Aprende</div>
+  </div>
+  <div class="top-right">
+    <div class="score" aria-label="Estrellas">⭐ <span id="score">0</span></div>
+    <button class="gear" onclick="abrirInstalar()" aria-label="Poner en la pantalla de inicio" title="Poner en la pantalla de inicio">📲</button>
+    <button class="gear" onclick="openSheet()" aria-label="Ajustes para acompañantes">⚙️</button>
+  </div>
+</div>
+
+<div class="controls">
+  <div class="seg" role="tablist" aria-label="Modo de juego">
+    <button id="m-contar" class="on" onclick="setMode('contar')">🍎 Contar</button>
+    <button id="m-numeros" onclick="setMode('numeros')">🔢 Números</button>
+    <button id="m-desafio" onclick="setMode('desafio')">🦖 Desafío</button>
+  </div>
+  <div class="seg small" aria-label="Nivel">
+    <button id="l-5" class="on" onclick="setLevel(5)">Hasta 5</button>
+    <button id="l-10" onclick="setLevel(10)">Hasta 10</button>
+    <button id="l-20" onclick="setLevel(20)">Hasta 20</button>
+  </div>
+</div>
+<div class="stars" id="stars" aria-hidden="true"></div>
+<div class="banner" id="banner">🦖 ¡Desafío de Rex! 10 sumas</div>
+<div class="prog" id="prog"></div>
+
+<div class="stage">
+  <div class="helper">
+    <div class="face" id="face" aria-hidden="true">🤖</div>
+    <div class="bubble" id="bubble" aria-live="polite">¡Hola! Soy Chispa. ¿Sumamos?</div>
+  </div>
+  <div class="sum" id="sum"></div>
+  <div class="dots" id="dots"></div>
+  <div class="btns">
+    <button class="bbtn" onclick="sayQuestion()">🔊 Escuchar</button>
+    <button class="bbtn alt" id="hintBtn" onclick="hint()">💡 Pista de Chispa</button>
+  </div>
+</div>
+
+<div class="options" id="options"></div>
+<div class="feedback" id="feedback" aria-live="polite"></div>
+
+<div class="more">
+  <h3>🎮 Más juegos de El Sobrinito</h3>
+  <a href="index.html">🔢 Dictado de números</a>
+  <a href="silabas.html">🔤 Chispa Aprende (sílabas)</a>
+</div>
+<div class="note">📲 Toca <b>📲</b> arriba para dejarlo en la pantalla de inicio. Toca cada dibujo para contarlo en voz alta. ⚙️ Ajustes para acompañantes: sonido, modo calmado y avance.</div>
+
+<div class="overlay" id="overlay" role="dialog" aria-modal="true">
+  <div class="ocard">
+    <div class="oe" id="oe">⭐</div>
+    <h2 id="ot">¡Vas genial!</h2>
+    <p id="ox">¡Sigue así!</p>
+    <button class="bbtn sol" id="obtn">¡Seguir!</button>
+  </div>
+</div>
+
+<div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-label="Ajustes para acompañantes">
+  <div class="scard">
+    <h2>⚙️ Para quien acompaña</h2>
+    <div class="hint">Mamá, papá, tía, tío, abuelos o profe: aquí ven el avance y ajustan el juego.</div>
+    <div class="hint" style="background:#FFF3C4;border:2px solid var(--tinta,#2E2435);border-radius:12px;padding:8px 10px;">💛 Herramienta de aprendizaje y refuerzo: <b>no reemplaza la educación formal</b>. Recomendamos jugar <b>acompañado de un adulto</b>.</div>
+    <div class="stats">
+      <div class="stat"><b id="st-total">0</b><span>sumas resueltas</span></div>
+      <div class="stat"><b id="st-first">0%</b><span>a la primera</span></div>
+      <div class="stat"><b id="st-best">–</b><span>mejor desafío de Rex</span></div>
+      <div class="stat"><b id="st-stars">0</b><span>estrellas</span></div>
+    </div>
+    <div class="hard"><b>🐶 Blanca anotó las que más cuestan:</b><ul id="st-hard"><li>Todavía ninguna</li></ul></div>
+    <div class="row"><span>🔊 Voz</span><div class="tog on" id="t-sound" onclick="toggle('sound')" role="switch" aria-checked="true" tabindex="0"></div></div>
+    <div class="row"><span>🐢 Voz más lenta</span><div class="tog" id="t-slow" onclick="toggle('slow')" role="switch" aria-checked="false" tabindex="0"></div></div>
+    <div class="row"><span>🌙 Modo calmado (sin animaciones ni confeti)</span><div class="tog" id="t-calm" onclick="toggle('calm')" role="switch" aria-checked="false" tabindex="0"></div></div>
+    <div class="row"><span>0️⃣ Incluir el cero</span><div class="tog" id="t-zero" onclick="toggle('zero')" role="switch" aria-checked="false" tabindex="0"></div></div>
+    <div class="btns">
+      <button class="bbtn alt" onclick="resetAll(this)">🧹 Borrar avance</button>
+      <button class="bbtn sol" onclick="closeSheet()">✔ Listo</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* Sumas con Rex — El Sobrinito Aprende · v1 · 7 nov 2026
+   Personajes: Rex 🦖 (desafíos), Chispa 🤖 (pistas y celebra), Blanca 🐶 (corrige con cariño). */
+const OBJS=['🍎','🍓','🍌','🐞','🦋','🐟','🎈','🍪','🐥','⭐','🦕','🌼','🍊','🐢'];
+const OBJ_NAME={'🍎':'manzanas','🍓':'frutillas','🍌':'plátanos','🐞':'chinitas','🦋':'mariposas','🐟':'pescaditos','🎈':'globos','🍪':'galletas','🐥':'pollitos','⭐':'estrellas','🦕':'dinosaurios','🌼':'flores','🍊':'naranjas','🐢':'tortugas'};
+const CHEERS=['¡Muy bien!','¡Bacán!','¡Eso es!','¡Genial!','¡Lo lograste!','¡Súper!'];
+const BLANCA=['¡Casi! Contemos juntos otra vez.','¡Tranqui! Toca cada dibujo y cuenta.','¡Uy! Prueba de nuevo, tú puedes.','Equivocarse también es aprender. ¡Otra vez!'];
+const KEY='sobrinito_sumas_v1';
+let S={score:0,total:0,first:0,best:null,hard:{},level:5,sound:true,slow:false,calm:false,zero:false};
+try{const raw=localStorage.getItem(KEY);if(raw)S=Object.assign(S,JSON.parse(raw));}catch(e){}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}}
+
+let qText='',mode='contar',cur=null,lastKey='',tries=0,locked=false,counted=0,hintTimer=null;
+let des={on:false,i:0,ok:0,n:10};
+
+const $=id=>document.getElementById(id);
+const rand=(a,b)=>a+Math.floor(Math.random()*(b-a+1));
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=rand(0,i);[a[i],a[j]]=[a[j],a[i]];}return a;};
+
+/* ---------- voz ---------- */
+let VOZ=null;
+function pickVoice(){try{const vs=speechSynthesis.getVoices().filter(v=>/^es/i.test(v.lang));if(!vs.length)return;const pref=['es-419','es-MX','es-US','es-CL','es-ES'];VOZ=vs.sort((a,b)=>{const pa=pref.indexOf(a.lang)<0?9:pref.indexOf(a.lang),pb=pref.indexOf(b.lang)<0?9:pref.indexOf(b.lang);const na=/natural|online/i.test(a.name)?-1:0,nb=/natural|online/i.test(b.name)?-1:0;return (na-nb)||(pa-pb);})[0];}catch(e){}}
+try{pickVoice();speechSynthesis.onvoiceschanged=pickVoice;}catch(e){}
+function say(t,rate){if(!S.sound)return;try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.lang=VOZ?VOZ.lang:'es-ES';if(VOZ)u.voice=VOZ;u.rate=(rate||0.85)*(S.slow?0.8:1);u.pitch=1.1;const f=$('face');f.classList.add('talk');u.onend=()=>f.classList.remove('talk');speechSynthesis.speak(u);setTimeout(()=>f.classList.remove('talk'),4000);}catch(e){}}
+function talk(face,txt,cls){$('face').textContent=face;const b=$('bubble');b.className='bubble'+(cls?' '+cls:'');b.textContent=txt;}
+
+/* ---------- generar sumas ---------- */
+function makeSum(){
+  const M=S.level,min=S.zero?0:1;let a,b,k,guard=0;
+  do{a=rand(min,M-min);b=rand(min,M-a);k=a+'+'+b;guard++;}while((k===lastKey||a+b<2&&!S.zero)&&guard<40);
+  // en "hasta 10" y "hasta 20" preferimos sumas que lleguen cerca del tope
+  if(M>5&&a+b<M/2&&Math.random()<.6){b=rand(Math.max(min,Math.ceil(M/2)-a),M-a);k=a+'+'+b;}
+  lastKey=k;
+  return {a,b,c:a+b,k,obj:OBJS[rand(0,OBJS.length-1)]};
+}
+function makeOptions(c){
+  const set=new Set([c]);const span=S.level<=5?2:3;let g=0;
+  while(set.size<3&&g<60){const d=c+rand(-span,span);if(d>=0&&d!==c&&d<=S.level+2)set.add(d);g++;}
+  let x=c+1;while(set.size<3){if(!set.has(x))set.add(x);x++;}
+  return shuffle([...set]);
+}
+
+/* ---------- pintar ---------- */
+function groupHTML(n,emoji,side){
+  if(n===0)return '<div class="group" style="grid-template-columns:1fr;min-width:64px;"><div class="obj" aria-label="cero" style="cursor:default;opacity:.35;font-family:Chewy">0</div></div>';
+  const cols=Math.min(5,n);let h='<div class="group" style="grid-template-columns:repeat('+cols+',1fr)">';
+  for(let i=0;i<n;i++)h+='<div class="obj" data-side="'+side+'" role="button" aria-label="'+emoji+'">'+emoji+'</div>';
+  return h+'</div>';
+}
+function render(){
+  const s=cur;counted=0;clearTimeout(hintTimer);
+  if(mode==='numeros'){
+    $('sum').innerHTML='<span class="numbig a">'+s.a+'</span><span class="op">+</span><span class="numbig b">'+s.b+'</span><span class="op">=</span><div class="qbox" id="qbox">?</div>';
+    $('dots').innerHTML='';
+  }else{
+    $('sum').innerHTML=groupHTML(s.a,s.obj,'a')+'<span class="op">+</span>'+groupHTML(s.b,s.obj,'b')+'<span class="op">=</span><div class="qbox" id="qbox">?</div>';
+    $('dots').innerHTML='';
+    document.querySelectorAll('#sum .obj[data-side]').forEach(o=>o.addEventListener('click',()=>countObj(o)));
+  }
+  const op=$('options');op.innerHTML='';
+  makeOptions(s.c).forEach(n=>{const b=document.createElement('button');b.className='opt';b.textContent=n;b.setAttribute('aria-label','Respuesta '+n);b.onclick=()=>answer(n,b);op.appendChild(b);});
+  $('feedback').textContent='';
+  if(des.on){$('prog').textContent='Suma '+(des.i+1)+' de '+des.n+' · ✔ '+des.ok;}
+  else{$('prog').textContent=mode==='contar'?'Toca cada '+(s.obj)+' para contarlo':'Si cuesta, pide la pista de Chispa';}
+  const q=mode==='numeros'?'¿Cuánto es '+s.a+' más '+s.b+'?':(s.a===0||s.b===0?'¿Cuánto es '+s.a+' más '+s.b+'?':'Tengo '+s.a+' '+OBJ_NAME[s.obj]+' y llegan '+s.b+' más. ¿Cuántas hay en total?');
+  qText=q;talk(des.on?'🦖':'🤖',q);
+}
+function countObj(o){
+  if(o.classList.contains('counted'))return;
+  counted++;o.classList.add('counted');o.insertAdjacentHTML('beforeend','<span class="n">'+counted+'</span>');
+  say(String(counted),1);
+  if(counted===cur.c){setTimeout(()=>{talk('🤖','¡Contaste '+cur.c+'! Ahora toca el número '+cur.c+'.','ok');},350);}
+}
+function resetCount(){counted=0;document.querySelectorAll('#sum .obj.counted').forEach(o=>{o.classList.remove('counted');const n=o.querySelector('.n');if(n)n.remove();});}
+function sayQuestion(){if(!cur)return;say(qText);}
+
+/* ---------- pista de Chispa: cuenta en voz alta ---------- */
+function hint(){
+  if(!cur||locked)return;clearTimeout(hintTimer);
+  if(mode==='numeros'&&!$('dots').innerHTML){
+    let h='<div class="group" style="grid-template-columns:repeat('+Math.max(1,Math.min(5,cur.a))+',1fr)">';for(let i=0;i<cur.a;i++)h+='<div class="dot a obj" data-side="a" style="width:18px;height:18px"></div>';
+    h+='</div><div class="group" style="grid-template-columns:repeat('+Math.max(1,Math.min(5,cur.b))+',1fr)">';for(let i=0;i<cur.b;i++)h+='<div class="dot b obj" data-side="b" style="width:18px;height:18px"></div>';
+    $('dots').innerHTML=h+'</div>';
+  }
+  resetCount();
+  const items=[...document.querySelectorAll(mode==='numeros'?'#dots .obj':'#sum .obj[data-side]')];
+  talk('🤖','¡Contemos juntos! Partimos en '+cur.a+' y seguimos…');
+  if(S.sound)say('Contemos juntos');
+  let i=0;const step=()=>{if(i>=items.length){talk('🤖','¡Son '+cur.c+' en total!','ok');say('Son '+cur.c+' en total');return;}
+    const o=items[i];counted=i+1;o.classList.add('counted');if(mode!=='numeros')o.insertAdjacentHTML('beforeend','<span class="n">'+counted+'</span>');else o.style.outline='3px solid var(--sol)';
+    say(String(counted),1.05);i++;hintTimer=setTimeout(step,S.slow?1100:800);};
+  hintTimer=setTimeout(step,S.sound?900:300);
+}
+
+/* ---------- responder ---------- */
+function answer(n,btn){
+  if(locked)return;
+  if(n===cur.c){
+    locked=true;clearTimeout(hintTimer);btn.classList.add('correct');
+    document.querySelectorAll('.opt').forEach(b=>b.disabled=true);
+    const q=$('qbox');q.textContent=cur.c;q.classList.add('done');
+    S.total++;if(tries===0){S.first++;addStars(1);}else addStars(0);
+    if(des.on&&tries===0)des.ok++;
+    const cheer=CHEERS[rand(0,CHEERS.length-1)];
+    talk(des.on?'🦖':'🤖',cheer+' '+cur.a+' + '+cur.b+' = '+cur.c,'ok');
+    $('feedback').textContent=cheer+' ⭐';
+    say(cheer+' '+cur.a+' más '+cur.b+' es '+cur.c);
+    confetti();save();
+    setTimeout(next,S.slow?2600:2000);
+  }else{
+    tries++;btn.classList.add('wrong');btn.disabled=true;
+    S.hard[cur.k]=(S.hard[cur.k]||0)+1;save();
+    const t=BLANCA[rand(0,BLANCA.length-1)];
+    talk('🐶',t,'blanca');$('feedback').textContent='🐶 ¡Otra vez!';
+    say(t);
+    if(tries>=2)setTimeout(hint,1600);
+  }
+}
+function next(){
+  locked=false;tries=0;
+  if(des.on){des.i++;if(des.i>=des.n){endChallenge();return;}}
+  else if(S.total>0&&S.total%10===0){showOverlay('🏅','¡'+S.total+' sumas!','Chispa está feliz. ¿Seguimos?',()=>{cur=makeSum();render();});return;}
+  cur=makeSum();render();
+}
+
+/* ---------- desafío de Rex ---------- */
+function startChallenge(){des={on:true,i:0,ok:0,n:10};$('banner').classList.add('on');$('banner').textContent='🦖 ¡Desafío de Rex! 10 sumas (hasta '+S.level+')';showOverlay('🦖','¡Desafío de Rex!','10 sumas seguidas. Las que salen a la primera valen. ¿Listo?',()=>{cur=makeSum();render();say('¡Desafío de Rex! Diez sumas. ¡Vamos!');},'¡Vamos!');}
+function endChallenge(){
+  const ok=des.ok;des.on=false;$('banner').classList.remove('on');
+  if(S.best===null||ok>S.best)S.best=ok;save();
+  const medal=ok>=9?'🥇':ok>=7?'🥈':'🥉';
+  const msg=ok>=9?'¡Rex está impresionado!':ok>=7?'¡Muy buen trabajo!':'¡Bien hecho! Cada vez te sale mejor.';
+  showOverlay(medal,ok+' de 10 a la primera',msg,()=>{des={on:true,i:0,ok:0,n:10};$('banner').classList.add('on');cur=makeSum();render();},'🔁 Otra vez');
+  say(ok+' de diez. '+msg);
+}
+
+/* ---------- estrellas, confeti, overlay ---------- */
+function addStars(n){S.score+=n;$('score').textContent=S.score;renderStars();}
+function renderStars(){const n=S.score%20;$('stars').textContent='⭐'.repeat(n);}
+function confetti(){if(S.calm)return;const em=['⭐','🎉','✨',cur.obj];for(let i=0;i<10;i++){const s=document.createElement('div');s.className='celebrate';s.textContent=em[i%em.length];s.style.left=rand(5,90)+'vw';s.style.animationDelay=(i*0.06)+'s';document.body.appendChild(s);setTimeout(()=>s.remove(),1800);}}
+function showOverlay(e,t,x,cb,btn){$('oe').textContent=e;$('ot').textContent=t;$('ox').textContent=x;$('obtn').textContent=btn||'¡Seguir!';$('overlay').classList.add('on');$('obtn').onclick=()=>{$('overlay').classList.remove('on');cb&&cb();};setTimeout(()=>$('obtn').focus(),50);}
+
+/* ---------- modos y nivel ---------- */
+function setMode(m){
+  mode=m==='desafio'?'contar':m;
+  ['contar','numeros','desafio'].forEach(x=>$('m-'+x).classList.toggle('on',x===m));
+  locked=false;tries=0;clearTimeout(hintTimer);
+  if(m==='desafio'){mode=S.level>10?'numeros':'contar';startChallenge();return;}
+  des.on=false;$('banner').classList.remove('on');cur=makeSum();render();
+}
+function setLevel(l){S.level=l;save();[5,10,20].forEach(x=>$('l-'+x).classList.toggle('on',x===l));
+  const active=document.querySelector('.seg button.on').id.replace('m-','');setMode(active);}
+
+/* ---------- ajustes ---------- */
+function openSheet(){
+  $('st-total').textContent=S.total;$('st-first').textContent=S.total?Math.round(S.first*100/S.total)+'%':'0%';
+  $('st-best').textContent=S.best===null?'–':S.best+'/10';$('st-stars').textContent=S.score;
+  const hard=Object.entries(S.hard).sort((a,b)=>b[1]-a[1]).slice(0,6);
+  $('st-hard').innerHTML=hard.length?hard.map(([k,v])=>'<li>'+k.replace('+',' + ')+' · '+v+'</li>').join(''):'<li>Todavía ninguna</li>';
+  ['sound','slow','calm','zero'].forEach(k=>{$('t-'+k).classList.toggle('on',!!S[k]);$('t-'+k).setAttribute('aria-checked',!!S[k]);});
+  $('sheet').classList.add('on');
+}
+function closeSheet(){$('sheet').classList.remove('on');}
+function toggle(k){S[k]=!S[k];save();$('t-'+k).classList.toggle('on',S[k]);$('t-'+k).setAttribute('aria-checked',S[k]);document.body.classList.toggle('calm',S.calm);if(!S.sound)try{speechSynthesis.cancel();}catch(e){}}
+function resetAll(b){if(!confirmReset(b))return;const keep={level:S.level,sound:S.sound,slow:S.slow,calm:S.calm,zero:S.zero};S=Object.assign({score:0,total:0,first:0,best:null,hard:{}},keep);save();$('score').textContent=0;renderStars();openSheet();}
+let resetArmed=false;function confirmReset(b){if(resetArmed){resetArmed=false;b.textContent='🧹 Borrar avance';return true;}resetArmed=true;b.textContent='¿Seguro? Toca otra vez';setTimeout(()=>{resetArmed=false;b.textContent='🧹 Borrar avance';},3000);return false;}
+document.querySelectorAll('.tog').forEach(t=>t.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();t.click();}}));
+$('sheet').addEventListener('click',e=>{if(e.target.id==='sheet')closeSheet();});
+
+/* ---------- inicio ---------- */
+document.body.classList.toggle('calm',S.calm);
+$('score').textContent=S.score;renderStars();
+[5,10,20].forEach(x=>$('l-'+x).classList.toggle('on',x===S.level));
+cur=makeSum();render();
+talk('🤖','¡Hola! Soy Chispa 🤖. Rex 🦖 y Blanca 🐶 también juegan. Toca los dibujos para contar y elige el número.');
+</script>
+<script src="app.js" data-app="Sumas con Rex" data-icon="icons/sumas-192.png"></script>
+</body>
+</html>

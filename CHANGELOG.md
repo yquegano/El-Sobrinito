@@ -2,6 +2,14 @@
 
 Cada cambio deja una copia con fecha en `versiones/` y su detalle en Notion (Registro de versiones de apps).
 
+## 2026-11-10 · Correcciones aprobadas por Jotha (Chispa Aprende v4.2, Dictado v2.2, Sumas v1.2)
+- **Chispa Aprende — pista del modo «mira el dibujo»:** decía que *piña* empieza con la ñ y que *taxi* empieza con la x. Ahora la voz dice «Empieza con la letra…» solo cuando es verdad; si no, dice «Tiene la letra eñe» / «Tiene la letra equis». Comprobado con las 56 palabras: solo piña y taxi cambian.
+- **Chispa Aprende — sílabas que suenan igual:** en «encuentra la sílaba», el Desafío de Rex y «arma la palabra» ya no aparecen juntas sílabas que se escuchan igual (ba/va, ce/se/ze/xe, ya/lla, ca/ka, que/ke, ge/je, ha/a, yi/hi). Probado en 1.500 rondas: 0 pares repetidos.
+- **Dictado de Chispa:** el nivel que viene marcado ahora es **1–10** (antes 1–20). El Desafío Final ya no repite números hasta haber pasado por todos los del nivel y nunca pone el mismo número dos veces seguidas (probado 1.000 veces).
+- **Sumas con Rex:** en ⚙️ «Para quien acompaña» se agrega el aviso: herramienta de aprendizaje, no reemplaza la educación formal, jugar acompañado de un adulto.
+- Respaldos: antes = `versiones/2026-11-09_v4.1_Chispa-Aprende_app.html`, `versiones/2026-11-09_v2.1_Dictado-de-Chispa_voz-ingles-y-app.html`, `versiones/2026-11-09_v1.1_Sumas-con-Rex_app.html`. Después = `versiones/2026-11-10_v4.2_Chispa-Aprende_pistas-y-silabas.html`, `versiones/2026-11-10_v2.2_Dictado-de-Chispa_nivel-y-desafio.html`, `versiones/2026-11-10_v1.2_Sumas-con-Rex_aviso.html`.
+- Para volver atrás: copiar el archivo «antes» sobre el archivo publicado.
+
 ## 2026-11-09 (tarde) · Voz en inglés grabada + los 3 juegos como app
 - **Voz en inglés de Chispa grabada:** 77 audios en `audio/en/` (números del 0 al 50 y todas las frases en inglés del Dictado: "Find the number…", "Draw the number…", "Great job!", etc.). Voz "af_heart" del modelo abierto Kokoro-82M (licencia Apache 2.0, uso comercial permitido). Ahora el inglés suena igual en cualquier celular o computador, aunque el equipo no tenga voz en inglés. Si un audio no carga, se usa la voz del equipo.
 - **Acceso directo / app:** cada juego tiene su propio ícono y se puede dejar en la pantalla de inicio con el botón **📲** (arriba, al lado de ⚙️): Dictado de Chispa (123, amarillo), Chispa Aprende (Aa, menta) y Sumas con Rex (1+2, rosado). Archivos nuevos: `manifest-dictado.webmanifest`, `manifest-silabas.webmanifest`, `manifest-sumas.webmanifest`, `icons/`, `app.js` (botón e instrucciones para Android, iPhone y computador) y `sw.js` (los 3 juegos, íconos y audios quedan guardados para jugar sin internet).

@@ -148,8 +148,8 @@ body{font-family:'Baloo 2',sans-serif;font-weight:700;color:var(--tinta);backgro
   </div>
 </div>
 <div class="levels">
-  <div class="lvl" onclick="setLevel(this,1,10)">1–10</div>
-  <div class="lvl on" onclick="setLevel(this,1,20)">1–20</div>
+  <div class="lvl on" onclick="setLevel(this,1,10)">1–10</div>
+  <div class="lvl" onclick="setLevel(this,1,20)">1–20</div>
   <div class="lvl" onclick="setLevel(this,10,50)">10–50</div>
 </div>
 <div class="stars" id="stars"></div>
@@ -262,7 +262,7 @@ body{font-family:'Baloo 2',sans-serif;font-weight:700;color:var(--tinta);backgro
   <div class="sup-sub" id="supSub">15 de 15 — ¡Sin ayuda! ⭐⭐⭐</div>
 </div>
 <script>
-let MIN=1,MAX=20,target=null,score=0,wrong=0,mode='find',lang='es';
+let MIN=1,MAX=10,target=null,score=0,wrong=0,mode='find',lang='es';
 let soundOn=true,surprisesOn=true,challengeActive=false,pendingAction='find';
 let nextEventIdx=0,fcActive=false,fcNums=[],fcTypes=[],fcIdx=0,fcCorrect=0,fcCv=null;
 const svgns='http://www.w3.org/2000/svg',xlink='http://www.w3.org/1999/xlink';
@@ -311,6 +311,8 @@ const DIGITS={
 let uid=0;
 function renderGuide(num,el){el.innerHTML='';String(num).split('').forEach((dch,di)=>{const paths=DIGITS[dch]||[];const svg=document.createElementNS(svgns,'svg');svg.setAttribute('viewBox','0 0 100 150');svg.setAttribute('class','digit-guide');paths.forEach((d,pi)=>{const id='gp'+(uid++),delay=(di*0.5+pi*0.4)+'s';const p=document.createElementNS(svgns,'path');p.setAttribute('d',d);p.setAttribute('id',id);p.setAttribute('pathLength','100');p.setAttribute('class','gpath');p.style.animationDelay=delay;svg.appendChild(p);const dot=document.createElementNS(svgns,'circle');dot.setAttribute('r','7');dot.setAttribute('class','gpen');const am=document.createElementNS(svgns,'animateMotion');am.setAttribute('dur','2.6s');am.setAttribute('repeatCount','indefinite');am.setAttribute('keyPoints','0;1;1');am.setAttribute('keyTimes','0;0.6;1');am.setAttribute('calcMode','linear');am.setAttribute('begin',delay);const mp=document.createElementNS(svgns,'mpath');mp.setAttributeNS(xlink,'xlink:href','#'+id);mp.setAttribute('href','#'+id);am.appendChild(mp);dot.appendChild(am);svg.appendChild(dot);});el.appendChild(svg);});}
 function rand(a,b){return Math.floor(Math.random()*(b-a+1))+a;}
+/* 10 nov 2026: Desafío Final sin repetir números hasta agotar el nivel y sin el mismo número dos veces seguidas */
+function fcSeq(a,b,n){const r=[];let bag=[],last=null;while(r.length<n){if(!bag.length){for(let i=a;i<=b;i++)bag.push(i);for(let i=bag.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[bag[i],bag[j]]=[bag[j],bag[i]];}if(bag.length>1&&bag[bag.length-1]===last){[bag[0],bag[bag.length-1]]=[bag[bag.length-1],bag[0]];}}last=bag.pop();r.push(last);}return r;}
 function T(es,en){return lang==='en'?en:es;}
 /* Voz (9-nov-2026): elige la mejor voz de cada idioma y dice los números en palabras.
    Si el equipo no tiene voz en inglés, no lee el inglés con voz española: avisa al adulto. */
@@ -378,7 +380,7 @@ function peekDraw(){const hb=document.getElementById('hintbox2');const e=emojiFo
 function clearDraw(){if(dCv)dCv.clear();}
 function doneDraw(){if(dCv&&!dCv.hasInk()){document.getElementById('feedback2').textContent=T('¡Dibuja primero! ✏️','Draw first! ✏️');return;}document.getElementById('feedback2').textContent=T(['¡Hermoso! 🎨','¡Lo lograste! ⭐','¡Artista! 😎'][rand(0,2)],['Beautiful! 🎨','You did it! ⭐','Artist! 😎'][rand(0,2)]);score++;document.getElementById('score').textContent=score;renderStars();celebrate();speak('¡Muy bien!','Nicely done!',lang==='en'?0.65:0.95);setTimeout(nextDraw,1300);}
 function nextDraw(){newDraw();}
-function launchFC(){if(fcActive)return;fcActive=true;challengeActive=false;fcNums=Array.from({length:15},()=>rand(MIN,MAX));fcTypes=fcNums.map((_,i)=>i%2===0?'verbal':'emoji');fcIdx=0;fcCorrect=0;if(!fcCv)fcCv=makeCanvas(document.getElementById('fcboard'));document.getElementById('findPanel').style.display='none';document.getElementById('drawPanel').style.display='none';document.getElementById('fcPanel').style.display='flex';speak('¡Desafío final! ¡15 números!','Final challenge! 15 numbers!',lang==='en'?0.65:0.95);setTimeout(fcRound,700);}
+function launchFC(){if(fcActive)return;fcActive=true;challengeActive=false;fcNums=fcSeq(MIN,MAX,15);fcTypes=fcNums.map((_,i)=>i%2===0?'verbal':'emoji');fcIdx=0;fcCorrect=0;if(!fcCv)fcCv=makeCanvas(document.getElementById('fcboard'));document.getElementById('findPanel').style.display='none';document.getElementById('drawPanel').style.display='none';document.getElementById('fcPanel').style.display='flex';speak('¡Desafío final! ¡15 números!','Final challenge! 15 numbers!',lang==='en'?0.65:0.95);setTimeout(fcRound,700);}
 function fcRound(){if(fcIdx>=15){fcEnd();return;}const n=fcNums[fcIdx],t=fcTypes[fcIdx];const isEmoji=t==='emoji'||(!soundOn&&t==='verbal');document.getElementById('fcProg').textContent=(fcIdx+1)+' '+T('de','of')+' 15';document.getElementById('fcTyp').textContent=isEmoji?T('👀 Cuenta y dibuja','👀 Count and draw'):T('🔊 Escucha y dibuja','🔊 Listen and draw');const eEl=document.getElementById('fcEmojis');if(isEmoji){eEl.style.display='flex';eEl.innerHTML=Array(n).fill('<span>'+emojiFor(n)+'</span>').join('');}else{eEl.style.display='none';}fcCv.size();fcCv.clear();document.getElementById('fcReveal').style.display='none';document.getElementById('fcChk').style.display='none';document.getElementById('fcDoneBtn').style.display='';document.getElementById('fcFb').textContent='';if(!isEmoji)speakNum('Dibuja el número…','Draw the number…',n);else speak('Cuenta los dibujitos y dibuja','Count and draw',lang==='en'?0.6:0.88);}
 function fcClear(){if(fcCv)fcCv.clear();}
 function fcDone(){if(fcCv&&!fcCv.hasInk()){document.getElementById('fcFb').textContent=T('¡Dibuja primero! ✏️','Draw first! ✏️');return;}const n=fcNums[fcIdx];document.getElementById('fcRevNum').textContent=n;document.getElementById('fcRevHint').textContent=T('¿Tu dibujo se parece a este?','Does your drawing look like this?');document.getElementById('fcReveal').style.display='block';document.getElementById('fcDoneBtn').style.display='none';document.getElementById('fcChk').style.display='flex';speakNum('El número era…','The number was…',n,0.88);}
