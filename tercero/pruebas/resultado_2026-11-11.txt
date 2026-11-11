@@ -1,0 +1,131 @@
+✔ Tipografías propias cargadas desde la app (sin Google Fonts)
+✔ Barra de voz oculta mientras no se lee nada
+✔ Validación de datos: 0 problemas
+✔ Contenido «OA1 Necesidades de las plantas»: Aprende 2 · Práctica 5 · Evaluación 1
+✔ Contenido «OA1 Raíz»: Aprende 1 · Práctica 4 · Evaluación 1
+✔ Contenido «OA1 Tallo»: Aprende 1 · Práctica 4 · Evaluación 1
+✔ Contenido «OA1 Hojas»: Aprende 1 · Práctica 4 · Evaluación 1
+✔ Contenido «OA1 Relación estructuras-necesidades»: Aprende 1 · Práctica 3 · Evaluación 1
+✔ Contenido «OA2 Plantas de Chile, nativas y autóctonas»: Aprende 2 · Práctica 4 · Evaluación 2
+✔ Contenido «OA2 Cultivos por zona»: Aprende 1 · Práctica 4 · Evaluación 1
+✔ Contenido «OA3 Ciclo de vida»: Aprende 1 · Práctica 3 · Evaluación 2
+✔ Contenido «OA3 Polinización»: Aprende 1 · Práctica 5 · Evaluación 1
+✔ Contenido «OA3 Dispersión de semillas»: Aprende 1 · Práctica 4 · Evaluación 1
+✔ Contenido «OA4 Alimentación»: Aprende 1 · Práctica 3 · Evaluación 1
+✔ Contenido «OA4 Oxígeno y medio ambiente»: Aprende 1 · Práctica 3 · Evaluación 1
+✔ Contenido «OA4 Productos derivados, ornamento, uso medicinal»: Aprende 1 · Práctica 4 · Evaluación 1
+✔ Contenido «OA4 Medidas de cuidado»: Aprende 1 · Práctica 3 · Evaluación 1
+✔ Contenido «Griegos: ubicación (mapa)»: Aprende 1 · Práctica 3 · Evaluación 1
+✔ Contenido «Griegos: polis»: Aprende 1 · Práctica 4 · Evaluación 1
+✔ Contenido «Griegos: pirámide social»: Aprende 1 · Práctica 4 · Evaluación 1
+✔ Contenido «Griegos: vestimenta»: Aprende 1 · Práctica 3 · Evaluación 1
+✔ Contenido «Griegos: vivienda»: Aprende 1 · Práctica 3 · Evaluación 1
+✔ Contenido «Griegos: familia»: Aprende 1 · Práctica 3 · Evaluación 1
+✔ Contenido «Griegos: legados»: Aprende 1 · Práctica 3 · Evaluación 1
+✔ Contenido «Romanos: ubicación geográfica»: Aprende 1 · Práctica 3 · Evaluación 1
+✔ Contenido «Romanos: construcciones»: Aprende 1 · Práctica 3 · Evaluación 2
+✔ Contenido «Romanos: pirámide social»: Aprende 1 · Práctica 3 · Evaluación 1
+✔ Contenido «Griegos y romanos no son lo mismo»: Aprende 1 · Práctica 3 · Evaluación 2
+✔ Contenido «Derechos (ejemplos)»: Aprende 1 · Práctica 3 · Evaluación 2
+✔ Contenido «Deberes (ejemplos)»: Aprende 1 · Práctica 3 · Evaluación 1
+✔ Contenido «Buena convivencia»: Aprende 1 · Práctica 3 · Evaluación 1
+✔ Contenido «Comprensión: leyenda»: Aprende 1 · Práctica 5 · Evaluación 3
+✔ Contenido «Comprensión: artículo informativo»: Aprende 1 · Práctica 4 · Evaluación 3
+✔ Contenido «Comprensión: texto dramático»: Aprende 1 · Práctica 4 · Evaluación 3
+✔ Contenido «Ortografía: uso de B»: Aprende 1 · Práctica 5 · Evaluación 2
+✔ Contenido «Ortografía: uso de V»: Aprende 1 · Práctica 5 · Evaluación 2
+✔ Contenido «Sustantivo individual»: Aprende 1 · Práctica 3 · Evaluación 1
+✔ Contenido «Sustantivo colectivo»: Aprende 1 · Práctica 4 · Evaluación 3
+✔ Contenido «Perímetro»: Aprende 1 · Práctica 6+generador · Evaluación 2
+✔ Contenido «Multiplicaciones»: Aprende 1 · Práctica 6+generador · Evaluación 2
+✔ Contenido «Tablas»: Aprende 1 · Práctica 7+generador · Evaluación 2
+✔ Contenido «Problemas de multiplicación»: Aprende 1 · Práctica 5+generador · Evaluación 2
+✔ Contenido «Línea de tiempo»: Aprende 1 · Práctica 4 · Evaluación 2
+✔ Contenido «Calendario»: Aprende 1 · Práctica 5 · Evaluación 2
+✔ Contenido «Hora»: Aprende 1 · Práctica 7+generador · Evaluación 2
+✔ Contenido «Minutos»: Aprende 1 · Práctica 6+generador · Evaluación 2
+✔ Contenido «Ángulos de 90° y 45°»: Aprende 1 · Práctica 5 · Evaluación 2
+✔ Contenido «Fracciones: lectura»: Aprende 1 · Práctica 4 · Evaluación 2
+✔ Contenido «Fracciones: representaciones»: Aprende 1 · Práctica 6+generador · Evaluación 2
+✔ Contenido «Fracciones: ordenar»: Aprende 1 · Práctica 4 · Evaluación 2
+✔ Contenido «Fracciones: problemas»: Aprende 1 · Práctica 4 · Evaluación 2
+✔ Contenido «Pictogramas»: Aprende 1 · Práctica 4 · Evaluación 2
+✔ Contenido «Gráficos de barra»: Aprende 1 · Práctica 4 · Evaluación 2
+✔ ciencias: evaluación con 16 preguntas y 5 formatos (tf:1, mcq:11, match:2, order:1, spot:1) · 69 ítems en total · 0 generadores
+✔ historia: evaluación con 17 preguntas y 4 formatos (mcq:10, fill:3, match:3, sort:1) · 61 ítems en total · 0 generadores
+✔ lenguaje: evaluación con 18 preguntas y 5 formatos (tf:1, mcq:9, match:2, sort:2, fill:4) · 51 ítems en total · 0 generadores
+✔ matematica: evaluación con 30 preguntas y 7 formatos (num:12, mcq:12, tf:1, clock:2, match:1, shade:1, order:1) · 100 ítems en total · 7 generadores
+✔ Inicio muestra 4 asignaturas
+✔ Inicio muestra la fecha de Ciencias (lunes 23 de noviembre)
+✔ ciencias: 7 secciones
+✔ ciencias: Aprende recorrido (14 temas, 16 explicaciones)
+✔ ciencias: Escucha muestra controles Pausa / Repetir / Parar
+✔ ciencias: botón Pausa cambia a Seguir
+✔ ciencias: Parar oculta la barra de voz
+✔ ciencias: Explora lab 0 responde al tocar (4 partes)
+✔ ciencias: Explora lab 1 responde al tocar (3 partes)
+✔ ciencias: Explora con 3 laboratorios
+✔ ciencias: Practica completa 53 ejercicios (14 temas) evaluados correctamente
+✔ ciencias: Mezcla de todos los temas da 10 ejercicios
+✔ ciencias: Comprueba lo aprendido 100 % (16 / 16)
+✔ ciencias: resultado lista contenidos dominados
+✔ ciencias: resultado aclara que no es nota oficial
+✔ ciencias: con errores, el resultado lista contenidos para reforzar
+✔ ciencias: Repasa tus errores ofrece 12 ejercicios
+✔ ciencias: tras repasar → «Aquí aparecerá lo que necesites reforzar»
+✔ ciencias: memorice se completa y muestra puntaje
+✔ historia: 7 secciones
+✔ historia: Aprende recorrido (14 temas, 14 explicaciones)
+✔ historia: Escucha muestra controles Pausa / Repetir / Parar
+✔ historia: botón Pausa cambia a Seguir
+✔ historia: Parar oculta la barra de voz
+✔ historia: Explora lab 0 responde al tocar (4 partes)
+✔ historia: Explora con 3 laboratorios
+✔ historia: Practica completa 44 ejercicios (14 temas) evaluados correctamente
+✔ historia: Mezcla de todos los temas da 10 ejercicios
+✔ historia: Comprueba lo aprendido 100 % (17 / 17)
+✔ historia: resultado lista contenidos dominados
+✔ historia: resultado aclara que no es nota oficial
+✔ historia: con errores, el resultado lista contenidos para reforzar
+✔ historia: Repasa tus errores ofrece 12 ejercicios
+✔ historia: tras repasar → «Aquí aparecerá lo que necesites reforzar»
+✔ historia: juego rápido 12/12 al responder bien
+✔ lenguaje: 7 secciones
+✔ lenguaje: Aprende recorrido (8 temas, 8 explicaciones)
+✔ lenguaje: Escucha muestra controles Pausa / Repetir / Parar
+✔ lenguaje: botón Pausa cambia a Seguir
+✔ lenguaje: Parar oculta la barra de voz
+✔ lenguaje: Explora con 3 laboratorios
+✔ lenguaje: Practica completa 33 ejercicios (8 temas) evaluados correctamente
+✔ lenguaje: Mezcla de todos los temas da 10 ejercicios
+✔ lenguaje: Comprueba lo aprendido 100 % (18 / 18)
+✔ lenguaje: resultado lista contenidos dominados
+✔ lenguaje: resultado aclara que no es nota oficial
+✔ lenguaje: con errores, el resultado lista contenidos para reforzar
+✔ lenguaje: Repasa tus errores ofrece 12 ejercicios
+✔ lenguaje: tras repasar → «Aquí aparecerá lo que necesites reforzar»
+✔ lenguaje: juego rápido 12/12 al responder bien
+✔ matematica: 7 secciones
+✔ matematica: Aprende recorrido (15 temas, 15 explicaciones)
+✔ matematica: Escucha muestra controles Pausa / Repetir / Parar
+✔ matematica: botón Pausa cambia a Seguir
+✔ matematica: Parar oculta la barra de voz
+✔ matematica: fracciones interactivas pintan partes
+✔ matematica: Explora con 4 laboratorios
+✔ matematica: Practica completa 84 ejercicios (15 temas) evaluados correctamente
+✔ matematica: Mezcla de todos los temas da 10 ejercicios
+✔ matematica: Comprueba lo aprendido 100 % (30 / 30)
+✔ matematica: resultado lista contenidos dominados
+✔ matematica: resultado aclara que no es nota oficial
+✔ matematica: con errores, el resultado lista contenidos para reforzar
+✔ matematica: Repasa tus errores ofrece 20 ejercicios
+✔ matematica: tras repasar → «Aquí aparecerá lo que necesites reforzar»
+✔ matematica: carrera de tablas suma puntos (5 de 5)
+✔ Panel adulto muestra avance y último Comprueba por asignatura
+✔ Reinicio del perfil 1 borra su avance (con confirmación en pantalla)
+✔ localStorage sin datos personales
+✔ Lectura en voz alta adapta fracciones, ×, grados, horas y cm: «Pinta tres cuartos de la barra: 4 por 5 = 20. Ángulo de 90 grados. Son las 3 y 15. Lado de 6 centímetros.»
+✔ Lectura en voz alta dice «blanco» en el espacio y omite emojis
+✔ Service worker activo: activo
+✔ La app abre sin internet (modo avión)
+✔ Errores de consola/página: ninguno

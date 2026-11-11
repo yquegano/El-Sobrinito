@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Protocolo de prueba — Repaso 3.º básico</title>
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/png" href="icons/tercero-32.png">
+<style>
+@font-face{font-family:'Baloo 2';src:url(fonts/baloo2-latin.woff) format('woff');font-weight:400 800;font-display:swap}
+@font-face{font-family:'Chewy';src:url(fonts/chewy-latin.woff) format('woff');font-display:swap}
+:root{--sol:#FFE08A;--lila:#C9B6F0;--menta:#A8E6D4;--crema:#FFFCF5;--tinta:#2E2435}
+*{box-sizing:border-box}
+body{margin:0;font-family:'Baloo 2',system-ui,sans-serif;font-weight:600;color:var(--tinta);background:var(--crema);font-size:16px;line-height:1.5}
+.wrap{max-width:900px;margin:0 auto;padding:20px max(16px,env(safe-area-inset-left)) 60px}
+h1{font-family:'Chewy','Baloo 2',sans-serif;font-weight:400;font-size:34px;line-height:1.1;margin:0 0 4px}
+h2{font-family:'Chewy','Baloo 2',sans-serif;font-weight:400;font-size:25px;margin:28px 0 8px;border-bottom:3px solid var(--tinta);padding-bottom:2px}
+h3{font-size:18px;margin:16px 0 6px}
+p,li{max-width:75ch}
+.sub{font-size:15px;opacity:.8}
+.caja{background:#fff;border:3px solid var(--tinta);border-radius:16px;padding:12px 16px;box-shadow:4px 4px 0 var(--tinta);margin:12px 0}
+.aviso{background:#FFF6D6;border-left:6px solid #FFB300;border-radius:8px;padding:8px 12px}
+table{border-collapse:collapse;width:100%;font-size:14px;background:#fff}
+th,td{border:1.5px solid var(--tinta);padding:5px 6px;text-align:left;vertical-align:top}
+th{background:var(--sol);font-weight:800}
+.tw{overflow-x:auto;max-width:100%}
+.obs td{height:44px}
+.chk{width:26px;text-align:center}
+.ok{color:#2E9E5B;font-weight:800}
+.no{color:#D9485F;font-weight:800}
+.btns{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0}
+.btns a,.btns button{font:inherit;font-weight:800;background:var(--lila);border:3px solid var(--tinta);border-radius:14px;padding:8px 14px;box-shadow:3px 3px 0 var(--tinta);color:var(--tinta);text-decoration:none;cursor:pointer}
+small{font-size:12.5px}
+@media print{
+  body{background:#fff;font-size:12px}
+  .wrap{max-width:none;padding:0}
+  .btns,.noprint{display:none!important}
+  .caja{box-shadow:none;border-width:1.5px}
+  h2{break-after:avoid;font-size:20px}
+  .salto{break-before:page}
+  table{font-size:11px}
+  tr{break-inside:avoid}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>Protocolo de prueba y hoja de observación</h1>
+<p class="sub">Repaso 3.º básico · El Sobrinito Aprende · versión 1.0 (11 de noviembre de 2026) · Prueba piloto con 5 estudiantes</p>
+<div class="btns noprint"><a href="./">⬅ Volver a la app</a><button type="button" onclick="window.print()">🖨️ Imprimir</button></div>
+
+<div class="caja aviso"><b>Privacidad.</b> La app no pide nombres, correos ni cuentas: cada estudiante elige un animal (perfil 1 a 5). En esta hoja tampoco se escriben nombres, edades ni datos de salud: solo el número de perfil. Si el adulto necesita saber qué perfil usa cada niño, lo anota aparte y lo destruye al terminar la prueba piloto.</div>
+
+<h2>1. Objetivo</h2>
+<p>Comprobar, antes de las pruebas del 23 al 27 de noviembre, que cinco estudiantes de 3.º básico pueden usar la app sin ayuda, que entienden las explicaciones y que la app no tiene fallas. La app es material de repaso: sus resultados <b>no son notas del colegio</b>.</p>
+<table>
+<tr><th>Asignatura</th><th>Fecha de la prueba</th><th>Repasar desde</th><th>Último repaso</th></tr>
+<tr><td>🌱 Ciencias Naturales</td><td>lunes 23 nov</td><td>viernes 13 nov</td><td>domingo 22 nov</td></tr>
+<tr><td>🏛️ Historia, Geografía y Cs. Sociales</td><td>martes 24 nov</td><td>sábado 14 nov</td><td>lunes 23 nov</td></tr>
+<tr><td>📖 Lenguaje y Comunicación</td><td>jueves 26 nov</td><td>domingo 15 nov</td><td>miércoles 25 nov</td></tr>
+<tr><td>🔢 Matemática</td><td>viernes 27 nov</td><td>lunes 16 nov</td><td>jueves 26 nov</td></tr>
+</table>
+
+<h2>2. Antes de empezar (adulto, 10 minutos)</h2>
+<ol>
+<li>Abrir la app en el celular, tablet o computador con internet <b>una vez</b>. Desde ese momento funciona sin internet.</li>
+<li>Opcional: agregarla a la pantalla de inicio (Chrome: menú ⋮ › «Agregar a la pantalla principal»; Safari: Compartir › «Agregar a inicio»).</li>
+<li>Probar el sonido: entrar a cualquier tema y tocar <b>🔊 Escuchar</b>. Si no suena, revisar el volumen. En Android, si no hay voz: Ajustes › Accesibilidad › Salida de texto a voz.</li>
+<li>En <b>👩‍🏫 Panel para el adulto</b> se puede activar «Leer en voz alta automáticamente», útil para quienes aún leen con dificultad.</li>
+<li>Asignar a cada estudiante un perfil (🦊 1, 🐼 2, 🐸 3, 🦉 4, 🐢 5). Si varios usan el mismo equipo, cada uno entra siempre con su animal.</li>
+</ol>
+
+<h2>3. Sesiones sugeridas (20 a 25 minutos cada una)</h2>
+<table>
+<tr><th>Sesión</th><th>Qué hace el estudiante</th><th>Qué registra el adulto</th></tr>
+<tr><td><b>A · Aprender</b></td><td>Aprende o Escucha (2 o 3 temas) › Explora › Practica esos temas</td><td>¿Entendió las instrucciones? ¿Usó la voz? ¿Qué tema le costó?</td></tr>
+<tr><td><b>B · Comprobar</b></td><td>Comprueba lo aprendido (todos los contenidos) › Repasa tus errores</td><td>Puntaje (por ejemplo 14/16) y temas para reforzar que muestra la pantalla</td></tr>
+<tr><td><b>C · Reforzar</b> (día anterior a la prueba)</td><td>Repasa tus errores › Practica los temas en 🔴 o 🟡 › Juega</td><td>¿Bajó la lista de errores? ¿Cómo se siente para la prueba?</td></tr>
+</table>
+<p>Cada asignatura necesita al menos una sesión A, una B y una C. Con 4 asignaturas, son unas 12 sesiones por estudiante entre el 13 y el 26 de noviembre.</p>
+
+<h2>4. Reglas para el observador</h2>
+<ul>
+<li>No dar las respuestas. Sí se puede leer en voz alta si el audio no funciona.</li>
+<li>Si el niño se traba más de 1 minuto, ayudar con la <i>forma de usar</i> la app (dónde tocar), no con el contenido, y anotarlo.</li>
+<li>Anotar cualquier falla: botón que no responde, dibujo que no se ve, voz que lee mal, texto difícil.</li>
+<li>Terminar la sesión si hay cansancio o frustración. Es mejor una sesión corta que una mala experiencia.</li>
+</ul>
+
+<h2>5. Criterios para dar por aprobada la prueba piloto</h2>
+<ul>
+<li>Los 5 perfiles completan al menos un «Comprueba lo aprendido» por asignatura.</li>
+<li>Al menos 4 de 5 estudiantes navegan sin ayuda después de la primera sesión.</li>
+<li>No quedan fallas graves abiertas (pantalla en blanco, respuesta correcta marcada como error, contenido equivocado).</li>
+<li>Toda pregunta que el adulto considere confusa queda anotada para corregirla.</li>
+</ul>
+
+<h2 class="salto">6. Hoja de observación por sesión</h2>
+<p class="sub">Reacción: 😀 tranquilo · 😐 neutro · 😟 frustrado. Ayuda: N = ninguna, U = cómo usar la app, L = lectura.</p>
+<div class="tw"><table class="obs">
+<tr><th>Fecha</th><th>Perfil (1–5)</th><th>Asignatura</th><th>Sesión (A/B/C)</th><th>Minutos</th><th>Puntaje Comprueba</th><th>Ayuda (N/U/L)</th><th>Reacción</th><th>Temas difíciles / observaciones</th></tr>
+<tbody id="filasObs"></tbody>
+</table></div>
+
+<h2 class="salto">7. Registro de fallas de la app</h2>
+<div class="tw"><table class="obs">
+<tr><th>Fecha</th><th>Equipo (celular, tablet, PC)</th><th>Asignatura y sección</th><th>Pregunta o pantalla</th><th>Qué pasó</th><th>Gravedad (alta / media / baja)</th></tr>
+<tbody id="filasFallas"></tbody>
+</table></div>
+
+<h2>8. Resumen por estudiante (al final de la prueba piloto)</h2>
+<div class="tw"><table class="obs">
+<tr><th>Perfil</th><th>🌱 Ciencias (Comprueba)</th><th>🏛️ Historia</th><th>📖 Lenguaje</th><th>🔢 Matemática</th><th>Temas para reforzar antes de la prueba</th></tr>
+<tr><td>🦊 1</td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>🐼 2</td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>🐸 3</td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>🦉 4</td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>🐢 5</td><td></td><td></td><td></td><td></td><td></td></tr>
+</table></div>
+
+<h2 class="salto">9. Contenidos incluidos en la app</h2>
+<p class="sub">Esta lista se genera desde la misma app, así que siempre muestra lo que realmente contiene. «Práctica» cuenta los ejercicios fijos (+ indica ejercicios que se generan al azar); «Evaluación» cuenta las preguntas de «Comprueba lo aprendido».</p>
+<div id="contenidos"></div>
+
+<h2>10. Fuentes</h2>
+<ul>
+<li>Ciencias Naturales 3.º básico, OA1 y OA3 (plantas: necesidades, estructuras, ciclo de vida): <a href="https://www.curriculumnacional.cl/614/articles-209638_recurso_pdf.pdf">curriculumnacional.cl · recurso 209638</a></li>
+<li>Ciencias Naturales 3.º básico, OA4 (importancia de las plantas y medidas de cuidado): <a href="https://www.curriculumnacional.cl/sites/default/files/newtenberg/614/articles-218258_recurso_pdf.pdf">curriculumnacional.cl · recurso 218258</a></li>
+<li>Historia, Geografía y Ciencias Sociales 3.º básico, OA3 y OA5 (griegos y romanos): <a href="https://www.curriculumnacional.cl/614/articles-218582_recurso_pdf.pdf">curriculumnacional.cl · recurso 218582</a> y <a href="https://www.curriculumnacional.cl/portal/Educacion-General/Historia-Geografia-y-Ciencias-Sociales-3-basico/HI03-OA-03/218581:HI-03-OA-3-OA-5-OA-13-OA-16-U3-A1">actividad HI03 OA3-OA5</a></li>
+<li>Lenguaje y Comunicación 3.º básico: <a href="https://www.curriculumnacional.cl/portal/Educacion-General/Lenguaje-y-comunicacion-Lengua-y-literatura/Lenguaje-y-comunicacion-3-basico/217400:LE03-OA-7-A4">recursos LE03 en curriculumnacional.cl</a></li>
+<li>Matemática 3.º básico (OA8, OA11, OA18, OA19, OA20, OA21, OA25): <a href="https://static.sumaysigue.uchile.cl/Sumo%20Primero/websp/oas/oas_3.pdf">Objetivos de aprendizaje 3.º básico, Plan Sumo Primero</a></li>
+<li>Textos de lectura («La leyenda de la neblina del valle», «El copihue, la flor nacional de Chile», «El cuaderno perdido»): originales, escritos para esta app.</li>
+<li>Dibujos: hechos en la misma app (sin imágenes externas). Tipografías Baloo 2 (SIL Open Font License) y Chewy (Apache 2.0), incluidas en la carpeta <i>fonts</i>.</li>
+</ul>
+<p class="sub">Los contenidos siguen los temarios entregados por el colegio. Si el temario oficial cambia, se debe revisar esta lista antes de seguir con la prueba piloto.</p>
+</div>
+<script src="base.js"></script>
+<script src="svg.js"></script>
+<script src="ciencias.js"></script>
+<script src="historia.js"></script>
+<script src="lenguaje.js"></script>
+<script src="matematica.js"></script>
+<script>
+(function () {
+  const filas = (id, n, cols) => { document.getElementById(id).innerHTML = Array.from({ length: n }, () => '<tr>' + '<td></td>'.repeat(cols) + '</tr>').join(''); };
+  filas('filasObs', 14, 9); filas('filasFallas', 8, 6);
+  const c = document.getElementById('contenidos');
+  c.innerHTML = MATERIAS.map(m => {
+    const tot = m.temas.reduce((a, t) => a + t.items.filter(i => i.ev).length, 0);
+    return `<h3>${m.emoji} ${m.nombre} · prueba ${m.fecha.split('-').reverse().join('/')} · ${m.temas.length} temas · ${tot} preguntas de evaluación</h3><div class="tw"><table><tr><th>Tema</th><th>OA / unidad</th><th>Aprende</th><th>Práctica</th><th>Evaluación</th><th class="chk">Revisado</th></tr>` +
+      m.temas.map(t => { const p = t.items.filter(i => !i.ev).length, e = t.items.filter(i => i.ev).length; const ok = t.aprende.length && (p || t.gen) && e; return `<tr><td>${t.titulo}</td><td>${t.oa}</td><td>${t.aprende.length}</td><td>${p}${t.gen ? ' +' : ''}</td><td class="${ok ? 'ok' : 'no'}">${e}</td><td class="chk">☐</td></tr>`; }).join('') + '</table></div>';
+  }).join('');
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,19 @@
+{
+ "id": "/El-Sobrinito/tercero/",
+ "name": "Repaso 3.º básico — El Sobrinito",
+ "short_name": "Repaso 3.º",
+ "description": "Repaso para las pruebas de 3.º básico: Ciencias, Historia, Lenguaje y Matemática. Sin cuentas ni anuncios; funciona sin internet.",
+ "lang": "es",
+ "start_url": "./",
+ "scope": "./",
+ "display": "standalone",
+ "orientation": "any",
+ "background_color": "#FFFCF5",
+ "theme_color": "#FFE08A",
+ "icons": [
+  {"src": "icons/tercero-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any"},
+  {"src": "icons/tercero-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any"},
+  {"src": "icons/tercero-maskable-192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable"},
+  {"src": "icons/tercero-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}
+ ]
+}

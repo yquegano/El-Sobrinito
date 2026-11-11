@@ -2,6 +2,16 @@
 
 Cada cambio deja una copia con fecha en `versiones/` y su detalle en Notion (Registro de versiones de apps).
 
+## 2026-11-11 · Nueva app: Repaso 3.º básico (`tercero/`) — v1.0, rama `tercero-basico` (sin publicar)
+- **Qué es:** repaso para las pruebas de 3.º básico del Colegio Monte Verde: Ciencias Naturales (lun 23 nov), Historia (mar 24), Lenguaje (jue 26) y Matemática (vie 27). 51 temas, 281 ejercicios fijos + 7 generadores de ejercicios al azar en Matemática.
+- **Siete secciones por asignatura:** Aprende (explicación con dibujo), Escucha (lectura en voz alta con Pausa / Seguir / Repetir / Parar), Explora (dibujos que se tocan, reloj, fracciones, arreglos y perímetro manipulables), Practica (con explicación después de cada respuesta), Juega (memorice, «¿Griego o romano?», «¿B o V?», carrera de tablas), Comprueba lo aprendido (todas las unidades, 16–30 preguntas, 4–7 formatos, puntaje, %, contenidos dominados y para reforzar; se aclara que no es nota del colegio) y Repasa tus errores.
+- **10 tipos de actividad:** alternativas, verdadero/falso, completar, unir, ordenar, clasificar, tocar en el dibujo, teclado numérico, mover las manecillas del reloj y pintar fracciones.
+- **Perfiles sin datos personales:** 5 animales (Estudiante 1 a 5). El avance se guarda solo en el equipo. Panel para el adulto con avance por asignatura, detalle por tema, lectura automática y reinicio con confirmación en pantalla.
+- **Sin internet:** service worker propio (`tercero/sw.js`) y tipografías dentro de la app (`tercero/fonts/`, Baloo 2 OFL y Chewy Apache 2.0): ya no depende de Google Fonts. Dibujos hechos en SVG/CSS, sin imágenes externas. Ícono propio (`tercero/icons/`).
+- **Protocolo de prueba piloto** (`tercero/protocolo.html`): sesiones sugeridas, reglas para el observador, criterios de aprobación, hoja de observación y registro de fallas para imprimir, lista de contenidos generada desde la app y fuentes.
+- **Pruebas** (`tercero/pruebas/`): 131 comprobaciones automáticas en Chromium a 390 px: los 50 contenidos del temario con Aprende + Práctica + Evaluación, datos sin errores (300 ejercicios generados por tema), todas las prácticas y evaluaciones respondidas por la interfaz (bien y mal), repaso de errores, juegos, panel adulto, voz, sin desborde horizontal, sin errores de consola y apertura sin internet. Solucionario para el adulto en `solucionario_2026-11-11.md`.
+- Respaldo: `versiones/2026-11-11_v1.0_Repaso-3basico.zip` (app completa).
+
 ## 2026-11-10 · Correcciones aprobadas por Jotha (Chispa Aprende v4.2, Dictado v2.2, Sumas v1.2)
 - **Chispa Aprende — pista del modo «mira el dibujo»:** decía que *piña* empieza con la ñ y que *taxi* empieza con la x. Ahora la voz dice «Empieza con la letra…» solo cuando es verdad; si no, dice «Tiene la letra eñe» / «Tiene la letra equis». Comprobado con las 56 palabras: solo piña y taxi cambian.
 - **Chispa Aprende — sílabas que suenan igual:** en «encuentra la sílaba», el Desafío de Rex y «arma la palabra» ya no aparecen juntas sílabas que se escuchan igual (ba/va, ce/se/ze/xe, ya/lla, ca/ka, que/ke, ge/je, ha/a, yi/hi). Probado en 1.500 rondas: 0 pares repetidos.
