@@ -28,7 +28,7 @@ main{padding:16px max(14px,env(safe-area-inset-right)) 16px max(14px,env(safe-ar
 .top{position:sticky;top:0;z-index:20;display:grid;grid-template-columns:48px 1fr 48px;align-items:center;gap:8px;padding:calc(10px + env(safe-area-inset-top)) 12px 10px;background:var(--sol);border-bottom:3px solid var(--tinta)}
 .top h1{font-family:'Chewy','Baloo 2',system-ui,sans-serif;font-weight:400;font-size:24px;line-height:1.1;text-align:center;text-wrap:balance;color:var(--tinta)}
 .back,.perfil{width:46px;height:46px;border-radius:50%;border:3px solid var(--tinta);background:#fff;font-size:22px;cursor:pointer;box-shadow:3px 3px 0 var(--tinta);display:grid;place-items:center}
-.back:active,.perfil:active,.btn:active,.op:active,.sec:active,.mat:active,.tema:active,.pf:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--tinta)}
+.back:active,.perfil:active,.btn:active,.op:active,.sec:active,.mat:active,.tema:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--tinta)}
 /* Botones */
 .btn{background:var(--lila);border:3px solid var(--tinta);border-radius:16px;padding:10px 18px;font-size:17px;font-weight:800;cursor:pointer;box-shadow:3px 3px 0 var(--tinta);min-height:48px}
 .btn.suave{background:#fff}
@@ -41,12 +41,6 @@ main{padding:16px max(14px,env(safe-area-inset-right)) 16px max(14px,env(safe-ar
 .nota{font-size:14px;font-weight:600;background:#FFF6D6;border-left:6px solid var(--naranja);padding:8px 12px;border-radius:8px}
 .pie{font-size:13px;font-weight:600;text-align:center;opacity:.8}
 .ayuda{font-size:14px;font-weight:600;opacity:.85}
-/* Perfiles */
-.perfiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px}
-.pf{display:flex;flex-direction:column;align-items:center;gap:2px;background:#fff;border:3px solid var(--tinta);border-radius:20px;padding:14px 8px;cursor:pointer;box-shadow:4px 4px 0 var(--tinta);font-size:17px}
-.pf.on{background:var(--menta)}
-.pf .ani{font-size:46px;line-height:1}
-.pf small{font-size:13px;font-weight:600}
 /* Inicio */
 .chispa{display:flex;gap:12px;align-items:center;background:#fff;border:3px solid var(--tinta);border-radius:20px;padding:12px 14px;box-shadow:4px 4px 0 var(--tinta)}
 .chispa .robot{font-size:46px}
@@ -170,9 +164,50 @@ figcaption{font-weight:800;text-align:center;margin-bottom:4px}
 .carta.par{background:#BFEFCB}
 .sw{display:flex;gap:10px;align-items:flex-start;font-weight:600}
 .sw input{width:24px;height:24px;flex:none;margin-top:2px}
+/* Ruta de aprendizaje */
+.subt{font-weight:800;font-size:15px;text-transform:uppercase;letter-spacing:.06em;opacity:.7;margin-top:4px}
+.ruta{background:#FFFBEF}
+.pasos{list-style:none;padding:0!important;display:flex;flex-direction:column;gap:8px}
+.paso-r{display:grid;grid-template-columns:40px 1fr auto;align-items:center;gap:10px;width:100%;text-align:left;background:#fff;border:2.5px solid var(--tinta);border-radius:14px;padding:8px 10px;cursor:pointer;box-shadow:2px 2px 0 var(--tinta)}
+.paso-r .pn{width:36px;height:36px;border-radius:50%;border:2.5px solid var(--tinta);display:grid;place-items:center;font-weight:800;background:var(--crema);font-size:17px}
+.paso-r .pt{display:flex;flex-direction:column;min-width:0}
+.paso-r .pt b{font-size:16px;line-height:1.25}
+.paso-r .pt small{font-size:13px;font-weight:600;opacity:.8}
+.paso-r.hecho{background:#EAF8EE}
+.paso-r.hecho .pn{border-color:var(--ok);background:#fff}
+.paso-r.ahora{background:var(--sol);box-shadow:3px 3px 0 var(--tinta)}
+.paso-r .toca{font-size:13px;font-weight:800;background:#fff;border:2px solid var(--tinta);border-radius:30px;padding:2px 8px;white-space:nowrap}
+/* Dibujos con pie */
+.dibujo{display:flex;flex-direction:column;align-items:center;gap:2px}
+.dibujo svg.ilus{width:150px!important;max-width:150px!important}
+.dibujo figcaption{font-size:14px}
+.lectura .dibujo svg.ilus{width:110px!important}
+/* Juegos: explicación y ejemplo */
+.ejemplo{border:3px dashed var(--tinta);border-radius:16px;padding:10px 12px;background:#F4F0FF;display:flex;flex-direction:column;gap:6px;align-items:center;text-align:center}
+.palabra.chica{font-size:32px;padding:4px 18px;display:inline-block}
+.ej-cartas{display:flex;align-items:center;gap:8px;justify-content:center}
+.ej-cartas .carta{width:130px;cursor:default}
+.mas{font-family:'Chewy','Baloo 2',system-ui,sans-serif;font-size:30px}
+.elige{display:flex;flex-direction:column;gap:6px}
+.tablas-sel{justify-content:flex-start}
+.tablas-sel .btn{min-height:42px;padding:6px 12px;font-size:16px}
+.carta{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;min-height:118px;line-height:1.2}
+.carta svg.ilus{width:62px;height:62px}
+.carta .cimg{font-size:34px;line-height:1}
+.carta .tapa{font-size:30px}
+.carta b{font-size:14px}
+/* Lluvia de palabras */
+.cielo{position:relative;height:210px;border:3px solid var(--tinta);border-radius:18px;overflow:hidden;background:linear-gradient(#A9DCF2,#E6F6FD 80%,#A5DD8A 80%)}
+.gota{position:absolute;left:50%;transform:translateX(-50%);top:6px;font-family:'Chewy','Baloo 2',system-ui,sans-serif;font-size:36px;background:#fff;border:3px solid var(--tinta);border-radius:16px;padding:0 16px;white-space:nowrap;box-shadow:3px 3px 0 var(--tinta)}
+.gota.cae{top:146px;transition:top 10s linear}
+/* Tablas de multiplicar */
+.tabla-lista{list-style:none;padding:0!important;display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:6px}
+.tabla-lista li{display:flex;align-items:center;justify-content:space-between;gap:8px;background:#FFFBEF;border:2px solid var(--tinta);border-radius:12px;padding:4px 6px 4px 12px;font-size:20px;font-weight:800;font-variant-numeric:tabular-nums}
+.res{min-width:52px;height:40px;border:2.5px solid var(--tinta);border-radius:10px;background:#fff;font-size:20px;font-weight:800;cursor:pointer}
+.res.oculto{background:var(--lila)}
 /* Barra de voz y aviso */
-#voz{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(12px + env(safe-area-inset-bottom));z-index:50;display:flex;gap:8px;background:var(--tinta);padding:8px;border-radius:100px;box-shadow:0 6px 18px rgba(0,0,0,.25)}
-#voz button{background:#fff;border:none;border-radius:100px;padding:8px 14px;font-size:15px;font-weight:800;cursor:pointer}
+#voz{grid-column:1/-1;justify-self:center;display:flex;gap:6px;background:var(--tinta);padding:5px;border-radius:100px;margin-top:2px}
+#voz button{background:#fff;border:none;border-radius:100px;padding:6px 12px;font-size:14px;font-weight:800;cursor:pointer}
 #aviso{position:fixed;left:50%;transform:translateX(-50%);top:calc(84px + env(safe-area-inset-top));z-index:60;background:var(--tinta);color:#fff;padding:10px 16px;border-radius:14px;font-size:15px;max-width:90vw;text-align:center}
 @media (max-width:430px){
   body{font-size:16px}

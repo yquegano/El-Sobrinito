@@ -58,7 +58,7 @@
         ] },
       { id: 'nativas', oa: 'OA2', titulo: 'Plantas de Chile: nativas y autóctonas',
         aprende: [
-          { t: 'Plantas nativas o autóctonas', txt: 'Una planta <b>nativa</b> o <b>autóctona</b> (las dos palabras significan lo mismo) es la que crece <b>de forma natural</b> en un lugar, sin que nadie la haya traído. Si solo existe en Chile, se llama <b>endémica</b>. Una planta <b>introducida</b> fue traída desde otro país, como el trigo o el eucalipto.', img: '<div class="emo">🌺 copihue · 🌲 araucaria · 🌳 quillay · 🌵 quisco</div>' },
+          { t: 'Plantas nativas o autóctonas', txt: 'Una planta <b>nativa</b> o <b>autóctona</b> (las dos palabras significan lo mismo) es la que crece <b>de forma natural</b> en un lugar, sin que nadie la haya traído. Si solo existe en Chile, se llama <b>endémica</b>. Una planta <b>introducida</b> fue traída desde otro país, como el trigo o el eucalipto.', img: '<figure class="dibujo">' + SVG.copihue() + '<figcaption>Copihue, flor nacional de Chile</figcaption></figure><div class="emo">🌲 araucaria · 🌳 quillay · 🌵 quisco</div>' },
           { t: 'Algunas plantas nativas de Chile', txt: '<b>Copihue</b>: flor nacional de Chile, una enredadera de los bosques del centro y sur del país. <b>Araucaria</b> o pehuén: árbol del sur cuyas semillas son los piñones. <b>Quillay</b>: árbol de la zona central; su corteza se usaba como jabón. <b>Boldo</b>: árbol cuyas hojas se usan en infusión. <b>Canelo</b>: árbol sagrado del pueblo mapuche. <b>Quisco</b>: cactus del norte y centro. <b>Tamarugo</b>: árbol de la pampa del norte.' }
         ],
         items: [
@@ -88,7 +88,7 @@
           order('Ordena desde lo primero a lo último.', ['🌰 Semilla', '🌱 Brote', '🌿 Planta joven', '🌸 Planta con flor'], 'La semilla germina, crece y llega a florecer.', { ev: true })
         ] },
       { id: 'polinizacion', oa: 'OA3', titulo: 'La polinización',
-        aprende: [{ t: 'La polinización', txt: 'Las flores tienen <b>estambres</b>, que producen un polvito llamado <b>polen</b>, y un <b>pistilo</b> en el centro. La <b>polinización</b> es el paso del polen hasta el pistilo. Lo llevan los <b>insectos</b> como las abejas, las <b>aves</b> como el picaflor, o el <b>viento</b>. Sin polinización no se forman frutos ni semillas.', img: SVG.flor() }],
+        aprende: [{ t: 'La polinización', txt: 'Las flores tienen <b>estambres</b>, que producen un polvito llamado <b>polen</b>, y un <b>pistilo</b> en el centro. La <b>polinización</b> es el paso del polen hasta el pistilo. Lo llevan los <b>insectos</b> como las abejas, las <b>aves</b> como el picaflor, o el <b>viento</b>. Sin polinización no se forman frutos ni semillas.', img: SVG.polinizacion() + SVG.flor() }],
         items: [
           mcq('¿Qué es la polinización?', ['El paso del polen hasta el pistilo de una flor', 'Regar la planta', 'Cortar las flores', 'Cuando la semilla cae al suelo'], 0, 'Polinizar es llevar el polen hasta el pistilo.'),
           spot('Toca los ESTAMBRES, donde se produce el polen.', SVG.flor(), 'estambres', 'Los estambres producen el polen.'),
@@ -98,7 +98,7 @@
           mcq('¿Qué se forma después de la polinización?', ['El fruto con semillas', 'Más raíces', 'Un tallo nuevo', 'Tierra'], 0, 'Después de la polinización, la flor forma el fruto con semillas.')
         ] },
       { id: 'dispersion', oa: 'OA3', titulo: 'Dispersión de las semillas',
-        aprende: [{ t: 'Las semillas viajan', txt: 'La <b>dispersión</b> es cuando las semillas se alejan de la planta para crecer en otro lugar. Viajan con el <b>viento</b> (como el diente de león, que tiene pelitos que vuelan), con los <b>animales</b> (que comen frutos o llevan semillas pegadas en su pelaje), con el <b>agua</b> (como el coco, que flota) o por la <b>misma planta</b> (vainas que se abren de golpe).', img: '<div class="emo">🌬️ diente de león · 🐦 animales · 🌊 coco · 💥 vainas</div>' }],
+        aprende: [{ t: 'Las semillas viajan', txt: 'La <b>dispersión</b> es cuando las semillas se alejan de la planta para crecer en otro lugar. Viajan con el <b>viento</b> (como el diente de león, que tiene pelitos que vuelan), con los <b>animales</b> (que comen frutos o llevan semillas pegadas en su pelaje), con el <b>agua</b> (como el coco, que flota) o por la <b>misma planta</b> (vainas que se abren de golpe).', img: '<figure class="dibujo">' + SVG.dienteLeon() + '<figcaption>Diente de león: el viento se lleva sus semillas</figcaption></figure><div class="emo">🐦 animales · 🌊 coco · 💥 vainas</div>' }],
         items: [
           mcq('¿Para qué sirve la dispersión de las semillas?', ['Para que las semillas lleguen a otros lugares donde puedan crecer', 'Para que la planta se seque', 'Para pintar las flores', 'Para que la raíz crezca'], 0, 'Al alejarse, las semillas encuentran espacio, luz y agua para crecer.'),
           match('Une cada semilla con la forma en que viaja.', [['Diente de león', 'Viento'], ['Coco', 'Agua'], ['Semilla pegada al pelaje de un perro', 'Animales']], 'El diente de león vuela, el coco flota y otras semillas se pegan a los animales.'),
@@ -145,6 +145,19 @@
       { id: 'exp-flor', titulo: 'Explora la flor', tipo: 'partes', svg: () => SVG.flor(), info: { petalos: 'Pétalos: sus colores atraen a insectos y aves.', estambres: 'Estambres: producen el polen.', pistilo: 'Pistilo: recibe el polen. Después se forma el fruto con semillas.' } },
       { id: 'exp-ciclo', titulo: 'Paso a paso: ciclo de vida', tipo: 'pasos', pasos: [['🌰', 'Semilla: guarda una plantita y alimento.'], ['🌱', 'Germinación: con agua, la semilla se abre y sale un brote.'], ['🌿', 'Crecimiento: aparecen tallo y hojas.'], ['🌸', 'Floración: la planta adulta forma flores.'], ['🐝', 'Polinización: el polen llega al pistilo.'], ['🍎', 'Fruto: la flor se transforma en fruto con semillas.'], ['🌬️', 'Dispersión: las semillas viajan y el ciclo vuelve a empezar.']] }
     ],
-    juego: { tipo: 'memorice', titulo: 'Memorice de las plantas', pares: [['Raíz', 'Absorbe agua'], ['Hojas', 'Fabrican alimento'], ['Tallo', 'Transporta agua'], ['Copihue', 'Flor nacional'], ['Abeja', 'Poliniza'], ['Diente de león', 'Viaja con el viento']] }
+    juego: {
+      tipo: 'memorice', titulo: 'Memorice de las plantas',
+      como: 'Todas las cartas están tapadas. Toca dos cartas para darlas vuelta. Si van juntas, por ejemplo una parte de la planta y lo que hace, ¡encontraste una pareja! y se quedan a la vista. Si no van juntas, se vuelven a tapar: fíjate bien dónde estaba cada una para recordarla.',
+      ejemplo: { html: '<div class="ej-cartas"><span class="carta vista par">' + SVG.abeja() + '<b>Abeja</b></span><span class="mas">+</span><span class="carta vista par"><span class="cimg">🌼</span><b>Poliniza las flores</b></span></div><p class="txt">¡Pareja! La abeja va con «Poliniza las flores», porque lleva el polen de una flor a otra.</p>',
+        voz: 'Por ejemplo: la carta de la abeja va con la carta que dice poliniza las flores, porque la abeja lleva el polen de una flor a otra. ¡Esa es una pareja!' },
+      pares: [
+        [{ t: 'Raíz', img: SVG.miniPlanta('raiz') }, { t: 'Absorbe el agua del suelo', img: '💧' }],
+        [{ t: 'Hojas', img: SVG.miniPlanta('hojas') }, { t: 'Fabrican el alimento con la luz', img: '☀️' }],
+        [{ t: 'Tallo', img: SVG.miniPlanta('tallo') }, { t: 'Lleva el agua hacia arriba', img: '⬆️' }],
+        [{ t: 'Copihue', img: SVG.copihue() }, { t: 'Flor nacional de Chile', img: '⭐' }],
+        [{ t: 'Abeja', img: SVG.abeja() }, { t: 'Poliniza las flores', img: '🌼' }],
+        [{ t: 'Diente de león', img: SVG.dienteLeon() }, { t: 'Su semilla viaja con el viento', img: '🌬️' }]
+      ]
+    }
   });
 })();

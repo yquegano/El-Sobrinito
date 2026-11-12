@@ -1,4 +1,4 @@
-# Solucionario · Repaso 3.º básico (v1.0, 11 nov 2026)
+# Solucionario · Repaso 3.º básico (v1.1, 11 nov 2026)
 
 Para el adulto que acompaña. [EV] = pregunta de «Comprueba lo aprendido». Los ejercicios que se generan al azar en Matemática no aparecen aquí: la app muestra su solución al responder.
 

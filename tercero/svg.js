@@ -165,5 +165,68 @@
     return `<figure class="linea"><figcaption>${titulo}</figcaption>${svg(W, 120, `<line x1="15" y1="50" x2="${W - 15}" y2="50" stroke="${T}" stroke-width="4"/><polygon points="${W - 15},43 ${W - 3},50 ${W - 15},57" fill="${T}"/>` + eventos.map(([a, t], i) => { const x = 30 + i * ((W - 70) / Math.max(1, n - 1)); return `<circle cx="${x}" cy="50" r="7" fill="#FFB300" stroke="${T}" stroke-width="2.5"/>${txt(x, 32, a, 13, 'middle', 800)}${txt(x, 76, t.split('|')[0], 11, 'middle', 600)}${t.split('|')[1] ? txt(x, 91, t.split('|')[1], 11, 'middle', 600) : ''}`; }).join(''), titulo)}</figure>`;
   };
 
+
+  /* ---------- Dibujos para Ciencias y juegos (12 nov 2026) ---------- */
+  // Copihue (Lapageria rosea): enredadera con flor roja en forma de campana colgante
+  S.copihue = () => svg(160, 200, `
+    <path d="M6 20 C38 4 70 32 100 22 S140 8 156 24" fill="none" stroke="#3F8A31" stroke-width="5" stroke-linecap="round"/>
+    <ellipse cx="38" cy="15" rx="17" ry="7" transform="rotate(-18 38 15)" fill="#6CC04A" stroke="${T}" stroke-width="2.5"/>
+    <ellipse cx="126" cy="13" rx="17" ry="7" transform="rotate(16 126 13)" fill="#6CC04A" stroke="${T}" stroke-width="2.5"/>
+    <path d="M88 24 C91 34 85 44 88 56" fill="none" stroke="#3F8A31" stroke-width="4" stroke-linecap="round"/>
+    <path d="M76 60 C70 92 64 132 56 170 Q62 182 70 172 Q78 184 88 173 Q98 184 106 172 Q114 182 120 170 C112 132 106 92 100 60 Z" fill="#D7263D" stroke="${T}" stroke-width="3" stroke-linejoin="round"/>
+    <path d="M88 64 L88 170 M81 66 C77 102 73 140 69 170 M95 66 C99 102 103 140 107 170" fill="none" stroke="#9E1B2E" stroke-width="2"/>
+    ${[[80, 90], [94, 104], [76, 126], [100, 138], [84, 150], [70, 156]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="2.6" fill="#FFD6DC"/>`).join('')}
+    <ellipse cx="88" cy="59" rx="11" ry="5" fill="#6CC04A" stroke="${T}" stroke-width="2"/>
+    <path d="M83 177 L80 190 M88 177 L88 192 M93 177 L96 190" stroke="#F2C200" stroke-width="3" stroke-linecap="round"/>
+  `, 'Copihue, la flor nacional de Chile');
+  const abejaInner = () => `
+    <ellipse cx="68" cy="30" rx="22" ry="15" transform="rotate(-25 68 30)" fill="#E6F6FD" stroke="${T}" stroke-width="2.5"/>
+    <ellipse cx="94" cy="28" rx="22" ry="15" transform="rotate(22 94 28)" fill="#E6F6FD" stroke="${T}" stroke-width="2.5"/>
+    <path d="M37 64 L22 68 L37 72 Z" fill="${T}"/>
+    <path d="M66 94 L62 104 M80 96 L80 106 M94 94 L98 104" stroke="${T}" stroke-width="2.5" stroke-linecap="round"/>
+    <ellipse cx="80" cy="68" rx="44" ry="28" fill="#FFD23F" stroke="${T}" stroke-width="3"/>
+    <path d="M70 43 Q65 68 70 93 M92 43 Q87 68 92 93" fill="none" stroke="${T}" stroke-width="9"/>
+    <ellipse cx="80" cy="68" rx="44" ry="28" fill="none" stroke="${T}" stroke-width="3"/>
+    <circle cx="62" cy="104" r="4" fill="#FFB300" stroke="${T}" stroke-width="1.5"/><circle cx="98" cy="104" r="4" fill="#FFB300" stroke="${T}" stroke-width="1.5"/>
+    <path d="M128 50 C130 38 136 34 142 32 M120 50 C118 38 122 32 126 26" fill="none" stroke="${T}" stroke-width="2.5" stroke-linecap="round"/>
+    <circle cx="142" cy="32" r="3.5" fill="${T}"/><circle cx="126" cy="26" r="3.5" fill="${T}"/>
+    <circle cx="124" cy="66" r="17" fill="#3A2E40" stroke="${T}" stroke-width="2.5"/>
+    <circle cx="130" cy="61" r="5" fill="#fff"/><circle cx="131.5" cy="61" r="2.4" fill="${T}"/>
+    <path d="M122 73 Q128 78 134 72" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"/>`;
+  S.abeja = () => svg(160, 120, abejaInner(), 'Abeja');
+  // Diente de león: la cabeza de semillas con "paracaídas" que el viento se lleva
+  S.dienteLeon = () => {
+    const rayos = Array.from({ length: 22 }, (_, i) => { const a = i * 2 * Math.PI / 22, x = 80 + 34 * Math.cos(a), y = 70 + 34 * Math.sin(a); return `<line x1="80" y1="70" x2="${x.toFixed(1)}" y2="${y.toFixed(1)}" stroke="#A9A2B0" stroke-width="1.5"/><circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="3.2" fill="#fff" stroke="#A9A2B0" stroke-width="1.2"/>`; }).join('');
+    const semilla = (x, y, r) => `<g transform="rotate(${r} ${x} ${y})"><line x1="${x}" y1="${y}" x2="${x}" y2="${y + 14}" stroke="#8B6B4A" stroke-width="1.6"/><ellipse cx="${x}" cy="${y + 16}" rx="2" ry="3" fill="#8B6B4A"/>${[-50, -25, 0, 25, 50].map(d => `<line x1="${x}" y1="${y}" x2="${(x + 8 * Math.sin(d * Math.PI / 180)).toFixed(1)}" y2="${(y - 8 * Math.cos(d * Math.PI / 180)).toFixed(1)}" stroke="#A9A2B0" stroke-width="1.3"/>`).join('')}</g>`;
+    return svg(160, 200, `
+      <path d="M104 40 C118 30 128 36 146 26 M98 22 C112 14 124 18 140 10" fill="none" stroke="#7FC4E6" stroke-width="2.5" stroke-dasharray="6 5" stroke-linecap="round"/>
+      ${semilla(124, 46, 20)}${semilla(146, 40, 35)}${semilla(136, 16, 10)}
+      <path d="M80 196 C77 160 84 130 80 104" fill="none" stroke="#3F8A31" stroke-width="5" stroke-linecap="round"/>
+      <path d="M78 196 L60 180 L66 178 L52 166 L60 166 L48 152 L64 160 L70 172 Z M82 196 L100 182 L94 180 L108 170 L100 168 L112 156 L96 162 L90 174 Z" fill="#6CC04A" stroke="${T}" stroke-width="2" stroke-linejoin="round"/>
+      ${rayos}<circle cx="80" cy="70" r="7" fill="#C9A27A" stroke="${T}" stroke-width="2"/>
+    `, 'Diente de león: sus semillas vuelan con el viento');
+  };
+  // Planta pequeña con una parte destacada (raiz | tallo | hojas)
+  S.miniPlanta = (parte) => {
+    const gris = (p, c) => p === parte ? c : '#CFC9D4';
+    const glow = (p, d, w) => p === parte ? `<path d="${d}" fill="none" stroke="#FFB300" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round" opacity=".55"/>` : '';
+    const R = 'M50 72 C50 85 42 92 34 102 M50 76 C52 88 60 94 68 104 M50 78 L50 106', TL = 'M50 30 L50 72', H1 = 'M50 52 C34 40 20 44 16 52 C26 62 40 62 50 52 Z', H2 = 'M50 40 C66 28 80 32 84 40 C74 50 60 50 50 40 Z';
+    return svg(100, 110, `<rect x="0" y="70" width="100" height="40" rx="6" fill="#EADBC8"/>
+      ${glow('raiz', R, 12)}<path d="${R}" fill="none" stroke="${gris('raiz', '#7A5230')}" stroke-width="4" stroke-linecap="round"/>
+      ${glow('tallo', TL, 16)}<path d="${TL}" stroke="${gris('tallo', '#3F8A31')}" stroke-width="7" stroke-linecap="round"/>
+      ${glow('hojas', H1, 9)}${glow('hojas', H2, 9)}<path d="${H1}" fill="${gris('hojas', '#6CC04A')}" stroke="${T}" stroke-width="2"/><path d="${H2}" fill="${gris('hojas', '#6CC04A')}" stroke="${T}" stroke-width="2"/>`,
+      { raiz: 'Planta con la raíz destacada', tallo: 'Planta con el tallo destacado', hojas: 'Planta con las hojas destacadas' }[parte] || 'Planta');
+  };
+  // Escena: una abeja lleva el polen de una flor a otra
+  S.polinizacion = () => {
+    const flor = (cx, cy, c) => `<path d="M${cx} ${cy + 16} L${cx} 178" stroke="#3F8A31" stroke-width="5"/>` + [0, 60, 120, 180, 240, 300].map(a => `<ellipse cx="${(cx + 20 * Math.cos(a * Math.PI / 180)).toFixed(1)}" cy="${(cy + 20 * Math.sin(a * Math.PI / 180)).toFixed(1)}" rx="13" ry="9" transform="rotate(${a} ${(cx + 20 * Math.cos(a * Math.PI / 180)).toFixed(1)} ${(cy + 20 * Math.sin(a * Math.PI / 180)).toFixed(1)})" fill="${c}" stroke="${T}" stroke-width="2.5"/>`).join('') + `<circle cx="${cx}" cy="${cy}" r="12" fill="#FFE08A" stroke="${T}" stroke-width="2.5"/>` + [[-4, -3], [4, -4], [0, 4], [-5, 4], [5, 3]].map(([x, y]) => `<circle cx="${cx + x}" cy="${cy + y}" r="1.8" fill="#E69500"/>`).join('');
+    return svg(300, 200, `<rect x="0" y="176" width="300" height="24" fill="#C2E89A"/>
+      ${flor(56, 92, '#FFC4D6')}${flor(244, 92, '#C9B6F0')}
+      <path d="M72 76 C110 30 170 24 226 74" fill="none" stroke="${T}" stroke-width="2" stroke-dasharray="5 6"/>
+      ${[[96, 52], [116, 42], [184, 42], [204, 52]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="3" fill="#E69500" stroke="${T}" stroke-width="1"/>`).join('')}
+      <g transform="translate(116 16) scale(.45)">${abejaInner()}</g>
+      ${txt(150, 196, 'La abeja lleva el polen de una flor a otra', 12)}
+    `, 'Una abeja lleva el polen de una flor a otra');
+  };
   window.SVG = S;
 })();

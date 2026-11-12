@@ -12,6 +12,7 @@
 <p>Por eso, dicen, la neblina de las mañanas es el regalo que el espíritu de la montaña le hizo a Ayelén. Y cada vez que alguien comparte su agua, la neblina vuelve a bajar.</p>` },
     articulo: { titulo: 'El copihue, la flor nacional de Chile', tipo: 'Artículo informativo', html: `<h4>El copihue, la flor nacional de Chile</h4>
 <p><i>El copihue es una planta nativa de Chile. Desde 1977 es la flor nacional de nuestro país.</i></p>
+<figure class="dibujo">${SVG.copihue()}<figcaption>El copihue</figcaption></figure>
 <h5>¿Cómo es?</h5><p>Es una enredadera: su tallo delgado se enrolla en los árboles para subir hacia la luz. Sus flores tienen forma de campana y suelen ser rojas, aunque también las hay rosadas y blancas.</p>
 <h5>¿Dónde vive?</h5><p>Crece en los bosques húmedos y sombríos del centro y sur de Chile.</p>
 <h5>¿Quién lo visita?</h5><p>Los picaflores lo visitan para beber el néctar de sus flores y, al hacerlo, llevan el polen de una flor a otra.</p>
@@ -121,6 +122,9 @@
       { id: 'exp-articulo', titulo: 'Lee el artículo informativo', tipo: 'texto', texto: 'articulo' },
       { id: 'exp-drama', titulo: 'Lee el texto dramático', tipo: 'texto', texto: 'drama' }
     ],
-    juego: { tipo: 'rapido', titulo: 'Lluvia de palabras: ¿B o V?', grupos: ['B', 'V'], items: [['hom_re', 0], ['in_ierno', 1], ['ha_lar', 0], ['nue_o', 1], ['_uscar', 0], ['_oy', 1], ['juga_a', 0], ['en_iar', 1], ['tam_or', 0], ['acti_o', 1], ['_urbuja', 0], ['octa_o', 1], ['_rillo', 0], ['in_itar', 1], ['cam_io', 0], ['_amos', 1]], ayuda: { 'hom_re': 'hombre', 'in_ierno': 'invierno', 'ha_lar': 'hablar', 'nue_o': 'nuevo', '_uscar': 'buscar', '_oy': 'voy', 'juga_a': 'jugaba', 'en_iar': 'enviar', 'tam_or': 'tambor', 'acti_o': 'activo', '_urbuja': 'burbuja', 'octa_o': 'octavo', '_rillo': 'brillo', 'in_itar': 'invitar', 'cam_io': 'cambio', '_amos': 'vamos' } }
+    juego: { tipo: 'rapido', lluvia: true, titulo: 'Lluvia de palabras: ¿B o V?',
+      como: 'Las palabras caen desde arriba como gotas de lluvia. A cada palabra le falta una letra: la B o la V. Toca la letra que falta antes de que la palabra llegue al suelo. Si la palabra cae, no pasa nada: Chispa te muestra cómo se escribe y sigues con la próxima.',
+      ejemplo: { html: '<div class="palabra chica">tam_or</div><p class="txt">➜ Tocas <b>B</b>: se escribe <b>tam<u>b</u>or</b>. Después de la M siempre va B.</p>', voz: 'Por ejemplo, cae la palabra tam, or, y le falta una letra. Tocas la be, porque se escribe tambor: después de la eme siempre va be.' },
+      grupos: ['B', 'V'], items: [['hom_re', 0], ['in_ierno', 1], ['ha_lar', 0], ['nue_o', 1], ['_uscar', 0], ['_oy', 1], ['juga_a', 0], ['en_iar', 1], ['tam_or', 0], ['acti_o', 1], ['_urbuja', 0], ['octa_o', 1], ['_rillo', 0], ['in_itar', 1], ['cam_io', 0], ['_amos', 1]], ayuda: { 'hom_re': 'hombre', 'in_ierno': 'invierno', 'ha_lar': 'hablar', 'nue_o': 'nuevo', '_uscar': 'buscar', '_oy': 'voy', 'juga_a': 'jugaba', 'en_iar': 'enviar', 'tam_or': 'tambor', 'acti_o': 'activo', '_urbuja': 'burbuja', 'octa_o': 'octavo', '_rillo': 'brillo', 'in_itar': 'invitar', 'cam_io': 'cambio', '_amos': 'vamos' } }
   });
 })();

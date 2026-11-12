@@ -2,6 +2,18 @@
 
 Cada cambio deja una copia con fecha en `versiones/` y su detalle en Notion (Registro de versiones de apps).
 
+## 2026-11-11 (noche) · Repaso 3.º básico v1.1 — perfil único, ruta de aprendizaje, juegos explicados y tablas (pedidos de Jotha) · PUBLICADA
+- **Perfil único:** cada app es para un niño o niña (como El Sobrinito). Se quitó la pantalla de los 5 animales: la app abre directo en las asignaturas. El botón ⚙️ de arriba abre el panel para el adulto. Si había avance de la v1.0, se conserva el perfil que estaba en uso.
+- **🗺️ Ruta de aprendizaje** al entrar a cada asignatura: 6 pasos en orden (Aprende o escucha cada tema, Explora, Practica, Juega, Comprueba lo aprendido, Repasa tus errores), con ✅ en lo hecho, «👉 Te toca» en el paso siguiente y el próximo tema sugerido (por ejemplo, Ciencias: «sigue con Lo que necesitan las plantas»). Se puede escuchar. Los temas aparecen numerados en el orden de la ruta.
+- **Juegos con explicación y ejemplo**, leídos en voz alta al abrirlos: memorice (ejemplo: Abeja + Poliniza las flores), ¿Griego o romano? (ejemplo: Acueducto → Roma), Lluvia de palabras (ejemplo: tam_or → tambor, después de M va B) y Carrera de tablas (ejemplo: 3 × 4 = 12).
+- **Memorice de las plantas con dibujos** en las 12 cartas: copihue, abeja, diente de león y una planta con la raíz, el tallo o las hojas destacadas. Dibujos nuevos también en Aprende (copihue, abeja polinizando, diente de león) y en el artículo del copihue de Lenguaje.
+- **Lluvia de palabras de verdad:** la palabra cae y hay 10 segundos para elegir B o V. Si llega al suelo aparece «¡Se cayó!» con la palabra bien escrita.
+- **Matemática:** la carrera de tablas permite elegir la tabla (del 1 al 10 o todas) y hay una sección nueva **✖️ Tablas de multiplicar** con las 10 tablas completas, un truco por tabla, lectura en voz alta, modo «esconder resultados» para autoevaluarse y botón para correr con esa tabla.
+- Los controles de voz (Pausa, Repetir, Parar) ahora van dentro del encabezado y ya no tapan botones. La voz lee «+», «−» e «=» como «más», «menos» y «es igual a».
+- Protocolo actualizado a perfil único (cada estudiante en su propio equipo o navegador). Voz: se mantiene la del equipo. Queda para más adelante una voz distinta por app o asignatura, o que la familia la elija.
+- Pruebas: 156 de 156 comprobaciones automáticas aprobadas (`tercero/pruebas/resultado_2026-11-11.txt`).
+- Respaldos: antes = `versiones/2026-11-11_v1.0_Repaso-3basico.zip`; después = `versiones/2026-11-11_v1.1_Repaso-3basico_perfil-unico.zip`. Para volver atrás: descomprimir la v1.0 sobre `tercero/`.
+
 ## 2026-11-11 · Nueva app: Repaso 3.º básico (`tercero/`) — v1.0, rama `tercero-basico` (sin publicar)
 - **Qué es:** repaso para las pruebas de 3.º básico del Colegio Monte Verde: Ciencias Naturales (lun 23 nov), Historia (mar 24), Lenguaje (jue 26) y Matemática (vie 27). 51 temas, 281 ejercicios fijos + 7 generadores de ejercicios al azar en Matemática.
 - **Siete secciones por asignatura:** Aprende (explicación con dibujo), Escucha (lectura en voz alta con Pausa / Seguir / Repetir / Parar), Explora (dibujos que se tocan, reloj, fracciones, arreglos y perímetro manipulables), Practica (con explicación después de cada respuesta), Juega (memorice, «¿Griego o romano?», «¿B o V?», carrera de tablas), Comprueba lo aprendido (todas las unidades, 16–30 preguntas, 4–7 formatos, puntaje, %, contenidos dominados y para reforzar; se aclara que no es nota del colegio) y Repasa tus errores.

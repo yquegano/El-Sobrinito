@@ -133,6 +133,9 @@
       { id: 'exp-piramides', titulo: 'Compara las pirámides sociales', tipo: 'html', html: () => PG() + PR() + '<p class="nota">Las dos sociedades tenían esclavos, pero sus otros grupos eran distintos: en Atenas, ciudadanos y metecos; en Roma, patricios y plebeyos.</p>' },
       { id: 'exp-construcciones', titulo: 'Construcciones griegas y romanas', tipo: 'html', html: () => '<h3>Grecia</h3>' + SVG.templo() + SVG.casaGriega() + '<h3>Roma</h3>' + SVG.acueducto() + SVG.coliseo() }
     ],
-    juego: { tipo: 'rapido', titulo: '¿Griego o romano?', grupos: ['🏛️ Grecia', '🛡️ Roma'], items: [['Polis', 0], ['Ágora', 0], ['Quitón', 0], ['Metecos', 0], ['Democracia de Atenas', 0], ['Juegos Olímpicos', 0], ['Esparta', 0], ['Acrópolis', 0], ['Acueducto', 1], ['Calzadas', 1], ['Coliseo', 1], ['Patricios', 1], ['Plebeyos', 1], ['Toga', 1], ['Río Tíber', 1], ['Latín', 1], ['Foro', 1], ['Termas', 1]] }
+    juego: { tipo: 'rapido', titulo: '¿Griego o romano?',
+      como: 'Aparece una palabra. Piensa si es de los antiguos griegos o de los romanos y toca el botón correcto. Son 12 palabras: ¡intenta acertarlas todas!',
+      ejemplo: { html: '<div class="palabra chica">Acueducto</div><p class="txt">➜ Tocas <b>🛡️ Roma</b>, porque los romanos construyeron acueductos para llevar agua a sus ciudades.</p>', voz: 'Por ejemplo, si aparece la palabra acueducto, tocas Roma, porque los romanos construyeron acueductos para llevar agua a sus ciudades.' },
+      grupos: ['🏛️ Grecia', '🛡️ Roma'], items: [['Polis', 0], ['Ágora', 0], ['Quitón', 0], ['Metecos', 0], ['Democracia de Atenas', 0], ['Juegos Olímpicos', 0], ['Esparta', 0], ['Acrópolis', 0], ['Acueducto', 1], ['Calzadas', 1], ['Coliseo', 1], ['Patricios', 1], ['Plebeyos', 1], ['Toga', 1], ['Río Tíber', 1], ['Latín', 1], ['Foro', 1], ['Termas', 1]] }
   });
 })();

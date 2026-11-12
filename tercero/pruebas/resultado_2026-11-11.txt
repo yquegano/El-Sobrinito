@@ -1,3 +1,4 @@
+✔ Perfil único: la app abre directo en las asignaturas, sin elegir perfil
 ✔ Tipografías propias cargadas desde la app (sin Google Fonts)
 ✔ Barra de voz oculta mientras no se lee nada
 ✔ Validación de datos: 0 problemas
@@ -58,6 +59,7 @@
 ✔ Inicio muestra 4 asignaturas
 ✔ Inicio muestra la fecha de Ciencias (lunes 23 de noviembre)
 ✔ ciencias: 7 secciones
+✔ ciencias: ruta de aprendizaje con 6 pasos; ahora → «1📘 Aprende o escucha cada tema, en orden0 de 14 temas · sigue con «Lo que necesitan las plantas»👉 Te toca»
 ✔ ciencias: Aprende recorrido (14 temas, 16 explicaciones)
 ✔ ciencias: Escucha muestra controles Pausa / Repetir / Parar
 ✔ ciencias: botón Pausa cambia a Seguir
@@ -73,8 +75,13 @@
 ✔ ciencias: con errores, el resultado lista contenidos para reforzar
 ✔ ciencias: Repasa tus errores ofrece 12 ejercicios
 ✔ ciencias: tras repasar → «Aquí aparecerá lo que necesites reforzar»
+✔ ciencias: el juego parte con «¿Cómo se juega?» y un ejemplo
+✔ ciencias: la explicación del juego se lee en voz alta sola
 ✔ ciencias: memorice se completa y muestra puntaje
+✔ ciencias: las cartas del memorice tienen dibujos (6), entre ellos el copihue y la abeja
+✔ ciencias: después de recorrer todo, la ruta muestra los 6 pasos con ✅ y «¡Ruta completa!»
 ✔ historia: 7 secciones
+✔ historia: ruta de aprendizaje con 6 pasos; ahora → «1📘 Aprende o escucha cada tema, en orden0 de 14 temas · sigue con «Dónde vivían los griegos»👉 Te toca»
 ✔ historia: Aprende recorrido (14 temas, 14 explicaciones)
 ✔ historia: Escucha muestra controles Pausa / Repetir / Parar
 ✔ historia: botón Pausa cambia a Seguir
@@ -89,8 +96,12 @@
 ✔ historia: con errores, el resultado lista contenidos para reforzar
 ✔ historia: Repasa tus errores ofrece 12 ejercicios
 ✔ historia: tras repasar → «Aquí aparecerá lo que necesites reforzar»
+✔ historia: el juego parte con «¿Cómo se juega?» y un ejemplo
+✔ historia: la explicación del juego se lee en voz alta sola
 ✔ historia: juego rápido 12/12 al responder bien
+✔ historia: después de recorrer todo, la ruta muestra los 6 pasos con ✅ y «¡Ruta completa!»
 ✔ lenguaje: 7 secciones
+✔ lenguaje: ruta de aprendizaje con 6 pasos; ahora → «1📘 Aprende o escucha cada tema, en orden0 de 8 temas · sigue con «La leyenda»👉 Te toca»
 ✔ lenguaje: Aprende recorrido (8 temas, 8 explicaciones)
 ✔ lenguaje: Escucha muestra controles Pausa / Repetir / Parar
 ✔ lenguaje: botón Pausa cambia a Seguir
@@ -104,8 +115,13 @@
 ✔ lenguaje: con errores, el resultado lista contenidos para reforzar
 ✔ lenguaje: Repasa tus errores ofrece 12 ejercicios
 ✔ lenguaje: tras repasar → «Aquí aparecerá lo que necesites reforzar»
-✔ lenguaje: juego rápido 12/12 al responder bien
-✔ matematica: 7 secciones
+✔ lenguaje: el juego parte con «¿Cómo se juega?» y un ejemplo
+✔ lenguaje: la explicación del juego se lee en voz alta sola
+✔ lenguaje: juego rápido 11/12 al responder bien (dejando caer 1 palabra)
+✔ lenguaje: en la lluvia, si la palabra llega al suelo aparece «¡Se cayó!» con la palabra bien escrita
+✔ lenguaje: después de recorrer todo, la ruta muestra los 6 pasos con ✅ y «¡Ruta completa!»
+✔ matematica: 8 secciones (con Tablas de multiplicar)
+✔ matematica: ruta de aprendizaje con 6 pasos; ahora → «1📘 Aprende o escucha cada tema, en orden0 de 15 temas · sigue con «Perímetro»👉 Te toca»
 ✔ matematica: Aprende recorrido (15 temas, 15 explicaciones)
 ✔ matematica: Escucha muestra controles Pausa / Repetir / Parar
 ✔ matematica: botón Pausa cambia a Seguir
@@ -120,11 +136,20 @@
 ✔ matematica: con errores, el resultado lista contenidos para reforzar
 ✔ matematica: Repasa tus errores ofrece 20 ejercicios
 ✔ matematica: tras repasar → «Aquí aparecerá lo que necesites reforzar»
-✔ matematica: carrera de tablas suma puntos (5 de 5)
-✔ Panel adulto muestra avance y último Comprueba por asignatura
-✔ Reinicio del perfil 1 borra su avance (con confirmación en pantalla)
+✔ matematica: el juego parte con «¿Cómo se juega?» y un ejemplo
+✔ matematica: la explicación del juego se lee en voz alta sola
+✔ matematica: carrera con la tabla elegida (del 7): 5 de 5, todas del 7
+✔ Tablas de multiplicar: muestra la tabla completa (2 × 1 … 2 × 10)
+✔ Tablas: la del 9 con su truco
+✔ Tablas: se pueden esconder los resultados para autoevaluarse
+✔ Tablas: tocar «?» muestra el resultado
+✔ Tablas: «Carrera con esta tabla» llega con la tabla ya elegida
+✔ matematica: después de recorrer todo, la ruta muestra los 6 pasos con ✅ y «¡Ruta completa!»
+✔ Panel adulto (botón ⚙️) muestra avance y último Comprueba de cada asignatura
+✔ Reiniciar borra todo el avance (con confirmación en pantalla)
 ✔ localStorage sin datos personales
-✔ Lectura en voz alta adapta fracciones, ×, grados, horas y cm: «Pinta tres cuartos de la barra: 4 por 5 = 20. Ángulo de 90 grados. Son las 3 y 15. Lado de 6 centímetros.»
+✔ Datos de la versión 1.0 (5 perfiles) se conservan al pasar a perfil único
+✔ Lectura en voz alta adapta fracciones, ×, grados, horas y cm: «Pinta tres cuartos de la barra: 4 por 5 es igual a 20. Ángulo de 90 grados. Son las 3 y 15. Lado de 6 centímetros.»
 ✔ Lectura en voz alta dice «blanco» en el espacio y omite emojis
 ✔ Service worker activo: activo
 ✔ La app abre sin internet (modo avión)

@@ -78,8 +78,9 @@ const REQ = [
   page.on('console', m => { if (m.type() === 'error' && !/fonts\.g/.test(m.text()) && !/Failed to load resource/.test(m.text())) errores.push('console: ' + m.text()); });
   page.on('requestfailed', r => { if (!/fonts\.g/.test(r.url())) errores.push('requestfailed: ' + r.url()); });
   await page.goto(URL);
-  await page.waitForSelector('.perfiles');
-  await page.screenshot({ path: OUT + '/01_perfiles.png', fullPage: true });
+  await page.waitForSelector('.materias');
+  ok(!(await page.$('.perfiles, .pf')), 'Perfil único: la app abre directo en las asignaturas, sin elegir perfil');
+  await page.screenshot({ path: OUT + '/01_inicio.png', fullPage: true });
   await page.evaluate(() => document.fonts.ready);
   ok(await page.evaluate(() => document.fonts.check('20px Chewy') && document.fonts.check('700 16px "Baloo 2"')), 'Tipografías propias cargadas desde la app (sin Google Fonts)');
   ok(!(await page.isVisible('#voz')), 'Barra de voz oculta mientras no se lee nada');
@@ -180,8 +181,6 @@ const REQ = [
   const ir = async (mid) => { await page.evaluate(() => { const b = document.querySelector('.top .back'); }); };
 
   // ---------- 2. Perfil ----------
-  await clickTxt('.pf', 'Estudiante 1');
-  await page.waitForSelector('.materias');
   ok((await page.$$('.mat')).length === 4, 'Inicio muestra 4 asignaturas');
   ok(/Prueba: lunes, 23 de noviembre/.test(await page.textContent('.materias')), 'Inicio muestra la fecha de Ciencias (lunes 23 de noviembre)');
   await page.screenshot({ path: OUT + '/02_inicio.png', fullPage: true }); await overflow('inicio');
@@ -193,7 +192,9 @@ const REQ = [
   for (const mid of mats) {
     // ---------- 3. Aprende: todas las explicaciones ----------
     await abrirMateria(mid);
-    ok((await page.$$('.sec')).length === 7, `${mid}: 7 secciones`);
+    ok((await page.$$('.sec')).length === (mid === 'matematica' ? 8 : 7), `${mid}: ${mid === 'matematica' ? '8 secciones (con Tablas de multiplicar)' : '7 secciones'}`);
+    const ruta0 = await page.evaluate(() => ({ n: document.querySelectorAll('.ruta .paso-r').length, ahora: (document.querySelector('.ruta .ahora') || {}).textContent || '' }));
+    ok(ruta0.n === 6 && /Te toca/.test(ruta0.ahora), `${mid}: ruta de aprendizaje con 6 pasos; ahora → «${ruta0.ahora.replace(/\s+/g, ' ').trim()}»`);
     if (mid === mats[0]) await page.screenshot({ path: OUT + `/03_secciones_${mid}.png`, fullPage: true });
     await clickTxt('.sec', 'Aprende');
     const nTemas = (await page.$$('.tema')).length;
@@ -282,68 +283,75 @@ const REQ = [
     const errTxt = await page.textContent('.secciones');
     ok(true, `${mid}: tras repasar → «${errTxt.match(/Repasa tus errores(.*)/)[1].trim()}»`);
 
-    // ---------- 9. Juego ----------
+    // ---------- 9. Juego: explicación con ejemplo (leída en voz alta) y juego ----------
     await clickTxt('.sec', 'Juega');
+    await page.waitForSelector('.juego .ejemplo');
+    const intro = await page.textContent('.juego');
+    ok(/¿Cómo se juega\?/.test(intro) && /Ejemplo/.test(intro), `${mid}: el juego parte con «¿Cómo se juega?» y un ejemplo`);
+    ok(await page.isVisible('#voz'), `${mid}: la explicación del juego se lee en voz alta sola`);
+    await page.screenshot({ path: OUT + `/09a_juego_intro_${mid}.png`, fullPage: true });
     const tipo = await page.evaluate(mid => window.MATERIAS.find(m => m.id === mid).juego.tipo, mid);
+    if (tipo === 'tablas') await clickExact('.tablas-sel .btn', 'del 7');
+    await clickTxt('.btn', '¡A jugar!');
     if (tipo === 'memorice') {
-      const pares = await page.evaluate(mid => window.MATERIAS.find(m => m.id === mid).juego.pares, mid);
-      for (const [a, b] of pares) {
-        const idx = await page.evaluate(([a, b]) => { const pairs = window.MATERIAS.flatMap(m => m.juego.pares || []); return null; }, [a, b]);
-        // Abrimos cartas hasta encontrar a y b leyendo el texto: usamos el orden interno revelando de a dos
-      }
-      // estrategia: abrir cada carta para conocerla (memoria perfecta)
-      const n = (await page.$$('.carta')).length; const vistas = {};
-      for (let i = 0; i < n; i++) {
-        if (await page.locator('.carta').nth(i).evaluate(e => e.classList.contains('par'))) continue;
-        await page.locator('.carta').nth(i).click(); const t = (await page.locator('.carta').nth(i).textContent()).trim();
-        const k = pares.findIndex(p => p.includes(t)); const otro = vistas[k];
-        if (otro != null) { await page.locator('.carta').nth(otro).click(); await page.waitForTimeout(80); }
-        else { const j = i + 1 < n ? i + 1 : 0; await page.locator('.carta').nth(j).click(); const t2 = (await page.locator('.carta').nth(j).textContent()).trim(); const k2 = pares.findIndex(p => p.includes(t2)); if (k2 !== k) { vistas[k] = i; vistas[k2] = j; await page.waitForTimeout(1250); } else await page.waitForTimeout(80); }
-      }
-      // completar las que faltan
-      for (let guard = 0; guard < 20 && !(await page.$('.juego .fb.ok')); guard++) {
-        const cerradas = await page.evaluate(() => [...document.querySelectorAll('.carta')].map((c, i) => c.classList.contains('par') ? -1 : i).filter(i => i >= 0));
-        if (!cerradas.length) break;
-        const textos = {}; for (const i of cerradas) { const k = Object.keys(vistas).find(q => vistas[q] === i); }
-        // usa el mapa conocido
-        const known = Object.entries(vistas).filter(([k, i]) => cerradas.includes(i));
-        let hecho = false;
-        for (const [k, i] of known) { const idx2 = cerradas.find(j => j !== i && Object.entries(vistas).every(([kk, ii]) => ii !== j)); }
-        // fallback: probar pares de cartas cerradas
-        for (let a = 0; a < cerradas.length && !hecho; a++) for (let b = a + 1; b < cerradas.length && !hecho; b++) {
-          await page.locator('.carta').nth(cerradas[a]).click(); await page.locator('.carta').nth(cerradas[b]).click(); await page.waitForTimeout(60);
-          if (await page.locator('.carta').nth(cerradas[a]).evaluate(e => e.classList.contains('par'))) hecho = true; else await page.waitForTimeout(1200);
-        }
-      }
+      const ks = await page.evaluate(() => [...document.querySelectorAll('.carta[data-k]')].map(c => +c.dataset.k));
+      for (const k of [...new Set(ks)]) { const idx = ks.map((v, i) => v === k ? i : -1).filter(i => i >= 0); for (const i of idx) await page.locator('.memo .carta').nth(i).click(); await page.waitForTimeout(60); }
       ok(!!(await page.$('.juego .fb.ok')), `${mid}: memorice se completa y muestra puntaje`);
+      const dib = await page.evaluate(() => ({ svg: document.querySelectorAll('.memo .carta svg').length, copihue: !!document.querySelector('.memo svg[aria-label^="Copihue"]'), abeja: !!document.querySelector('.memo svg[aria-label="Abeja"]') }));
+      ok(dib.svg >= 6 && dib.copihue && dib.abeja, `${mid}: las cartas del memorice tienen dibujos (${dib.svg}), entre ellos el copihue y la abeja`);
     } else if (tipo === 'rapido') {
-      const items = await page.evaluate(mid => window.MATERIAS.find(m => m.id === mid).juego, mid);
+      const J = await page.evaluate(mid => window.MATERIAS.find(m => m.id === mid).juego, mid);
+      let cayo = false;
       for (let k = 0; k < 12; k++) {
-        const w = (await page.textContent('.palabra')).trim(); const it = items.items.find(x => x[0] === w);
-        await clickExact('.juego .op', items.grupos[it[1]]); await page.waitForTimeout(900);
+        const sel = J.lluvia ? '.gota' : '.palabra';
+        await page.waitForSelector(sel);
+        if (J.lluvia && k === 0) { await page.waitForTimeout(10600); cayo = /Se cayó/.test(await page.textContent('.juego')); await page.waitForTimeout(2400); continue; }
+        const w = (await page.textContent(sel)).trim(); const it = J.items.find(x => x[0] === w);
+        await clickExact('.juego .op', J.grupos[it[1]]); await page.waitForTimeout(950);
       }
-      ok((await page.textContent('.puntaje')).replace(/\s/g, '') === '12/12', `${mid}: juego rápido 12/12 al responder bien`);
+      const esperado = J.lluvia ? '11/12' : '12/12';
+      ok((await page.textContent('.puntaje')).replace(/\s/g, '') === esperado, `${mid}: juego rápido ${esperado} al responder bien${J.lluvia ? ' (dejando caer 1 palabra)' : ''}`);
+      if (J.lluvia) ok(cayo, `${mid}: en la lluvia, si la palabra llega al suelo aparece «¡Se cayó!» con la palabra bien escrita`);
     } else if (tipo === 'tablas') {
-      await clickTxt('.btn', '¡Partir!');
-      for (let k = 0; k < 5; k++) { const t = await page.textContent('.palabra'); const [a, b] = t.match(/\d+/g).map(Number); for (const d of String(a * b)) await clickExact('.pad .k', d); await clickExact('.pad .k', '✔️'); }
-      ok((await page.textContent('#tt')).includes('⭐ 5'), `${mid}: carrera de tablas suma puntos (5 de 5)`);
+      const as = [];
+      for (let k = 0; k < 5; k++) { const t = await page.textContent('.palabra'); const [a, b] = t.match(/\d+/g).map(Number); as.push(a); for (const d of String(a * b)) await clickExact('.pad .k', d); await clickExact('.pad .k', '✔️'); }
+      ok((await page.textContent('#tt')).includes('⭐ 5') && as.every(a => a === 7) && /Tabla del 7/.test(await page.textContent('#tt')), `${mid}: carrera con la tabla elegida (del 7): 5 de 5, todas del 7`);
     }
     await page.screenshot({ path: OUT + `/09_juego_${mid}.png`, fullPage: true });
     await overflow(`${mid} juego`);
+    if (mid === 'matematica') {
+      await page.click('.top .back'); await clickTxt('.sec', 'Tablas de multiplicar');
+      const t2 = await page.textContent('.tabla-mult');
+      ok((await page.$$('.tabla-lista li')).length === 10 && /2 × 10 =\s*20/.test(t2), 'Tablas de multiplicar: muestra la tabla completa (2 × 1 … 2 × 10)');
+      await clickExact('.tablas-sel .btn', 'del 9');
+      const t9 = await page.textContent('.tabla-mult');
+      ok(/9 × 4 =\s*36/.test(t9) && /suman 9/.test(t9), 'Tablas: la del 9 con su truco');
+      await page.screenshot({ path: OUT + '/12_tablas.png', fullPage: true }); await overflow('tablas');
+      await clickTxt('.btn', 'Esconder resultados');
+      ok((await page.$$('.res.oculto')).length === 10, 'Tablas: se pueden esconder los resultados para autoevaluarse');
+      await page.locator('.res.oculto').first().click(); ok((await page.textContent('.res')).trim() === '9', 'Tablas: tocar «?» muestra el resultado');
+      await clickTxt('.btn', 'Carrera con esta tabla'); await page.waitForSelector('.tablas-sel .btn.on');
+      ok((await page.textContent('.tablas-sel .btn.on')).trim() === 'del 9', 'Tablas: «Carrera con esta tabla» llega con la tabla ya elegida');
+    }
+    await abrirMateria(mid);
+    const rutaF = await page.evaluate(() => ({ hechos: document.querySelectorAll('.ruta .paso-r.hecho').length, completa: /Ruta completa/.test(document.querySelector('.ruta').textContent) }));
+    ok(rutaF.hechos === 6 && rutaF.completa, `${mid}: después de recorrer todo, la ruta muestra los 6 pasos con ✅ y «¡Ruta completa!»`);
+    if (mid === 'ciencias') await page.screenshot({ path: OUT + '/03b_ruta_completa_ciencias.png', fullPage: true });
   }
 
-  // ---------- 10. Panel adulto y reinicio ----------
+  // ---------- 10. Panel adulto, reinicio y migración ----------
   await page.goto(URL); await page.waitForSelector('.materias');
-  await page.click('.top .perfil'); await clickTxt('.btn', 'Panel para el adulto');
-  await page.waitForSelector('table.adulto');
+  await page.click('.top .perfil'); await page.waitForSelector('table.adulto');
   const tabla = await page.textContent('table.adulto');
-  ok(/Avance \d+ %/.test(tabla) && /Comprueba: \d+\/\d+/.test(tabla), 'Panel adulto muestra avance y último Comprueba por asignatura');
+  ok(/\d+ %/.test(tabla) && /\d+\/\d+ \(\d+ %\)/.test(tabla), 'Panel adulto (botón ⚙️) muestra avance y último Comprueba de cada asignatura');
   await page.screenshot({ path: OUT + '/10_panel_adulto.png', fullPage: true }); await overflow('panel adulto');
-  await page.locator('.fila .btn', { hasText: '🦊 1' }).click();
-  await clickExact('.fb .btn', 'Sí, borrar');
-  const borrado = await page.evaluate(() => { const d = JSON.parse(localStorage.getItem('tercero_repaso_v1')); return !d.perfiles[1] && d.actual === null; });
-  ok(borrado, 'Reinicio del perfil 1 borra su avance (con confirmación en pantalla)');
+  await clickTxt('.btn', 'Borrar el avance'); await clickExact('.fb .btn', 'Sí, borrar');
+  const borrado = await page.evaluate(() => { const d = JSON.parse(localStorage.getItem('tercero_repaso_v1')); return !!d.perfil && Object.keys(d.perfil.evals).length === 0 && !d.perfiles; });
+  ok(borrado, 'Reiniciar borra todo el avance (con confirmación en pantalla)');
   ok(await page.evaluate(() => !/nombre|rut|correo|email/i.test(localStorage.getItem('tercero_repaso_v1'))), 'localStorage sin datos personales');
+  await page.evaluate(() => localStorage.setItem('tercero_repaso_v1', JSON.stringify({ actual: 3, auto: false, perfiles: { 3: { n: 3, items: {}, temas: {}, vistos: {}, errores: {}, evals: { ciencias: [{ fecha: Date.now(), ok: 5, total: 16, porTema: {} }] }, juegos: {} } } })));
+  await page.goto(URL); await page.waitForSelector('.materias'); await page.click('.top .perfil'); await page.waitForSelector('table.adulto');
+  ok(/5\/16/.test(await page.textContent('table.adulto')), 'Datos de la versión 1.0 (5 perfiles) se conservan al pasar a perfil único');
 
   // ---------- 11. Voz: texto que se lee ----------
   const voz = await page.evaluate(() => [window.__TERCERO.paraVoz('Pinta <b>3/4</b> de la barra: 4 × 5 = 20. Ángulo de 90°. Son las 3:15. Lado de 6 cm.'), window.__TERCERO.paraVoz('El ca___allo 🐴 corre.')]);
@@ -355,13 +363,12 @@ const REQ = [
   ok(sw === 'activo', 'Service worker activo: ' + sw);
   await page.reload(); await page.waitForTimeout(800);
   await ctx.setOffline(true);
-  await page.reload(); await page.waitForSelector('.perfiles, .materias', { timeout: 8000 }).catch(() => {});
-  ok(!!(await page.$('.perfiles, .materias')), 'La app abre sin internet (modo avión)');
+  await page.reload(); await page.waitForSelector('.materias', { timeout: 8000 }).catch(() => {});
+  ok(!!(await page.$('.materias')), 'La app abre sin internet (modo avión)');
   await ctx.setOffline(false);
 
   // ---------- 13. Escritorio ----------
-  await page.setViewportSize({ width: 1280, height: 900 }); await page.goto(URL); await page.waitForSelector('.perfiles');
-  await clickTxt('.pf', 'Estudiante 3'); await page.waitForSelector('.materias');
+  await page.setViewportSize({ width: 1280, height: 900 }); await page.goto(URL); await page.waitForSelector('.materias');
   await page.screenshot({ path: OUT + '/11_escritorio.png' });
 
   ok(errores.length === 0, 'Errores de consola/página: ' + (errores.length ? errores.join(' | ') : 'ninguno'));

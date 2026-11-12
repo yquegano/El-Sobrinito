@@ -8,7 +8,6 @@
   const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
   const mezclar = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
   const KEY = 'tercero_repaso_v1';
-  const ANIMALES = ['🦊', '🐼', '🐸', '🦉', '🐢'];
 
   /* ---------- Datos: asignar ids ---------- */
   MATERIAS.forEach(m => m.temas.forEach(t => t.items.forEach((it, i) => { it.id = `${m.id}.${t.id}.${i}`; it.tema = t.id; it.materia = m.id; })));
@@ -17,11 +16,19 @@
   const itemPorId = id => { const [mi, ti, ii] = id.split('.'); const t = T(M(mi), ti); return t && t.items[+ii]; };
 
   /* ---------- Almacenamiento ---------- */
-  let DB = { actual: null, auto: false, perfiles: {} };
-  try { DB = Object.assign(DB, JSON.parse(localStorage.getItem(KEY) || '{}')); } catch (e) { }
+  // Un solo niño o niña por equipo (como El Sobrinito). Si hay datos de la versión 1.0 (5 perfiles), se conserva el perfil que estaba en uso.
+  const nuevoPerfil = () => ({ items: {}, temas: {}, vistos: {}, errores: {}, evals: {}, juegos: {}, explora: {} });
+  let DB = { auto: false, perfil: null };
+  try {
+    const g = JSON.parse(localStorage.getItem(KEY) || '{}');
+    DB = Object.assign(DB, g);
+    if (!DB.perfil && g.perfiles) { const k = g.actual && g.perfiles[g.actual] ? g.actual : Object.keys(g.perfiles)[0]; if (k) DB.perfil = g.perfiles[k]; }
+  } catch (e) { }
+  delete DB['perfiles']; delete DB['actual'];
+  if (!DB.perfil) DB.perfil = nuevoPerfil();
+  ['items', 'temas', 'vistos', 'errores', 'evals', 'juegos', 'explora'].forEach(k => { DB.perfil[k] = DB.perfil[k] || {}; });
   const guardar = () => { try { localStorage.setItem(KEY, JSON.stringify(DB)); } catch (e) { } };
-  const nuevoPerfil = n => ({ n, items: {}, temas: {}, vistos: {}, errores: {}, evals: {}, juegos: {} });
-  const P = () => DB.perfiles[DB.actual];
+  const P = () => DB.perfil;
   function registrar(it, ok) {
     const p = P(); if (!p) return;
     const k = it.tema && `${it.materia}.${it.tema}`;
@@ -45,7 +52,7 @@
     const d = document.createElement('div'); d.innerHTML = String(html).replace(/<br\s*\/?>/gi, '. ').replace(/<\/(p|li|h\d|div)>/gi, '. ');
     let s = d.textContent || '';
     s = s.replace(/\b(\d)\/(\d)\b/g, m => NOMBRESFR[m] || m.replace('/', ' de '));
-    s = s.replace(/(\d+)\s*×\s*(\d+)/g, '$1 por $2').replace(/×/g, ' por ').replace(/(\d+)°/g, '$1 grados').replace(/(\d+) cm\b/g, '$1 centímetros').replace(/(\d+) m\b/g, '$1 metros');
+    s = s.replace(/\s\+\s/g, ' más ').replace(/\s−\s/g, ' menos ').replace(/\s=\s/g, ' es igual a ').replace(/(\d+)\s*×\s*(\d+)/g, '$1 por $2').replace(/×/g, ' por ').replace(/(\d+)°/g, '$1 grados').replace(/(\d+) cm\b/g, '$1 centímetros').replace(/(\d+) m\b/g, '$1 metros');
     s = s.replace(/\b(\d{1,2}):00\b/g, '$1 en punto').replace(/\b(\d{1,2}):(\d{2})\b/g, (m, h, mi) => `${h} y ${+mi}`);
     s = s.replace(/_{2,}|_/g, ' blanco ').replace(/☐/g, ' cuadro ').replace(/[>]/g, ' mayor que ').replace(/[<]/g, ' menor que ');
     s = s.replace(/\p{Extended_Pictographic}|️|‍|[➜→⬆️]/gu, ' ').replace(/\s+/g, ' ').replace(/(\.\s*)+/g, '. ').trim();
@@ -80,38 +87,27 @@
   /* ---------- Utilidades de pantalla ---------- */
   function pantalla(titulo, volver, color) {
     detener(); window.scrollTo(0, 0);
-    const el = app(); el.innerHTML = '';
+    const el = app(); const voz = $('#voz'); el.innerHTML = '';
     const h = document.createElement('header'); h.className = 'top'; h.style.background = color || '';
-    h.innerHTML = `${volver ? '<button type="button" class="back" aria-label="Volver">⬅</button>' : '<span></span>'}<h1>${titulo}</h1><button type="button" class="perfil" aria-label="Cambiar de estudiante">${DB.actual ? ANIMALES[DB.actual - 1] : '👤'}</button>`;
+    h.innerHTML = `${volver ? '<button type="button" class="back" aria-label="Volver">⬅</button>' : '<span></span>'}<h1>${titulo}</h1><button type="button" class="perfil" aria-label="Panel para el adulto" title="Panel para el adulto">⚙️</button>`;
+    if (voz) h.appendChild(voz); // los controles de voz van dentro del encabezado: nunca tapan botones
     el.appendChild(h);
     if (volver) h.querySelector('.back').onclick = volver;
-    h.querySelector('.perfil').onclick = renderPerfiles;
+    h.querySelector('.perfil').onclick = renderAdulto;
     const main = document.createElement('main'); el.appendChild(main); return main;
   }
   const div = (cls, html) => { const d = document.createElement('div'); if (cls) d.className = cls; if (html != null) d.innerHTML = html; return d; };
   const boton = (txt, cls, fn) => { const b = document.createElement('button'); b.type = 'button'; b.className = cls || 'btn'; b.innerHTML = txt; b.onclick = fn; return b; };
   const diasPara = f => { const hoy = new Date(); hoy.setHours(0, 0, 0, 0); const [y, mo, d] = f.split('-').map(Number); return Math.round((new Date(y, mo - 1, d) - hoy) / 864e5); };
+  const fechaCorta = f => { const [y, mo, d] = f.split('-').map(Number); return new Date(y, mo - 1, d).toLocaleDateString('es-CL', { weekday: 'short', day: 'numeric', month: 'short' }); };
   const fechaTxt = f => { const [y, mo, d] = f.split('-').map(Number); const dt = new Date(y, mo - 1, d); return dt.toLocaleDateString('es-CL', { weekday: 'long', day: 'numeric', month: 'long' }); };
 
-  /* ---------- Perfiles ---------- */
-  function renderPerfiles() {
-    const main = pantalla('¿Quién va a estudiar?', DB.actual ? renderInicio : null, '#A8E6D4');
-    main.appendChild(div('intro', 'Elige tu animal. Tu avance se guarda solo en este equipo. No necesitas cuenta ni escribir tu nombre.'));
-    const g = div('perfiles');
-    [1, 2, 3, 4, 5].forEach(n => {
-      const p = DB.perfiles[n];
-      g.appendChild(boton(`<span class="ani">${ANIMALES[n - 1]}</span><b>Estudiante ${n}</b><small>${p ? 'Avance: ' + MATERIAS.map(m => avanceMateria0(p, m)).reduce((a, b) => a + b, 0) / MATERIAS.length + ' %' : 'Nuevo'}</small>`, 'pf' + (DB.actual === n ? ' on' : ''), () => { if (!DB.perfiles[n]) DB.perfiles[n] = nuevoPerfil(n); DB.actual = n; guardar(); renderInicio(); }));
-    });
-    main.appendChild(g);
-    main.appendChild(boton('👩‍🏫 Panel para el adulto', 'btn suave', renderAdulto));
-  }
   const avanceMateria0 = (p, m) => { const v = m.temas.filter(t => p.vistos[`${m.id}.${t.id}`]).length, pr = m.temas.filter(t => (p.temas[`${m.id}.${t.id}`] || {}).ok > 0).length; return Math.round(100 * (v + pr) / (2 * m.temas.length)); };
 
   /* ---------- Inicio ---------- */
   function renderInicio() {
-    if (!DB.actual) return renderPerfiles();
     const main = pantalla('Repaso 3.º básico', null, '#FFE08A');
-    main.appendChild(div('chispa', `<span class="robot">🤖</span><p><b>¡Hola, ${ANIMALES[DB.actual - 1]} Estudiante ${DB.actual}!</b> Soy Chispa. Vamos a repasar para las pruebas de noviembre. Elige una asignatura.</p>`));
+    main.appendChild(div('chispa', `<span class="robot">🤖</span><p><b>¡Hola!</b> Soy Chispa. Vamos a repasar para las pruebas de noviembre. Elige una asignatura y sigue tu <b>ruta de aprendizaje</b>: paso a paso, en orden.</p>`));
     const g = div('materias');
     MATERIAS.forEach(m => {
       const d = diasPara(m.fecha), av = avanceMateria(m);
@@ -135,11 +131,48 @@
       ['🏆', 'Comprueba lo aprendido', 'Evaluación de práctica con todos los contenidos', () => iniciarEval(m)],
       ['🔁', 'Repasa tus errores', err ? `Tienes ${err} para repasar` : 'Aquí aparecerá lo que necesites reforzar', () => iniciarRepaso(m)]
     ];
+    if (m.id === 'matematica') sec.splice(5, 0, ['✖️', 'Tablas de multiplicar', 'Todas las tablas del 1 al 10, con trucos', () => renderTablas(m, 2)]);
+    main.appendChild(rutaCard(m));
+    main.appendChild(div('subt', 'Todas las secciones'));
     const g = div('secciones');
     sec.forEach(([e, t, s, f]) => g.appendChild(boton(`<span class="se">${e}</span><b>${t}</b><small>${s}</small>`, 'sec', f)));
     main.appendChild(g);
     const evs = (P().evals[m.id] || []);
     if (evs.length) { const u = evs[evs.length - 1]; main.appendChild(div('nota', `Último "Comprueba lo aprendido": ${u.ok} de ${u.total} (${Math.round(100 * u.ok / u.total)} %) · ${new Date(u.fecha).toLocaleDateString('es-CL')}`)); }
+  }
+
+  /* ---------- Ruta de aprendizaje ---------- */
+  function rutaCard(m) {
+    const p = P(), nT = m.temas.length;
+    const vistos = m.temas.filter(t => p.vistos[`${m.id}.${t.id}`]).length;
+    const pract = m.temas.filter(t => (p.temas[`${m.id}.${t.id}`] || {}).ok > 0).length;
+    const expl = m.explora.filter((x, i) => p.explora[`${m.id}.${i}`]).length;
+    const jugo = Object.keys(p.juegos).some(k => k === m.id || k.startsWith(m.id + '.'));
+    const evs = p.evals[m.id] || [], u = evs[evs.length - 1], err = (p.errores[m.id] || []).length;
+    const sigTema = m.temas.find(t => !p.vistos[`${m.id}.${t.id}`]);
+    const sigPrac = m.temas.find(t => !((p.temas[`${m.id}.${t.id}`] || {}).ok > 0));
+    const pasos = [
+      ['📘', 'Aprende o escucha cada tema, en orden', `${vistos} de ${nT} temas`, vistos === nT, () => sigTema ? aprende(m, sigTema, 0) : elegirTema(m, 'aprende'), sigTema ? `«${sigTema.titulo}»` : ''],
+      ['🔍', 'Explora los dibujos', `${expl} de ${m.explora.length}`, expl === m.explora.length, () => renderExplora(m), ''],
+      ['✏️', 'Practica cada tema', `${pract} de ${nT} temas`, pract === nT, () => sigPrac ? practicar(m, sigPrac) : elegirTema(m, 'practica'), sigPrac ? `«${sigPrac.titulo}»` : ''],
+      ['🎮', 'Juega: ' + m.juego.titulo, jugo ? 'jugado' : 'pendiente', jugo, () => renderJuego(m), ''],
+      ['🏆', 'Comprueba lo aprendido', u ? `último: ${u.ok} de ${u.total}` : 'pendiente', !!u, () => iniciarEval(m), ''],
+      ['🔁', 'Repasa tus errores', !u ? 'después de comprobar' : err ? `${err} por repasar` : 'nada pendiente', !!u && !err, () => iniciarRepaso(m), '']
+    ];
+    const toca = pasos.findIndex(x => !x[3]);
+    const card = div('card ruta');
+    card.innerHTML = '<h2>🗺️ Tu ruta de aprendizaje</h2><p class="txt">Sigue los pasos en orden. Cuando termines uno, aparece ✅.</p>';
+    const ol = document.createElement('ol'); ol.className = 'pasos';
+    pasos.forEach(([e, t, est, ok, f, extra], k) => {
+      const li = document.createElement('li');
+      li.appendChild(boton(`<span class="pn">${ok ? '✅' : k + 1}</span><span class="pt"><b>${e} ${t}</b><small>${est}${k === toca && extra ? ' · sigue con ' + extra : ''}</small></span>${k === toca ? '<span class="toca">👉 Te toca</span>' : ''}`, 'paso-r' + (ok ? ' hecho' : '') + (k === toca ? ' ahora' : ''), f));
+      ol.appendChild(li);
+    });
+    card.appendChild(ol);
+    if (toca === -1) card.appendChild(div('fb ok', '<b>¡Ruta completa! 🎉</b><p>Puedes volver a «Comprueba lo aprendido» para mejorar tu puntaje o jugar otra vez.</p>'));
+    const voz = `Tu ruta de aprendizaje de ${m.corto}. Paso 1: aprende o escucha cada tema, en orden. Paso 2: explora los dibujos. Paso 3: practica cada tema. Paso 4: juega. Paso 5: comprueba lo aprendido. Paso 6: repasa tus errores. ` + (toca > -1 ? `Ahora te toca el paso ${toca + 1}: ${pasos[toca][1]}${pasos[toca][5] ? ', sigue con ' + pasos[toca][5] : ''}.` : '¡Terminaste la ruta!');
+    card.appendChild(btnVoz(voz));
+    return card;
   }
 
   function elegirTema(m, modo) {
@@ -148,10 +181,10 @@
     main.appendChild(div('intro', modo === 'practica' ? 'Elige un tema. El punto de color muestra cómo te ha ido: 🟢 bien · 🟡 a medias · 🔴 a reforzar · ⚪ sin practicar.' : 'Elige un tema.'));
     const g = div('temas');
     if (modo === 'practica') g.appendChild(boton('<b>🎲 Mezcla de todos los temas</b>', 'tema todo', () => practicar(m, null)));
-    m.temas.forEach(t => {
+    m.temas.forEach((t, n) => {
       const d = dominio(m, t), pt = d == null ? '⚪' : d >= .8 ? '🟢' : d >= .5 ? '🟡' : '🔴';
       const visto = P().vistos[`${m.id}.${t.id}`] ? ' ✓' : '';
-      g.appendChild(boton(`${modo === 'practica' ? pt + ' ' : ''}<b>${t.titulo}</b>${modo !== 'practica' ? visto : ''}<small>${t.oa}</small>`, 'tema', () => modo === 'aprende' ? aprende(m, t, 0) : modo === 'escucha' ? escucha(m, t) : practicar(m, t)));
+      g.appendChild(boton(`${modo === 'practica' ? pt + ' ' : ''}<b>${n + 1}. ${t.titulo}</b>${modo !== 'practica' ? visto : ''}<small>${t.oa}</small>`, 'tema', () => modo === 'aprende' ? aprende(m, t, 0) : modo === 'escucha' ? escucha(m, t) : practicar(m, t)));
     });
     main.appendChild(g);
   }
@@ -186,10 +219,11 @@
   function renderExplora(m) {
     const main = pantalla('🔍 Explora · ' + m.corto, () => renderMateria(m.id), m.color);
     const g = div('temas');
-    m.explora.forEach(x => g.appendChild(boton(`<b>${x.titulo}</b>`, 'tema', () => lab(m, x))));
+    m.explora.forEach((x, i) => g.appendChild(boton(`<b>${x.titulo}</b>${P().explora[`${m.id}.${i}`] ? ' ✓' : ''}`, 'tema', () => lab(m, x, i))));
     main.appendChild(g);
   }
-  function lab(m, x) {
+  function lab(m, x, i) {
+    if (i != null) { P().explora[`${m.id}.${i}`] = 1; guardar(); }
     const main = pantalla('🔍 ' + x.titulo, () => renderExplora(m), m.color);
     const card = div('card');
     main.appendChild(card);
@@ -354,63 +388,171 @@
     }
   };
 
-  /* ---------- Juegos ---------- */
-  function renderJuego(m) {
+  /* ---------- Juegos: primero la explicación con un ejemplo (leída en voz alta), después el juego ---------- */
+  const caraCarta = x => typeof x === 'string' ? `<b>${esc(x)}</b>` : `${x.img ? (x.img.startsWith('<') ? x.img : `<span class="cimg">${x.img}</span>`) : ''}<b>${esc(x.t)}</b>`;
+  const textoCarta = x => typeof x === 'string' ? x : x.t;
+  function renderJuego(m, opc = {}) {
     const j = m.juego; const main = pantalla('🎮 ' + j.titulo, () => renderMateria(m.id), m.color);
     const card = div('card juego'); main.appendChild(card);
-    const record = v => { const p = P(); const k = m.id; p.juegos[k] = Math.max(p.juegos[k] || 0, v); guardar(); return p.juegos[k]; };
-    if (j.tipo === 'memorice') {
-      const cartas = mezclar(j.pares.flatMap(([a, b], k) => [[a, k], [b, k]])); let abiertas = [], hechas = 0, intentos = 0;
-      card.innerHTML = '<p class="paso">Encuentra las parejas: cada parte o concepto con lo que hace o significa.</p>';
-      const g = div('memo'); card.appendChild(g); const st = div('nota', 'Intentos: 0'); card.appendChild(st);
-      cartas.forEach(([t, k], n) => { const c = boton('❓', 'carta', () => { if (c.classList.contains('vista') || abiertas.length === 2) return; c.textContent = t; c.classList.add('vista'); abiertas.push([c, k]); if (abiertas.length === 2) { intentos++; st.textContent = 'Intentos: ' + intentos; const [[c1, k1], [c2, k2]] = abiertas; if (k1 === k2) { c1.classList.add('par'); c2.classList.add('par'); abiertas = []; hechas++; if (hechas === j.pares.length) { const best = record(Math.max(1, 100 - intentos * 3)); card.appendChild(div('fb ok', `<b>¡Lo lograste en ${intentos} intentos! 🎉</b><p>Tu mejor puntaje: ${best}</p>`)); card.appendChild(boton('Jugar otra vez', 'btn', () => renderJuego(m))); } } else setTimeout(() => { c1.textContent = '❓'; c2.textContent = '❓'; c1.classList.remove('vista'); c2.classList.remove('vista'); abiertas = []; }, 1100); } }); g.appendChild(c); });
-    } else if (j.tipo === 'rapido') {
-      const ronda = mezclar(j.items).slice(0, 12); let i = 0, pts = 0, racha = 0;
-      const sig = () => {
-        if (i >= ronda.length) { const best = record(pts); card.innerHTML = `<div class="puntaje">${pts} / ${ronda.length}</div><p class="txt">¡Terminaste! Tu mejor puntaje: ${best}</p>`; card.appendChild(boton('Jugar otra vez', 'btn', () => renderJuego(m))); return; }
-        const [t, g] = ronda[i]; card.innerHTML = `<p class="paso">${i + 1} de ${ronda.length} · ⭐ ${pts} · 🔥 racha ${racha}</p><div class="palabra">${esc(t)}</div>`;
-        const r = div('opciones dos'); j.grupos.forEach((gr, gi) => r.appendChild(boton(gr, 'op', () => { const ok = gi === g; if (ok) { pts++; racha++; } else racha = 0; const extra = j.ayuda && j.ayuda[t] ? ` Se escribe <b>${j.ayuda[t]}</b>.` : ''; r.querySelectorAll('button').forEach(b => b.disabled = true); card.appendChild(div('fb ' + (ok ? 'ok' : 'ko'), `<b>${ok ? '¡Bien!' : 'Era ' + esc(j.grupos[g])}</b>${extra}`)); setTimeout(() => { i++; sig(); }, ok ? 800 : 1800); })));
-        card.appendChild(r);
-      }; sig();
-    } else if (j.tipo === 'tablas') {
-      let pts = 0, t0 = 0, timer = null, a, b, inp;
-      card.innerHTML = '<p class="txt">Resuelve todas las multiplicaciones que puedas en 60 segundos. Si te equivocas, no pasa nada: aparece la respuesta y sigues.</p>';
-      card.appendChild(boton('▶️ ¡Partir!', 'btn grande', () => { pts = 0; t0 = Date.now(); nueva(); timer = setInterval(tick, 250); }));
-      const nueva = () => { a = 2 + Math.floor(Math.random() * 9); b = 2 + Math.floor(Math.random() * 9); card.innerHTML = `<p class="paso" id="tt">⏱ 60 · ⭐ ${pts}</p><div class="palabra">${a} × ${b} = ?</div>`; inp = document.createElement('input'); inp.className = 'numin'; inp.readOnly = true; const pad = div('pad'); [1, 2, 3, 4, 5, 6, 7, 8, 9, '⌫', 0, '✔️'].forEach(k => pad.appendChild(boton(String(k), k === '✔️' ? 'k ok' : 'k', () => { if (k === '⌫') inp.value = inp.value.slice(0, -1); else if (k === '✔️') ok(); else if (inp.value.length < 3) inp.value += k; }))); card.append(inp, pad); tick(); };
-      const ok = () => { const v = +inp.value; if (v === a * b) { pts++; nueva(); } else { aviso(`${a} × ${b} = ${a * b}`); nueva(); } };
-      const tick = () => { const s = 60 - Math.floor((Date.now() - t0) / 1000); const tt = $('#tt'); if (tt) tt.textContent = `⏱ ${Math.max(0, s)} · ⭐ ${pts}`; if (s <= 0) { clearInterval(timer); const best = record(pts); card.innerHTML = `<div class="puntaje">${pts}</div><p class="txt">multiplicaciones correctas en 60 segundos. Tu mejor marca: ${best}</p>`; card.appendChild(boton('Jugar otra vez', 'btn', () => renderJuego(m))); } };
+    const p = P();
+    const record = (k, v) => { p.juegos[k] = Math.max(p.juegos[k] || 0, v); guardar(); return p.juegos[k]; };
+    // Pantalla de explicación
+    const texto = j.como + (j.ejemplo ? ' ' + j.ejemplo.voz : '');
+    card.innerHTML = `<h2>¿Cómo se juega?</h2><p class="txt">${j.como}</p>${j.ejemplo ? `<div class="ejemplo"><p class="paso">Ejemplo</p>${j.ejemplo.html}</div>` : ''}`;
+    let tabla = opc.tabla != null ? opc.tabla : 0;
+    if (j.tipo === 'tablas') {
+      const sel = div('elige'); sel.innerHTML = '<p class="paso">Elige la tabla que quieres practicar</p>';
+      const fila = div('fila tablas-sel');
+      const pinta = () => fila.querySelectorAll('button').forEach(b => b.classList.toggle('on', +b.dataset.t === tabla));
+      [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].forEach(n => { const b = boton(n ? `del ${n}` : '🎲 Todas', 'btn suave', () => { tabla = n; pinta(); }); b.dataset.t = n; fila.appendChild(b); });
+      sel.appendChild(fila); card.appendChild(sel); pinta();
     }
+    card.appendChild(btnVoz(texto));
+    card.appendChild(boton('▶️ ¡A jugar!', 'btn grande', () => { detener(); jugar(); }));
+    hablar(texto);
+
+    function jugar() {
+      if (!(m.id in p.juegos)) { p.juegos[m.id] = 0; guardar(); } // la ruta marca «jugado» desde la primera partida
+      if (j.tipo === 'memorice') {
+        const cartas = mezclar(j.pares.flatMap(([a, b], k) => [[a, k], [b, k]])); let abiertas = [], hechas = 0, intentos = 0;
+        card.innerHTML = '<p class="paso">Toca dos cartas. Busca las parejas que van juntas.</p>';
+        const g = div('memo'); card.appendChild(g); const st = div('nota', 'Intentos: 0 · Parejas: 0 de ' + j.pares.length); card.appendChild(st);
+        cartas.forEach(([x, k]) => {
+          const c = boton('<span class="tapa">❓</span>', 'carta', () => {
+            if (c.classList.contains('vista') || abiertas.length === 2) return;
+            c.innerHTML = caraCarta(x); c.classList.add('vista'); abiertas.push([c, k]);
+            if (abiertas.length < 2) return;
+            intentos++;
+            const [[c1, k1], [c2, k2]] = abiertas;
+            if (k1 === k2) {
+              c1.classList.add('par'); c2.classList.add('par'); abiertas = []; hechas++;
+              const [a, b] = j.pares[k1]; hablar(`¡Pareja! ${textoCarta(a)}: ${textoCarta(b)}.`);
+              if (hechas === j.pares.length) { const best = record(m.id, Math.max(1, 100 - intentos * 3)); card.appendChild(div('fb ok', `<b>¡Lo lograste en ${intentos} intentos! 🎉</b><p>Puntaje: ${Math.max(1, 100 - intentos * 3)} · Tu mejor puntaje: ${best}</p>`)); card.appendChild(boton('Jugar otra vez', 'btn', () => renderJuego(m))); }
+            } else setTimeout(() => { [c1, c2].forEach(z => { z.innerHTML = '<span class="tapa">❓</span>'; z.classList.remove('vista'); }); abiertas = []; }, 1300);
+            st.textContent = `Intentos: ${intentos} · Parejas: ${hechas} de ${j.pares.length}`;
+          });
+          c.dataset.k = k; g.appendChild(c);
+        });
+      } else if (j.tipo === 'rapido') {
+        const ronda = mezclar(j.items).slice(0, 12); let i = 0, pts = 0, racha = 0;
+        const sig = () => {
+          if (!card.isConnected) return;
+          if (i >= ronda.length) { const best = record(m.id, pts); card.innerHTML = `<div class="puntaje">${pts} / ${ronda.length}</div><p class="txt">¡Terminaste! Tu mejor puntaje: ${best}</p>`; card.appendChild(boton('Jugar otra vez', 'btn', () => renderJuego(m))); return; }
+          const [t, g] = ronda[i];
+          card.innerHTML = `<p class="paso">${i + 1} de ${ronda.length} · ⭐ ${pts} · 🔥 racha ${racha}</p>`;
+          let gota = null, tCaida = null, listo = false;
+          if (j.lluvia) { const cielo = div('cielo'); gota = div('gota', esc(t)); cielo.appendChild(gota); card.appendChild(cielo); requestAnimationFrame(() => requestAnimationFrame(() => gota.classList.add('cae'))); }
+          else card.appendChild(div('palabra', esc(t)));
+          const correcta = j.ayuda && j.ayuda[t] ? ` Se escribe <b>${esc(j.ayuda[t])}</b>.` : '';
+          const fin = (ok, titulo) => {
+            listo = true; clearTimeout(tCaida);
+            if (gota) { const top = getComputedStyle(gota).top; gota.classList.remove('cae'); gota.style.top = top; }
+            if (ok) { pts++; racha++; } else racha = 0;
+            r.querySelectorAll('button').forEach(b => b.disabled = true);
+            card.appendChild(div('fb ' + (ok ? 'ok' : 'ko'), `<b>${titulo}</b>${correcta}`));
+            setTimeout(() => { i++; sig(); }, ok ? 900 : 2200);
+          };
+          const r = div('opciones dos');
+          j.grupos.forEach((gr, gi) => r.appendChild(boton(esc(gr), 'op', () => { if (!listo) fin(gi === g, gi === g ? '¡Bien!' : 'Era ' + esc(j.grupos[g])); })));
+          card.appendChild(r);
+          if (j.lluvia) tCaida = setTimeout(() => { if (!listo && card.isConnected) fin(false, `¡Se cayó! 💧 Era ${esc(j.grupos[g])}.`); }, 10000);
+        };
+        sig();
+      } else if (j.tipo === 'tablas') {
+        let pts = 0, t0 = Date.now(), timer = null, a = 0, b = 0, inp;
+        const nombre = tabla ? `Tabla del ${tabla}` : 'Todas las tablas';
+        const nueva = () => {
+          let na, nb;
+          do { na = tabla || 2 + Math.floor(Math.random() * 9); nb = 1 + Math.floor(Math.random() * 10); } while (na === a && nb === b);
+          a = na; b = nb;
+          card.innerHTML = `<p class="paso" id="tt">${nombre} · ⏱ 60 · ⭐ ${pts}</p><div class="palabra">${a} × ${b} = ?</div>`;
+          inp = document.createElement('input'); inp.className = 'numin'; inp.readOnly = true; inp.setAttribute('aria-label', 'Tu respuesta');
+          const pad = div('pad'); [1, 2, 3, 4, 5, 6, 7, 8, 9, '⌫', 0, '✔️'].forEach(k => pad.appendChild(boton(String(k), k === '✔️' ? 'k ok' : 'k', () => { if (k === '⌫') inp.value = inp.value.slice(0, -1); else if (k === '✔️') revisar(); else if (inp.value.length < 3) inp.value += k; })));
+          card.append(inp, pad); tick();
+        };
+        const revisar = () => { if (inp.value === '') return aviso('Escribe el resultado con los números.'); if (+inp.value === a * b) pts++; else aviso(`${a} × ${b} = ${a * b}`); nueva(); };
+        const tick = () => {
+          if (!card.isConnected) { clearInterval(timer); return; }
+          const s = 60 - Math.floor((Date.now() - t0) / 1000); const tt = card.querySelector('#tt'); if (tt) tt.textContent = `${nombre} · ⏱ ${Math.max(0, s)} · ⭐ ${pts}`;
+          if (s <= 0) { clearInterval(timer); const best = record(m.id + (tabla ? '.t' + tabla : ''), pts); card.innerHTML = `<div class="puntaje">${pts}</div><p class="txt">multiplicaciones correctas en 60 segundos (${nombre.toLowerCase()}). Tu mejor marca: ${best}</p>`; card.appendChild(boton('Jugar otra vez', 'btn', () => renderJuego(m, { tabla }))); card.appendChild(boton('✖️ Ver las tablas', 'btn suave', () => renderTablas(m, tabla || 2))); }
+        };
+        nueva(); timer = setInterval(tick, 250);
+      }
+    }
+  }
+
+  /* ---------- Tablas de multiplicar (sección exclusiva de Matemática) ---------- */
+  const TRUCOS = {
+    1: 'Cualquier número multiplicado por 1 da el mismo número: 1 × 8 = 8.',
+    2: 'Multiplicar por 2 es sacar el doble: 2 × 7 es 7 + 7 = 14. Todos los resultados son números pares.',
+    3: 'Vas sumando de 3 en 3: 3, 6, 9, 12, 15… Si olvidas uno, súmale 3 al anterior.',
+    4: 'Es el doble del doble: para 4 × 6, el doble de 6 es 12 y el doble de 12 es 24.',
+    5: 'Los resultados siempre terminan en 0 o en 5: 5, 10, 15, 20, 25…',
+    6: 'Es el doble de la tabla del 3: como 3 × 4 = 12, entonces 6 × 4 = 24.',
+    7: 'Vas sumando de 7 en 7. Un truco para recordar: 56 = 7 × 8 (cinco, seis, siete, ocho).',
+    8: 'Es el doble de la tabla del 4: como 4 × 3 = 12, entonces 8 × 3 = 24.',
+    9: 'Las cifras del resultado suman 9: 9 × 4 = 36 y 3 + 6 = 9.',
+    10: 'Le agregas un cero al número: 10 × 7 = 70.'
+  };
+  function renderTablas(m, n) {
+    const main = pantalla('✖️ Tablas de multiplicar', () => renderMateria(m.id), m.color);
+    const fila = div('fila tablas-sel');
+    for (let k = 1; k <= 10; k++) fila.appendChild(boton(`del ${k}`, 'btn suave' + (k === n ? ' on' : ''), () => renderTablas(m, k)));
+    main.appendChild(fila);
+    const card = div('card tabla-mult'); main.appendChild(card);
+    let ocultar = false;
+    const lineas = Array.from({ length: 10 }, (_, i) => [n, i + 1, n * (i + 1)]);
+    const pinta = () => {
+      card.innerHTML = `<h2>Tabla del ${n}</h2>`;
+      const ul = document.createElement('ul'); ul.className = 'tabla-lista';
+      lineas.forEach(([a, b, r]) => {
+        const li = document.createElement('li');
+        const res = boton(ocultar ? '?' : String(r), 'res' + (ocultar ? ' oculto' : ''), () => { res.textContent = r; res.classList.remove('oculto'); hablar(`${a} × ${b} = ${r}`); });
+        li.innerHTML = `<span class="op-t">${a} × ${b} =</span>`; li.appendChild(res); ul.appendChild(li);
+      });
+      card.appendChild(ul);
+      card.appendChild(div('nota', `💡 <b>Truco:</b> ${TRUCOS[n]}`));
+      const r = div('fila');
+      r.append(btnVoz(`La tabla del ${n}. ` + lineas.map(([a, b, x]) => `${a} × ${b} = ${x}`).join('. ') + '. Truco: ' + TRUCOS[n]),
+        boton(ocultar ? '👀 Mostrar resultados' : '🙈 Esconder resultados', 'btn suave', () => { ocultar = !ocultar; pinta(); }),
+        boton('🏁 Carrera con esta tabla', 'btn', () => renderJuego(m, { tabla: n })));
+      card.appendChild(r);
+      if (ocultar) card.appendChild(div('ayuda', 'Di el resultado en voz alta y toca el «?» para ver si acertaste.'));
+    };
+    pinta();
   }
 
   /* ---------- Panel del adulto ---------- */
   function renderAdulto() {
-    const main = pantalla('👩‍🏫 Panel para el adulto', DB.actual ? renderInicio : renderPerfiles, '#A8E6D4');
-    main.appendChild(div('intro', 'Avance de cada perfil en este equipo. Los datos no salen de este dispositivo. "Comprueba" muestra el último resultado de la evaluación de práctica.'));
+    const main = pantalla('👩‍🏫 Panel para el adulto', renderInicio, '#A8E6D4');
+    const p = P();
+    main.appendChild(div('intro', 'Avance del niño o niña que usa la app en este equipo. Los datos no salen de este dispositivo y no se pide ningún dato personal. «Comprueba» es el último resultado de la evaluación de práctica (no es una nota del colegio).'));
     const tb = document.createElement('table'); tb.className = 'adulto';
-    tb.innerHTML = `<tr><th>Perfil</th>${MATERIAS.map(m => `<th>${m.emoji} ${m.corto}</th>`).join('')}</tr>` + [1, 2, 3, 4, 5].map(n => { const p = DB.perfiles[n]; return `<tr><th>${ANIMALES[n - 1]} ${n}</th>${MATERIAS.map(m => { if (!p) return '<td>—</td>'; const ev = (p.evals[m.id] || []).slice(-1)[0]; return `<td>Avance ${avanceMateria0(p, m)} %<br><small>Comprueba: ${ev ? ev.ok + '/' + ev.total : '—'}<br>Errores por repasar: ${(p.errores[m.id] || []).length}</small></td>`; }).join('')}</tr>`; }).join('');
+    tb.innerHTML = '<tr><th>Asignatura</th><th>Prueba</th><th>Avance</th><th>Último Comprueba</th><th>Errores por repasar</th></tr>' + MATERIAS.map(m => {
+      const ev = (p.evals[m.id] || []).slice(-1)[0];
+      return `<tr><th>${m.emoji} ${m.corto}</th><td>${fechaCorta(m.fecha)}</td><td>${avanceMateria0(p, m)} %</td><td>${ev ? `${ev.ok}/${ev.total} (${Math.round(100 * ev.ok / ev.total)} %)` : '—'}</td><td>${(p.errores[m.id] || []).length}</td></tr>`;
+    }).join('');
     const wrap = div('tablawrap'); wrap.appendChild(tb); main.appendChild(wrap);
-    if (DB.actual && P()) {
-      const p = P(); const det = div('card');
-      det.innerHTML = `<h3>Detalle del perfil ${ANIMALES[DB.actual - 1]} ${DB.actual}</h3>` + MATERIAS.map(m => `<h4>${m.emoji} ${m.corto}</h4><ul class="det">${m.temas.map(t => { const r = p.temas[`${m.id}.${t.id}`] || { ok: 0, ko: 0 }; return `<li>${p.vistos[`${m.id}.${t.id}`] ? '📘' : '·'} ${t.titulo}: <b>${r.ok}</b> ✔ / <b>${r.ko}</b> ✖</li>`; }).join('')}</ul>`).join('');
-      main.appendChild(det);
-    }
+    const det = div('card');
+    det.innerHTML = '<h3>Detalle por tema</h3><p class="ayuda">📘 = explicación vista · ✔ respuestas correctas · ✖ respuestas incorrectas (práctica y evaluación)</p>' + MATERIAS.map(m => `<h4>${m.emoji} ${m.corto}</h4><ul class="det">${m.temas.map((t, n) => { const r = p.temas[`${m.id}.${t.id}`] || { ok: 0, ko: 0 }; return `<li>${p.vistos[`${m.id}.${t.id}`] ? '📘' : '·'} ${n + 1}. ${t.titulo}: <b>${r.ok}</b> ✔ / <b>${r.ko}</b> ✖</li>`; }).join('')}</ul>`).join('');
+    main.appendChild(det);
     const ajustes = div('card');
     ajustes.innerHTML = `<h3>Ajustes</h3><label class="sw"><input type="checkbox" id="auto" ${DB.auto ? 'checked' : ''}> Leer en voz alta automáticamente cada explicación y pregunta</label><p class="nota">Voz detectada: ${VOZ.voz ? esc(VOZ.voz.name + ' (' + VOZ.voz.lang + ')') : 'ninguna en español; se usará la voz por defecto del equipo'}.</p>`;
     main.appendChild(ajustes);
     ajustes.querySelector('#auto').onchange = e => { DB.auto = e.target.checked; guardar(); };
     main.appendChild(div('card', `<h3>Prueba piloto y fuentes</h3><p class="txt">El protocolo explica cómo organizar las sesiones, qué observar y trae la hoja de observación para imprimir (sin datos personales). También lista todos los contenidos de la app y las fuentes curriculares usadas.</p><a class="btn" href="protocolo.html" style="text-decoration:none;text-align:center">📋 Abrir protocolo y hoja de observación</a><p class="nota">Fuentes: Bases Curriculares y recursos de 3.º básico de curriculumnacional.cl (Mineduc) y objetivos de aprendizaje del Plan Sumo Primero. Las lecturas y los dibujos son originales de esta app.</p>`));
     const borrar = div('card');
-    borrar.innerHTML = '<h3>Reiniciar progreso</h3><p class="txt">Borra el avance de un perfil (no se puede deshacer).</p>';
-    const fila = div('fila');
-    [1, 2, 3, 4, 5].forEach(n => fila.appendChild(boton(`${ANIMALES[n - 1]} ${n}`, 'btn suave', () => {
-      const conf = div('fb ko', `<b>¿Borrar todo el avance del perfil ${ANIMALES[n - 1]} ${n}?</b>`);
-      conf.append(boton('Sí, borrar', 'btn', () => { delete DB.perfiles[n]; if (DB.actual === n) DB.actual = null; guardar(); renderAdulto(); }), boton('Cancelar', 'btn suave', () => conf.remove()));
+    borrar.innerHTML = '<h3>Reiniciar el avance</h3><p class="txt">Borra todo el avance guardado en este equipo (no se puede deshacer).</p>';
+    borrar.appendChild(boton('🗑️ Borrar el avance', 'btn suave', () => {
+      if (borrar.querySelector('.fb')) return;
+      const conf = div('fb ko', '<b>¿Borrar todo el avance de este equipo?</b>');
+      conf.append(boton('Sí, borrar', 'btn', () => { DB.perfil = nuevoPerfil(); guardar(); renderAdulto(); aviso('Avance borrado.'); }), boton('Cancelar', 'btn suave', () => conf.remove()));
       borrar.appendChild(conf);
-    })));
-    borrar.appendChild(fila); main.appendChild(borrar);
+    }));
+    main.appendChild(borrar);
   }
 
   /* ---------- Inicio ---------- */
-  window.addEventListener('DOMContentLoaded', () => { DB.actual && DB.perfiles[DB.actual] ? renderInicio() : renderPerfiles(); });
+  window.addEventListener('DOMContentLoaded', () => { guardar(); renderInicio(); });
   window.__TERCERO = { MATERIAS, TIPOS, paraVoz, itemPorId };
 })();

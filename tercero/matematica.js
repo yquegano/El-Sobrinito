@@ -193,6 +193,8 @@
       { id: 'exp-arreglos', titulo: 'Arma multiplicaciones', tipo: 'arreglos' },
       { id: 'exp-perimetro', titulo: 'Calcula perímetros', tipo: 'perimetro' }
     ],
-    juego: { tipo: 'tablas', titulo: 'Carrera de tablas (60 segundos)' }
+    juego: { tipo: 'tablas', titulo: 'Carrera de tablas (60 segundos)',
+      como: 'Primero elige qué tabla quieres practicar, o todas mezcladas. Tienes 60 segundos. Aparece una multiplicación: escribe el resultado con los números de abajo y toca ✔️. Cada respuesta correcta suma una estrella. Si te equivocas, Chispa te muestra el resultado y sigues.',
+      ejemplo: { html: '<div class="palabra chica">3 × 4 = ?</div><p class="txt">➜ Escribes <b>12</b> y tocas ✔️. ¡Ganas una ⭐!</p>', voz: 'Por ejemplo, aparece 3 por 4. Escribes 12 y tocas el botón verde. ¡Ganas una estrella!' } }
   });
 })();
