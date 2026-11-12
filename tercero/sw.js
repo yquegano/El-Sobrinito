@@ -1,6 +1,6 @@
 /* Repaso 3.º básico · service worker (v1, 2026-11-11)
    Guarda la app completa para usarla sin internet. Páginas y scripts: primero internet (para recibir correcciones) y, si no hay, la copia guardada. */
-const CACHE = 'tercero-v2';
+const CACHE = 'tercero-v3';
 const FONTS = 'tercero-fonts-v1';
 const ARCHIVOS = ['./', 'index.html', 'protocolo.html', 'base.js', 'svg.js', 'ciencias.js', 'historia.js', 'lenguaje.js', 'matematica.js', 'engine.js', 'manifest.webmanifest',
   'icons/tercero-32.png', 'icons/tercero-192.png', 'icons/tercero-512.png', 'icons/tercero-maskable-192.png', 'icons/tercero-maskable-512.png', 'icons/tercero-apple-180.png',

@@ -193,6 +193,8 @@ const REQ = [
     // ---------- 3. Aprende: todas las explicaciones ----------
     await abrirMateria(mid);
     ok((await page.$$('.sec')).length === (mid === 'matematica' ? 8 : 7), `${mid}: ${mid === 'matematica' ? '8 secciones (con Tablas de multiplicar)' : '7 secciones'}`);
+    const pos = await page.evaluate(() => { const a = document.querySelector('.secciones').getBoundingClientRect(), b = document.querySelector('.ruta').getBoundingClientRect(), s = [...document.querySelectorAll('.sec')].map(x => x.getBoundingClientRect().top); return { arriba: a.top < b.top, filas: new Set(s.map(Math.round)).size }; });
+    ok(pos.arriba && pos.filas <= 2, `${mid}: todas las secciones arriba, una al lado de la otra (${pos.filas} filas), y la ruta debajo`);
     const ruta0 = await page.evaluate(() => ({ n: document.querySelectorAll('.ruta .paso-r').length, ahora: (document.querySelector('.ruta .ahora') || {}).textContent || '' }));
     ok(ruta0.n === 6 && /Te toca/.test(ruta0.ahora), `${mid}: ruta de aprendizaje con 6 pasos; ahora → «${ruta0.ahora.replace(/\s+/g, ' ').trim()}»`);
     if (mid === mats[0]) await page.screenshot({ path: OUT + `/03_secciones_${mid}.png`, fullPage: true });
@@ -280,8 +282,8 @@ const REQ = [
     const nRep = await recorrer(() => true);
     ok(nRep > 0, `${mid}: Repasa tus errores ofrece ${nRep} ejercicios`);
     await clickExact('.nav .btn', '🏠 Volver');
-    const errTxt = await page.textContent('.secciones');
-    ok(true, `${mid}: tras repasar → «${errTxt.match(/Repasa tus errores(.*)/)[1].trim()}»`);
+    const errTit = await page.getAttribute('.sec[title^="Repasa tus errores"]', 'title');
+    ok(!(await page.$('.sec .badge')), `${mid}: tras repasar → «${errTit}» (sin errores pendientes)`);
 
     // ---------- 9. Juego: explicación con ejemplo (leída en voz alta) y juego ----------
     await clickTxt('.sec', 'Juega');
@@ -320,7 +322,7 @@ const REQ = [
     await page.screenshot({ path: OUT + `/09_juego_${mid}.png`, fullPage: true });
     await overflow(`${mid} juego`);
     if (mid === 'matematica') {
-      await page.click('.top .back'); await clickTxt('.sec', 'Tablas de multiplicar');
+      await page.click('.top .back'); await clickTxt('.sec', 'Tablas');
       const t2 = await page.textContent('.tabla-mult');
       ok((await page.$$('.tabla-lista li')).length === 10 && /2 × 10 =\s*20/.test(t2), 'Tablas de multiplicar: muestra la tabla completa (2 × 1 … 2 × 10)');
       await clickExact('.tablas-sel .btn', 'del 9');

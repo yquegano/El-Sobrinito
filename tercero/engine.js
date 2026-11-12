@@ -132,11 +132,15 @@
       ['🔁', 'Repasa tus errores', err ? `Tienes ${err} para repasar` : 'Aquí aparecerá lo que necesites reforzar', () => iniciarRepaso(m)]
     ];
     if (m.id === 'matematica') sec.splice(5, 0, ['✖️', 'Tablas de multiplicar', 'Todas las tablas del 1 al 10, con trucos', () => renderTablas(m, 2)]);
-    main.appendChild(rutaCard(m));
-    main.appendChild(div('subt', 'Todas las secciones'));
+    // Todas las secciones arriba, una al lado de la otra; debajo, la ruta de aprendizaje
+    const CORTO = { 'Comprueba lo aprendido': 'Comprueba', 'Repasa tus errores': 'Repasa errores', 'Tablas de multiplicar': 'Tablas' };
     const g = div('secciones');
-    sec.forEach(([e, t, s, f]) => g.appendChild(boton(`<span class="se">${e}</span><b>${t}</b><small>${s}</small>`, 'sec', f)));
+    sec.forEach(([e, t, s, f]) => {
+      const b = boton(`<span class="se">${e}</span><b>${CORTO[t] || t}</b>${t === 'Repasa tus errores' && err ? `<i class="badge">${err}</i>` : ''}`, 'sec mini', f);
+      b.title = `${t}: ${s}`; b.setAttribute('aria-label', `${t}. ${s}`); g.appendChild(b);
+    });
     main.appendChild(g);
+    main.appendChild(rutaCard(m));
     const evs = (P().evals[m.id] || []);
     if (evs.length) { const u = evs[evs.length - 1]; main.appendChild(div('nota', `Último "Comprueba lo aprendido": ${u.ok} de ${u.total} (${Math.round(100 * u.ok / u.total)} %) · ${new Date(u.fecha).toLocaleDateString('es-CL')}`)); }
   }

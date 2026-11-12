@@ -164,6 +164,12 @@ figcaption{font-weight:800;text-align:center;margin-bottom:4px}
 .carta.par{background:#BFEFCB}
 .sw{display:flex;gap:10px;align-items:flex-start;font-weight:600}
 .sw input{width:24px;height:24px;flex:none;margin-top:2px}
+/* Secciones compactas, una al lado de la otra */
+.secciones{display:grid;grid-template-columns:repeat(auto-fill,minmax(80px,1fr));gap:8px}
+.sec.mini{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:2px;text-align:center;padding:8px 4px;border-radius:14px;box-shadow:3px 3px 0 var(--tinta)}
+.sec.mini .se{font-size:28px;line-height:1.1}
+.sec.mini b{font-size:13.5px;line-height:1.15}
+.sec.mini .badge{position:absolute;top:-6px;right:-6px;background:var(--ko);color:#fff;font-style:normal;font-weight:800;font-size:12px;min-width:22px;height:22px;border-radius:11px;display:grid;place-items:center;border:2px solid var(--tinta)}
 /* Ruta de aprendizaje */
 .subt{font-weight:800;font-size:15px;text-transform:uppercase;letter-spacing:.06em;opacity:.7;margin-top:4px}
 .ruta{background:#FFFBEF}

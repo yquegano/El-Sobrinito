@@ -2,6 +2,11 @@
 
 Cada cambio deja una copia con fecha en `versiones/` y su detalle en Notion (Registro de versiones de apps).
 
+## 2026-11-11 (23:30) · Repaso 3.º básico v1.2 — secciones arriba (pedido de Jotha) · PUBLICADA
+- Al entrar a una asignatura, **todas las secciones aparecen arriba, una al lado de la otra**, como botones compactos (Aprende, Escucha, Explora, Practica, Juega, Tablas en Matemática, Comprueba y Repasa errores). Si hay errores pendientes, «Repasa errores» muestra un globo rojo con la cantidad. Debajo sigue la ruta de aprendizaje.
+- Pruebas: 160 de 160.
+- Respaldos: antes = `versiones/2026-11-11_v1.1_Repaso-3basico_perfil-unico.zip`; después = `versiones/2026-11-11_v1.2_Repaso-3basico_secciones-arriba.zip`.
+
 ## 2026-11-11 (noche) · Repaso 3.º básico v1.1 — perfil único, ruta de aprendizaje, juegos explicados y tablas (pedidos de Jotha) · PUBLICADA
 - **Perfil único:** cada app es para un niño o niña (como El Sobrinito). Se quitó la pantalla de los 5 animales: la app abre directo en las asignaturas. El botón ⚙️ de arriba abre el panel para el adulto. Si había avance de la v1.0, se conserva el perfil que estaba en uso.
 - **🗺️ Ruta de aprendizaje** al entrar a cada asignatura: 6 pasos en orden (Aprende o escucha cada tema, Explora, Practica, Juega, Comprueba lo aprendido, Repasa tus errores), con ✅ en lo hecho, «👉 Te toca» en el paso siguiente y el próximo tema sugerido (por ejemplo, Ciencias: «sigue con Lo que necesitan las plantas»). Se puede escuchar. Los temas aparecen numerados en el orden de la ruta.
